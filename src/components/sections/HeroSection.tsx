@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
-import { RunwayCanvas } from '../3d/RunwayCanvas';
-import { FallbackBackdrop } from '../3d/FallbackBackdrop';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 export const HeroSection: React.FC = () => {
@@ -25,12 +23,18 @@ export const HeroSection: React.FC = () => {
       id="chapter-01"
       className="full-viewport-scene bg-[#080808] flex flex-col justify-between items-center text-center px-4 overflow-hidden"
     >
-      {/* 3D WebGL Canvas or Lightweight Fallback */}
-      {!isMobile ? (
-        <RunwayCanvas scrollProgress={scrollProgress} />
-      ) : (
-        <FallbackBackdrop />
-      )}
+      {/* Video Background Layer */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          className="absolute w-full h-full object-cover opacity-60 mix-blend-screen filter grayscale-[80%]"
+          src="https://videos.pexels.com/video-files/4919750/4919750-hd_1920_1080_25fps.mp4"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/90 via-[#080808]/50 to-[#080808]"></div>
+      </div>
 
       {/* TOP: Brand Identifier */}
       <motion.div

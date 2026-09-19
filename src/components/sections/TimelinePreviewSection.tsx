@@ -12,14 +12,14 @@ export const TimelinePreviewSection: React.FC = () => {
         id="chapter-timeline-intro"
         className="full-viewport-scene bg-[#050505] flex flex-col justify-center items-center text-center relative border-b border-[#B59A62]/10"
       >
-        <div className="editorial-container relative z-10">
-          <span className="text-metadata text-[#B59A62] block mb-4">
+        <div className="editorial-container relative z-10 flex flex-col items-center justify-center text-center">
+          <span className="text-metadata text-[#C7A46A] block mb-4">
             THE ARCHIVE
           </span>
-          <h2 className="text-section-title font-serif font-light tracking-tight text-[#F4F1EA] uppercase">
+          <h2 className="text-section-title font-serif font-light tracking-tight text-[#F4F1EA] uppercase relative z-20">
             THE JOURNEY
           </h2>
-          <p className="mt-6 text-body-editorial text-[#8C8A85] max-w-xl mx-auto font-light uppercase tracking-wide">
+          <p className="mt-8 text-body-editorial text-[#8C8A85] max-w-2xl text-center font-light uppercase tracking-wide relative z-10">
             A chronological retrospective of our evolution from a singular runway to an international creative ecosystem.
           </p>
         </div>

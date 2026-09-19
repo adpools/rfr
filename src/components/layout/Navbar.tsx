@@ -32,13 +32,12 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-[8000] transition-all duration-700 ${
+        className={`fixed left-1/2 -translate-x-1/2 z-[8000] transition-all duration-700 w-[94%] max-w-6xl rounded-full flex items-center justify-between ${
           showSolidBackground
-            ? 'py-4 bg-[#050505]/80 backdrop-blur-md border-b border-[#B59A62]/10 shadow-2xl'
-            : 'py-6 md:py-8 bg-transparent'
+            ? 'top-4 py-3.5 px-6 md:px-8 bg-[#0B0B0B]/90 backdrop-blur-xl border border-[#333] shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
+            : 'top-[3%] py-4 px-6 md:px-8 bg-transparent border border-transparent'
         }`}
       >
-        <div className="editorial-container flex items-center justify-between">
           {/* Brand Monogram & Title */}
           <Link href="/" className="group flex items-center gap-4 no-underline">
             <div className="flex flex-col">
@@ -78,7 +77,6 @@ export const Navbar: React.FC = () => {
               {isMobileMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
             </button>
           </div>
-        </div>
       </header>
 
       {/* Fullscreen Menu */}
