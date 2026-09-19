@@ -34,92 +34,52 @@ export const HeroSection: React.FC = () => {
 
       {/* TOP: Brand Identifier */}
       <motion.div
-        initial={{ opacity: 0, y: -15 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10 pt-16 md:pt-20"
+        transition={{ duration: 1, delay: 0.2 }}
+        className="relative z-10 pt-20"
       >
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[#C7A46A]/30 bg-[#111111]/70 backdrop-blur-md">
-          <Sparkles size={11} className="text-[#C7A46A]" />
-          <span className="text-[10px] md:text-xs font-sans tracking-[0.35em] text-[#FAF9F6] uppercase font-light">
+        <div className="flex items-center gap-3">
+          <div className="w-[30px] h-[1px] bg-[#B59A62]/50"></div>
+          <span className="text-[10px] md:text-xs font-sans tracking-[0.4em] text-[#B59A62] uppercase font-light">
             RIYAS FASHION RUNWAY
           </span>
+          <div className="w-[30px] h-[1px] bg-[#B59A62]/50"></div>
         </div>
       </motion.div>
 
-      {/* CENTER: Monumental RFR Title & Editorial Headline */}
-      <div className="editorial-container relative z-10 my-auto py-6 flex flex-col items-center">
+      {/* CENTER: Monumental RFR Title */}
+      <div className="editorial-container relative z-10 my-auto flex flex-col items-center">
         <motion.h1
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="text-hero-monumental font-sculptural font-bold leading-none select-none text-transparent bg-clip-text bg-gradient-to-b from-[#FAF9F6] via-[#E5C896] to-[#9E7C49] drop-shadow-2xl"
+          initial={{ opacity: 0, scale: 0.98, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-h1-monumental font-sculptural font-bold leading-none select-none text-[#F4F1EA]"
         >
           RFR
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.7 }}
-          className="mt-4 md:mt-6 text-xl sm:text-3xl md:text-4xl font-serif font-light text-[#FAF9F6] max-w-3xl mx-auto uppercase tracking-wide leading-snug"
-        >
-          CREATIVITY HAS A RUNWAY.
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.8 }}
-          className="mt-3 text-xs md:text-sm font-sans font-light tracking-[0.2em] text-neutral-400 uppercase max-w-xl mx-auto"
+          transition={{ duration: 1, delay: 1 }}
+          className="mt-6 text-sm md:text-base font-serif font-light text-[#8C8A85] max-w-2xl mx-auto uppercase tracking-[0.2em] leading-relaxed text-center"
         >
           A Creative Ecosystem Built Around Fashion, People & Possibility.
         </motion.p>
-
-        {/* Action CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.95 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-4"
-        >
-          <a
-            href="#chapter-02"
-            data-cursor="EXPLORE"
-            className="px-8 py-3.5 rounded-full bg-[#C7A46A] text-[#080808] font-sans text-xs font-semibold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all shadow-xl shadow-[#C7A46A]/20 flex items-center gap-2"
-          >
-            <span>EXPLORE RFR</span>
-            <ArrowDown size={13} />
-          </a>
-
-          <a
-            href="/timeline"
-            data-cursor="JOURNEY"
-            className="px-8 py-3.5 rounded-full bg-[#141414]/90 text-[#FAF9F6] border border-neutral-700 hover:border-[#C7A46A] font-sans text-xs font-medium tracking-[0.2em] uppercase transition-all flex items-center gap-2 backdrop-blur-md"
-          >
-            <span>OUR JOURNEY</span>
-            <ArrowUpRight size={13} />
-          </a>
-        </motion.div>
       </div>
 
       {/* BOTTOM: Directional Cue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="relative z-10 pb-8 flex flex-col items-center gap-2 text-neutral-500"
+        transition={{ duration: 1.5, delay: 1.5 }}
+        className="relative z-10 pb-12 flex flex-col items-center gap-4 text-[#8C8A85]"
       >
-        <span className="text-[9px] tracking-[0.35em] uppercase font-mono text-[#C7A46A]/80">
-          01 / 17 • SCROLL TO ENTER ↓
+        <span className="text-[9px] tracking-[0.4em] uppercase font-sans font-light">
+          SCROLL TO ENTER
         </span>
-        <div className="w-4 h-7 rounded-full border border-neutral-700 flex items-start justify-center p-1">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-            className="w-1 h-1.5 rounded-full bg-[#C7A46A]"
-          />
-        </div>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-[#B59A62]/50 to-transparent"></div>
       </motion.div>
     </section>
   );

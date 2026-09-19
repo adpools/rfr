@@ -2,23 +2,23 @@
 @import "tailwindcss";
 
 :root {
-  --bg-obsidian: #080808;
-  --bg-charcoal: #111111;
-  --bg-card: #141414;
-  --bg-card-hover: #1c1c1c;
+  --bg-obsidian: #050505;
+  --bg-charcoal: #080808;
+  --bg-card: #0B0B0B;
+  --bg-card-hover: #111111;
   --bg-alabaster: #F4F1EA;
   --bg-soft-linen: #FAF9F6;
   
-  --text-primary: #FAF9F6;
-  --text-muted: #A3A3A3;
+  --text-primary: #F4F1EA;
+  --text-muted: #8C8A85;
   --text-dark: #0A0A0A;
   --text-dark-muted: #555555;
   
-  --gold-primary: #C7A46A;
-  --gold-muted: #9E7C49;
-  --gold-glow: rgba(199, 164, 106, 0.25);
-  --gold-border: rgba(199, 164, 106, 0.2);
-  --gold-border-bright: rgba(199, 164, 106, 0.45);
+  --gold-primary: #B59A62;
+  --gold-muted: #C5A76A;
+  --gold-glow: rgba(181, 154, 98, 0.15);
+  --gold-border: rgba(181, 154, 98, 0.2);
+  --gold-border-bright: rgba(181, 154, 98, 0.4);
   
   --font-serif: 'Cormorant Garamond', 'Cinzel', serif;
   --font-sculptural: 'Cinzel', serif;

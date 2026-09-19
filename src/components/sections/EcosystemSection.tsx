@@ -1,38 +1,79 @@
 import React from 'react';
-import { NetworkGraph3D } from '../3d/NetworkGraph3D';
+import { motion } from 'framer-motion';
 
 export const EcosystemSection: React.FC = () => {
   return (
     <section
-      id="chapter-10"
-      className="full-viewport-scene bg-[#080808] border-b border-neutral-900 flex flex-col justify-between relative overflow-hidden"
+      id="chapter-ecosystem"
+      className="full-viewport-scene bg-[#050505] overflow-hidden flex flex-col justify-center items-center relative"
     >
-      <div className="editorial-container relative z-10 my-auto py-10 w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-neutral-800/80">
-          <div>
-            <div className="flex items-center gap-3 text-xs font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-2">
-              <span>10</span>
-              <span className="w-8 h-[1px] bg-[#C7A46A]" />
-              <span>THE INTERCONNECTED MATRIX</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif text-white uppercase tracking-tight">
-              CREATIVE ECOSYSTEM
-            </h2>
-          </div>
-          <p className="text-xs font-mono text-neutral-400 uppercase tracking-widest mt-2 md:mt-0">
-            NUCLEUS ARCHITECTURE • 10 SYMBIOTIC HUBS
-          </p>
+      {/* Background Subtle Gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#111111] via-[#050505] to-[#050505] opacity-50"></div>
+
+      <div className="editorial-container relative z-10 w-full text-center">
+        <span className="text-metadata text-[#B59A62] block mb-12">
+          THE INTERCONNECTED MATRIX
+        </span>
+
+        <div className="relative">
+          {/* Floating Elements (Subtle Animation) */}
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-16 left-[10%] lg:left-[20%] text-xs font-mono tracking-widest text-[#8C8A85] uppercase"
+          >
+            Podcast
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, 15, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-10 -right-[5%] lg:right-[15%] text-xs font-mono tracking-widest text-[#8C8A85] uppercase"
+          >
+            Flea
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute bottom-20 left-[5%] lg:left-[15%] text-xs font-mono tracking-widest text-[#8C8A85] uppercase"
+          >
+            Studio
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            className="absolute -bottom-12 right-[10%] lg:right-[25%] text-xs font-mono tracking-widest text-[#8C8A85] uppercase"
+          >
+            Campaigns
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+            className="absolute -top-8 right-[20%] lg:right-[35%] text-xs font-mono tracking-widest text-[#8C8A85] uppercase"
+          >
+            Runway
+          </motion.div>
+          
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            className="text-section-title font-serif font-light text-[#F4F1EA] uppercase tracking-tight leading-[0.9] relative z-10"
+          >
+            THE RFR<br />
+            <span className="italic text-[#B59A62]">ECOSYSTEM</span>
+          </motion.h2>
         </div>
 
-        {/* Full-Viewport 3D Network Graph Canvas */}
-        <div className="w-full">
-          <NetworkGraph3D />
-        </div>
-      </div>
-
-      {/* Level 05: Directional Cue */}
-      <div className="scene-directional-cue">
-        <span>10 / 17 • SCROLL TO NETWORK ↓</span>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-16 text-body-editorial font-sans font-light text-[#8C8A85] max-w-xl mx-auto uppercase tracking-wide"
+        >
+          A symbiotic network of creative disciplines operating across multiple mediums to redefine contemporary culture.
+        </motion.p>
       </div>
     </section>
   );

@@ -19,12 +19,11 @@ export const Navbar: React.FC = () => {
 
   // Primary curated editorial navigation links
   const primaryNavLinks = [
-    { label: 'HOME', href: '/' },
+    { label: 'TIMELINE', href: '/timeline' },
     { label: 'ABOUT', href: '/about' },
-    { label: 'SERVICES', href: '/services' },
-    { label: 'JOURNEY', href: '/timeline' },
-    { label: 'GALLERY', href: '/gallery' },
-    { label: 'PRESS', href: '/press' },
+    { label: 'FASHION', href: '/gallery' },
+    { label: 'EVENTS', href: '/services' },
+    { label: 'CONTACT', href: '/contact' },
   ];
 
   const isHome = location === '/';
@@ -33,69 +32,50 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-[8000] transition-all duration-300 ${
+        className={`fixed top-0 left-0 w-full z-[8000] transition-all duration-700 ${
           showSolidBackground
-            ? 'py-3.5 bg-[#080808]/92 backdrop-blur-xl border-b border-[#C7A46A]/20 shadow-2xl'
-            : 'py-6 bg-transparent'
+            ? 'py-4 bg-[#050505]/80 backdrop-blur-md border-b border-[#B59A62]/10 shadow-2xl'
+            : 'py-6 md:py-8 bg-transparent'
         }`}
       >
         <div className="editorial-container flex items-center justify-between">
           {/* Brand Monogram & Title */}
-          <Link href="/" className="group flex items-center gap-3 no-underline">
-            <div className="w-8 h-8 rounded-lg bg-[#111111] border border-[#C7A46A]/40 flex items-center justify-center text-[#C7A46A] font-sculptural text-sm font-bold group-hover:border-[#C7A46A] group-hover:shadow-[0_0_15px_rgba(199,164,106,0.3)] transition-all">
-              R
-            </div>
+          <Link href="/" className="group flex items-center gap-4 no-underline">
             <div className="flex flex-col">
-              <span className="font-sculptural text-sm md:text-base font-bold tracking-[0.2em] text-[#FAF9F6] group-hover:text-[#C7A46A] transition-colors uppercase">
+              <span className="font-sculptural text-sm md:text-lg font-bold tracking-[0.25em] text-[#F4F1EA] group-hover:text-[#B59A62] transition-colors uppercase">
                 RFR BY RIYAS
-              </span>
-              <span className="font-sans text-[8px] tracking-[0.28em] text-neutral-400 uppercase font-light">
-                RIYAS FASHION RUNWAY
               </span>
             </div>
           </Link>
 
           {/* Desktop Curated Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-10">
             {primaryNavLinks.map((link) => {
               const isActive = location === link.href || (link.href !== '/' && location.startsWith(link.href));
               return (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`text-xs font-sans tracking-[0.18em] uppercase font-light transition-all duration-300 relative py-1 ${
+                  className={`text-[10px] md:text-xs font-sans tracking-[0.25em] uppercase transition-all duration-300 relative py-2 ${
                     isActive
-                      ? 'text-[#C7A46A] font-medium'
-                      : 'text-neutral-300 hover:text-white'
+                      ? 'text-[#B59A62] font-medium'
+                      : 'text-[#8C8A85] hover:text-[#F4F1EA] font-light'
                   }`}
                 >
                   {link.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#C7A46A]" />
-                  )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Primary CTA & Drawer Toggle */}
-          <div className="flex items-center gap-3 md:gap-4">
-            <Link
-              href="/business"
-              data-cursor="PARTNER"
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-sans tracking-[0.18em] uppercase font-medium bg-[#141414] text-[#FAF9F6] border border-[#C7A46A]/50 hover:border-[#C7A46A] hover:bg-[#C7A46A] hover:text-[#080808] transition-all duration-300 shadow-md group"
-            >
-              <span>DO BUSINESS</span>
-              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
-
-            {/* Menu Toggle (Mobile + Desktop Expanded Drawer) */}
+          {/* Mobile Menu Toggle */}
+          <div className="flex items-center lg:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle Fullscreen Menu"
-              className="p-2.5 rounded-full bg-[#141414] border border-[#C7A46A]/30 hover:border-[#C7A46A] text-[#FAF9F6] transition-colors"
+              className="p-3 text-[#F4F1EA] transition-colors hover:text-[#B59A62]"
             >
-              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              {isMobileMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
             </button>
           </div>
         </div>

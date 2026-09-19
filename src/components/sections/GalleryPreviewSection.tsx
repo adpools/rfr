@@ -2,103 +2,74 @@ import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { galleryData } from '../../data/galleryData';
-import { GalleryItem } from '../../types';
 import { LightboxModal } from '../common/LightboxModal';
-import { ArrowUpRight, Maximize2 } from 'lucide-react';
+import { GalleryItem } from '../../types';
+import { Maximize2, ArrowUpRight } from 'lucide-react';
 
 export const GalleryPreviewSection: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<'all' | 'events' | 'shows' | 'shoots'>('all');
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
-
-  const filteredItems = activeCategory === 'all'
-    ? galleryData.slice(0, 4)
-    : galleryData.filter((item) => item.category === activeCategory).slice(0, 4);
 
   return (
     <section
-      id="chapter-12"
-      className="full-viewport-scene bg-[#080808] border-b border-neutral-900 flex flex-col justify-between relative overflow-hidden"
+      id="chapter-archive"
+      className="full-viewport-scene bg-[#050505] overflow-hidden flex flex-col justify-center"
     >
-      <div className="editorial-container relative z-10 my-auto py-10 w-full">
-        {/* Top Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-800/80">
+      <div className="editorial-container-wide relative z-10 w-full mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <div className="flex items-center gap-3 text-xs font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-2">
-              <span>12</span>
-              <span className="w-8 h-[1px] bg-[#C7A46A]" />
-              <span>VISUAL REPERTOIRE</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif text-white uppercase tracking-tight">
+            <span className="text-metadata text-[#B59A62] block mb-4">
+              FROM FASHION
+            </span>
+            <h2 className="text-section-title font-serif font-light text-[#F4F1EA] uppercase tracking-tight leading-none">
               THE ARCHIVE
             </h2>
           </div>
-
-          <div className="flex items-center gap-4 mt-4 md:mt-0">
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {(['all', 'events', 'shows', 'shoots'] as const).map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
-                    activeCategory === cat
-                      ? 'bg-[#C7A46A] text-black font-semibold shadow-md shadow-[#C7A46A]/20'
-                      : 'bg-[#141414] text-neutral-400 hover:text-white border border-neutral-800'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            <Link
-              href="/gallery"
-              data-cursor="GALLERY"
-              className="inline-flex items-center gap-1.5 text-xs font-sans tracking-[0.2em] uppercase text-[#C7A46A] hover:text-white transition-colors group whitespace-nowrap pl-2"
-            >
-              <span>FULL VAULT</span>
-              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
-          </div>
+          <Link
+            href="/gallery"
+            className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#B59A62] transition-colors group"
+          >
+            <span>VIEW FULL ARCHIVE</span>
+            <span className="w-8 h-[1px] bg-[#B59A62] group-hover:w-12 transition-all"></span>
+          </Link>
         </div>
+      </div>
 
-        {/* Asymmetric 4-Card Editorial Composition */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 h-[440px] sm:h-[480px]">
-          {filteredItems.map((item, idx) => (
+      {/* Horizontal Scrolling Archive */}
+      <div className="w-full relative pl-[5vw] lg:pl-[4rem] pr-[5vw] lg:pr-[4rem]">
+        <div className="flex gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8 pt-4">
+          {galleryData.map((item, idx) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8, delay: idx * 0.1 }}
               onClick={() => setSelectedItem(item)}
-              data-cursor="OPEN"
-              className="group relative rounded-3xl overflow-hidden cursor-pointer bg-[#121212] border border-neutral-800 hover:border-[#C7A46A]/60 transition-all duration-500 flex flex-col justify-end p-6"
+              className="group relative flex-none w-[85vw] md:w-[45vw] lg:w-[35vw] h-[55vh] lg:h-[65vh] rounded-sm overflow-hidden cursor-pointer snap-center bg-[#080808]"
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale hover:grayscale-0"
+                className="absolute inset-0 w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-90 transition-opacity" />
 
-              <div className="absolute top-4 right-4 p-2.5 rounded-full bg-black/60 backdrop-blur-md text-white/70 group-hover:text-[#C7A46A] opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <Maximize2 size={15} />
-              </div>
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[9px] font-mono tracking-widest text-[#C7A46A] uppercase px-2 py-0.5 rounded border border-[#C7A46A]/30">
+              {/* Hover Interaction Content */}
+              <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-metadata text-[#B59A62] border border-[#B59A62]/30 px-3 py-1 rounded-full">
                     {item.category}
                   </span>
-                  <span className="text-[10px] text-neutral-400 font-mono">
+                  <span className="text-[10px] text-[#8C8A85] font-mono">
                     {item.year}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-serif text-white uppercase tracking-wide group-hover:text-[#C7A46A] transition-colors leading-snug">
+                <h3 className="text-2xl lg:text-3xl font-serif text-[#F4F1EA] uppercase tracking-wide leading-snug mb-4 group-hover:text-[#B59A62] transition-colors">
                   {item.title}
                 </h3>
+                
+                <div className="w-0 h-[1px] bg-[#B59A62] group-hover:w-full transition-all duration-700 ease-out" />
               </div>
             </motion.div>
           ))}
@@ -112,11 +83,6 @@ export const GalleryPreviewSection: React.FC = () => {
         onClose={() => setSelectedItem(null)}
         onSelect={(item) => setSelectedItem(item)}
       />
-
-      {/* Level 05: Directional Cue */}
-      <div className="scene-directional-cue">
-        <span>12 / 17 • SCROLL TO PRESS ↓</span>
-      </div>
     </section>
   );
 };
