@@ -57,7 +57,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           {/* Luxury Progress Bar */}
           <div className="w-48 md:w-64 h-[1px] bg-neutral-800 relative mt-12 overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-[#9E7C49] via-[#C7A46A] to-[#FAF9F6]"
+              className="h-full bg-gradient-to-r from-[#C7A46A] via-[#C7A46A] to-[#FAF9F6]"
               style={{ width: `${progress}%` }}
               transition={{ ease: 'easeOut', duration: 0.2 }}
             />

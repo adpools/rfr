@@ -10,7 +10,7 @@ export const TimelinePreviewSection: React.FC = () => {
       {/* Intro Scene */}
       <section
         id="chapter-timeline-intro"
-        className="full-viewport-scene bg-[#050505] flex flex-col justify-center items-center text-center relative border-b border-[#B59A62]/10"
+        className="full-viewport-scene bg-[#050505] flex flex-col justify-center items-center text-center relative border-b border-[#C7A46A]/10"
       >
         <div className="editorial-container relative z-10 flex flex-col items-center justify-center text-center">
           <span className="text-metadata text-[#C7A46A] block mb-4">
@@ -32,7 +32,7 @@ export const TimelinePreviewSection: React.FC = () => {
           <section
             key={item.year}
             id={`chapter-year-${item.year}`}
-            className="full-viewport-scene bg-[#080808] border-b border-[#B59A62]/5 overflow-hidden flex flex-col justify-center"
+            className="full-viewport-scene bg-[#080808] border-b border-[#C7A46A]/5 overflow-hidden flex flex-col justify-center"
           >
             <div className="editorial-container-wide relative z-10 w-full">
               <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center justify-between`}>
@@ -45,7 +45,7 @@ export const TimelinePreviewSection: React.FC = () => {
                     viewport={{ once: true, margin: "-20%" }}
                     transition={{ duration: 1 }}
                   >
-                    <span className="text-year-monumental font-sculptural text-[#B59A62] opacity-80 block mb-2 leading-none">
+                    <span className="text-year-monumental font-sculptural text-[#C7A46A] opacity-80 block mb-2 leading-none">
                       {item.year}
                     </span>
                     <h3 className="text-3xl lg:text-5xl font-serif text-[#F4F1EA] uppercase tracking-wide mb-6">
@@ -55,10 +55,10 @@ export const TimelinePreviewSection: React.FC = () => {
                       {item.description}
                     </p>
                     
-                    <div className="space-y-3 pt-6 border-t border-[#B59A62]/20">
+                    <div className="space-y-3 pt-6 border-t border-[#C7A46A]/20">
                       {item.milestones.map((milestone) => (
                         <div key={milestone} className="flex items-start gap-3 text-xs md:text-sm text-[#8C8A85] font-light uppercase tracking-wider">
-                          <CheckCircle2 size={16} className="text-[#B59A62] shrink-0 mt-0.5" />
+                          <CheckCircle2 size={16} className="text-[#C7A46A] shrink-0 mt-0.5" />
                           <span>{milestone}</span>
                         </div>
                       ))}

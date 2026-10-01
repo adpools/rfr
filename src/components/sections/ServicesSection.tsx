@@ -66,7 +66,7 @@ export const ServicesSection: React.FC = () => {
                   onClick={() => setActiveEvent(event)}
                   onMouseEnter={() => setActiveEvent(event)}
                   data-cursor="INSPECT"
-                  className={`w-full text-left px-6 py-4 rounded-full transition-all duration-300 flex items-center justify-between border ${
+                  className={`w-full text-left px-5 py-2.5 rounded-2xl transition-all duration-300 flex items-center justify-between border ${
                     isSelected
                       ? 'border-[#C7A46A] bg-transparent shadow-[0_0_15px_rgba(199,164,106,0.1)]'
                       : 'border-[#333] bg-transparent hover:border-[#666]'
@@ -74,14 +74,14 @@ export const ServicesSection: React.FC = () => {
                 >
                   <div className="flex items-center gap-4">
                     <span
-                      className={`font-mono text-[11px] ${
+                      className={`font-mono text-[22px] ${
                         isSelected ? 'text-[#C7A46A]' : 'text-[#666]'
                       }`}
                     >
                       0{idx + 1}
                     </span>
                     <span
-                      className={`text-sm sm:text-base font-serif uppercase tracking-wider transition-colors ${
+                      className={`text-xl sm:text-2xl font-serif uppercase tracking-wider transition-colors ${
                         isSelected ? 'text-[#F4F1EA]' : 'text-[#888]'
                       }`}
                     >
@@ -128,7 +128,7 @@ export const ServicesSection: React.FC = () => {
                 <div className="pt-6 flex items-center justify-between">
                   <Link
                     href={`/services/events/${activeEvent.slug}`}
-                    className="px-6 py-3 md:px-8 bg-[#C5A76A] text-[#050505] font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-full inline-flex items-center gap-2 hover:bg-[#F4F1EA] transition-colors"
+                    className="px-5 py-2.5 md:px-8 bg-[#C7A46A] text-[#050505] font-sans font-bold text-[20px]rounded-2xlgap-4 hover:bg-[#F4F1EA] transition-colors"
                   >
                     <span>EXPLORE PRODUCTION</span>
                     <ArrowUpRight size={14} />

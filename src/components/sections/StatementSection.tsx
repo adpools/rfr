@@ -14,7 +14,7 @@ export const StatementSection: React.FC = () => {
   return (
     <section
       id="chapter-02"
-      className="full-viewport-scene bg-[#080808] border-t border-b border-[#B59A62]/10 overflow-hidden flex flex-col justify-center relative"
+      className="full-viewport-scene bg-[#080808] border-t border-b border-[#C7A46A]/10 overflow-hidden flex flex-col justify-center relative"
     >
       <div className="editorial-container relative z-10 my-auto">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start lg:items-end justify-between">
@@ -29,7 +29,7 @@ export const StatementSection: React.FC = () => {
               variants={lineVariants}
               className="text-section-title font-serif font-light tracking-tight text-[#F4F1EA] uppercase leading-[0.9]"
             >
-              RFR IS <span className="italic text-[#B59A62] font-normal">MORE THAN</span><br />
+              RFR IS <span className="italic text-[#C7A46A] font-normal">MORE THAN</span><br />
               A RUNWAY.
             </motion.h2>
           </div>
@@ -53,7 +53,7 @@ export const StatementSection: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={lineVariants}
-              className="w-16 h-[1px] bg-[#B59A62]/50"
+              className="w-16 h-[1px] bg-[#C7A46A]/50"
             />
           </div>
         </div>

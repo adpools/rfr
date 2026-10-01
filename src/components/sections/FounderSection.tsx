@@ -30,7 +30,7 @@ export const FounderSection: React.FC = () => {
 
           {/* Right: Narrative */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center">
-            <span className="text-metadata text-[#B59A62] block mb-6">
+            <span className="text-metadata text-[#C7A46A] block mb-6">
               THE FOUNDER
             </span>
             
@@ -45,10 +45,10 @@ export const FounderSection: React.FC = () => {
 
             <Link
               href="/founder"
-              className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#B59A62] transition-colors group"
+              className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#C7A46A] transition-colors group"
             >
               <span>READ DOSSIER</span>
-              <span className="w-8 h-[1px] bg-[#B59A62] group-hover:w-12 transition-all"></span>
+              <span className="w-8 h-[1px] bg-[#C7A46A] group-hover:w-12 transition-all"></span>
             </Link>
           </div>
           

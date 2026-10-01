@@ -40,7 +40,7 @@ export const PressPage: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-5 py-2 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+                className={`px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest transition-all ${
                   selectedCategory === cat
                     ? 'bg-[#C7A46A] text-black font-bold'
                     : 'bg-[#121212] text-neutral-400 hover:text-white border border-neutral-800'
@@ -58,7 +58,7 @@ export const PressPage: React.FC = () => {
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#141414] border border-neutral-800 rounded-full pl-9 pr-4 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#C7A46A] transition-colors"
+              className="w-full bg-[#141414] border border-neutral-800 rounded-2xl pl-9 pr-4 py-1 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#C7A46A] transition-colors"
             />
           </div>
         </div>

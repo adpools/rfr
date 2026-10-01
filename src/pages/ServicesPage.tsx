@@ -37,7 +37,7 @@ export const ServicesPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as 'all' | 'events' | 'campaigns' | 'podcast')}
-              className={`px-6 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+              className={`px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest transition-all ${
                 activeTab === tab.id
                   ? 'bg-[#C7A46A] text-black font-bold'
                   : 'bg-[#121212] text-neutral-400 hover:text-white border border-neutral-800'

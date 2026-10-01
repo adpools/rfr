@@ -17,7 +17,7 @@ export const GalleryPreviewSection: React.FC = () => {
       <div className="editorial-container-wide relative z-10 w-full mb-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <span className="text-metadata text-[#B59A62] block mb-4">
+            <span className="text-metadata text-[#C7A46A] block mb-4">
               FROM FASHION
             </span>
             <h2 className="text-section-title font-serif font-light text-[#F4F1EA] uppercase tracking-tight leading-none">
@@ -26,10 +26,10 @@ export const GalleryPreviewSection: React.FC = () => {
           </div>
           <Link
             href="/gallery"
-            className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#B59A62] transition-colors group"
+            className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#C7A46A] transition-colors group"
           >
             <span>VIEW FULL ARCHIVE</span>
-            <span className="w-8 h-[1px] bg-[#B59A62] group-hover:w-12 transition-all"></span>
+            <span className="w-8 h-[1px] bg-[#C7A46A] group-hover:w-12 transition-all"></span>
           </Link>
         </div>
       </div>
@@ -57,7 +57,7 @@ export const GalleryPreviewSection: React.FC = () => {
               {/* Hover Interaction Content */}
               <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-metadata text-[#B59A62] border border-[#B59A62]/30 px-3 py-1 rounded-full">
+                  <span className="text-metadata text-[#C7A46A] border border-[#C7A46A]/30 px-5 py-2.5 rounded-2xl">
                     {item.category}
                   </span>
                   <span className="text-[10px] text-[#8C8A85] font-mono">
@@ -65,11 +65,11 @@ export const GalleryPreviewSection: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-2xl lg:text-3xl font-serif text-[#F4F1EA] uppercase tracking-wide leading-snug mb-4 group-hover:text-[#B59A62] transition-colors">
+                <h3 className="text-2xl lg:text-3xl font-serif text-[#F4F1EA] uppercase tracking-wide leading-snug mb-4 group-hover:text-[#C7A46A] transition-colors">
                   {item.title}
                 </h3>
                 
-                <div className="w-0 h-[1px] bg-[#B59A62] group-hover:w-full transition-all duration-700 ease-out" />
+                <div className="w-0 h-[1px] bg-[#C7A46A] group-hover:w-full transition-all duration-700 ease-out" />
               </div>
             </motion.div>
           ))}

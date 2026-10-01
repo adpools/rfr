@@ -44,11 +44,11 @@ export const HeroSection: React.FC = () => {
         className="relative z-10 pt-20"
       >
         <div className="flex items-center gap-3">
-          <div className="w-[30px] h-[1px] bg-[#B59A62]/50"></div>
-          <span className="text-[10px] md:text-xs font-sans tracking-[0.4em] text-[#B59A62] uppercase font-light">
+          <div className="w-[30px] h-[1px] bg-[#C7A46A]/50"></div>
+          <span className="text-[10px] md:text-xs font-sans tracking-[0.4em] text-[#C7A46A] uppercase font-light">
             RIYAS FASHION RUNWAY
           </span>
-          <div className="w-[30px] h-[1px] bg-[#B59A62]/50"></div>
+          <div className="w-[30px] h-[1px] bg-[#C7A46A]/50"></div>
         </div>
       </motion.div>
 
@@ -83,7 +83,7 @@ export const HeroSection: React.FC = () => {
         <span className="text-[9px] tracking-[0.4em] uppercase font-sans font-light">
           SCROLL TO ENTER
         </span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-[#B59A62]/50 to-transparent"></div>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-[#C7A46A]/50 to-transparent"></div>
       </motion.div>
     </section>
   );

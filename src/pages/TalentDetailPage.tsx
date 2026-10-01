@@ -152,7 +152,7 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
                         coverNote: '',
                       });
                     }}
-                    className="px-6 py-2.5 rounded-full border border-neutral-700 text-xs font-mono uppercase tracking-widest text-neutral-300 hover:text-white hover:border-[#C7A46A] transition-colors"
+                    className="px-5 py-2.5 rounded-2xl border border-neutral-700 text-xs font-mono uppercase tracking-widest text-neutral-300 hover:text-white hover:border-[#C7A46A] transition-colors"
                   >
                     SUBMIT ANOTHER PROFILE
                   </button>

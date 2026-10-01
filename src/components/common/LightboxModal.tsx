@@ -131,7 +131,7 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
                 {item.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 text-[11px] text-neutral-400 bg-neutral-900 px-2.5 py-1 rounded-full border border-neutral-800"
+                    className="inline-flex items-center gap-1 text-[11px] text-neutral-400 bg-neutral-900 px-5 py-2.5 rounded-2xl border border-neutral-800"
                   >
                     <Tag size={10} className="text-[#C7A46A]" />
                     {tag}

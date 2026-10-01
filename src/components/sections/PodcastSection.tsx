@@ -30,8 +30,8 @@ export const PodcastSection: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="lg:col-span-5 p-8 rounded-3xl bg-[#0c0c0c] border border-[#C7A46A]/25 relative flex flex-col items-center justify-center text-center shadow-2xl"
           >
-            <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/60 border border-red-800/50 text-red-400 text-[10px] font-mono tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+            <div className="absolute top-4 left-4 flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#C7A46A]/20 border border-[#C7A46A]/50 text-[#C7A46A] text-[10px] font-mono tracking-widest uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C7A46A] animate-ping" />
               <span>STUDIO LIVE</span>
             </div>
 
@@ -84,7 +84,7 @@ export const PodcastSection: React.FC = () => {
               <Link
                 href="/services/podcast"
                 data-cursor="PODCAST"
-                className="btn-luxury btn-luxury-gold rounded-full text-xs inline-flex items-center gap-2"
+                className="btn-luxury btn-luxury-gold rounded-2xl text-xs inline-flex items-center gap-2"
               >
                 <span>EXPLORE PODCAST SERIES</span>
                 <ArrowUpRight size={13} />

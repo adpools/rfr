@@ -52,7 +52,7 @@ export const AssetsNetworkPage: React.FC = () => {
               <div className="pt-6 border-t border-neutral-800 flex items-center justify-between">
                 <Link
                   href={`/assets/${portal.id}`}
-                  className="btn-luxury btn-luxury-gold rounded-full text-xs"
+                  className="btn-luxury btn-luxury-gold rounded-2xl text-xs"
                 >
                   <span>{portal.ctaLabel}</span>
                   <ArrowUpRight size={14} />

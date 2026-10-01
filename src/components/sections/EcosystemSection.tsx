@@ -11,7 +11,7 @@ export const EcosystemSection: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#111111] via-[#050505] to-[#050505] opacity-50"></div>
 
       <div className="editorial-container relative z-10 w-full text-center">
-        <span className="text-metadata text-[#B59A62] block mb-12">
+        <span className="text-metadata text-[#C7A46A] block mb-12">
           THE INTERCONNECTED MATRIX
         </span>
 
@@ -61,7 +61,7 @@ export const EcosystemSection: React.FC = () => {
             className="text-section-title font-serif font-light text-[#F4F1EA] uppercase tracking-tight leading-[0.9] relative z-10"
           >
             THE RFR<br />
-            <span className="italic text-[#B59A62]">ECOSYSTEM</span>
+            <span className="italic text-[#C7A46A]">ECOSYSTEM</span>
           </motion.h2>
         </div>
 

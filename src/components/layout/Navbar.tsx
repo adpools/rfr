@@ -41,7 +41,7 @@ export const Navbar: React.FC = () => {
           {/* Brand Monogram & Title */}
           <Link href="/" className="group flex items-center gap-4 no-underline">
             <div className="flex flex-col">
-              <span className="font-sculptural text-sm md:text-lg font-bold tracking-[0.25em] text-[#F4F1EA] group-hover:text-[#B59A62] transition-colors uppercase">
+              <span className="font-sculptural text-sm md:text-lg font-bold tracking-[0.25em] text-[#F4F1EA] group-hover:text-[#C7A46A] transition-colors uppercase">
                 RFR BY RIYAS
               </span>
             </div>
@@ -57,7 +57,7 @@ export const Navbar: React.FC = () => {
                   href={link.href}
                   className={`text-[10px] md:text-xs font-sans tracking-[0.25em] uppercase transition-all duration-300 relative py-2 ${
                     isActive
-                      ? 'text-[#B59A62] font-medium'
+                      ? 'text-[#C7A46A] font-medium'
                       : 'text-[#8C8A85] hover:text-[#F4F1EA] font-light'
                   }`}
                 >
@@ -72,7 +72,7 @@ export const Navbar: React.FC = () => {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle Fullscreen Menu"
-              className="p-3 text-[#F4F1EA] transition-colors hover:text-[#B59A62]"
+              className="p-3 text-[#F4F1EA] transition-colors hover:text-[#C7A46A]"
             >
               {isMobileMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
             </button>

@@ -81,7 +81,7 @@ export const PressDetailPage: React.FC = () => {
             <span>By <strong className="text-white font-medium">{article.author}</strong></span>
             <button
               onClick={handleShare}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#181818] border border-neutral-700 hover:border-[#C7A46A] text-neutral-300 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#181818] border border-neutral-700 hover:border-[#C7A46A] text-neutral-300 hover:text-white transition-colors"
             >
               <Share2 size={13} />
               <span>SHARE DISPATCH</span>
@@ -122,7 +122,7 @@ export const PressDetailPage: React.FC = () => {
             {article.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-xs font-mono text-neutral-400"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-2xl bg-[#141414] border border-neutral-800 text-xs font-mono text-neutral-400"
               >
                 <Tag size={12} className="text-[#C7A46A]" />
                 {tag}

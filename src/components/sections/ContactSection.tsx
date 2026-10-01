@@ -57,7 +57,7 @@ export const ContactSection: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             >
-              <span className="text-metadata text-[#B59A62] block mb-6">
+              <span className="text-metadata text-[#C7A46A] block mb-6">
                 EXECUTIVE INQUIRY
               </span>
               
@@ -72,11 +72,11 @@ export const ContactSection: React.FC = () => {
 
               <div className="space-y-6 text-sm font-sans tracking-widest text-[#F4F1EA] uppercase">
                 <div className="flex items-center gap-4">
-                  <Mail size={16} className="text-[#B59A62]" />
+                  <Mail size={16} className="text-[#C7A46A]" />
                   <span>partnerships@rfr.com</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <MapPin size={16} className="text-[#B59A62]" />
+                  <MapPin size={16} className="text-[#C7A46A]" />
                   <span>Global Headquarters</span>
                 </div>
               </div>
@@ -94,7 +94,7 @@ export const ContactSection: React.FC = () => {
             >
               {submitted ? (
                 <div className="text-center py-12">
-                  <CheckCircle2 size={48} className="text-[#B59A62] mx-auto mb-6" />
+                  <CheckCircle2 size={48} className="text-[#C7A46A] mx-auto mb-6" />
                   <h3 className="text-2xl font-serif text-[#F4F1EA] uppercase mb-4">
                     Inquiry Received
                   </h3>
@@ -103,7 +103,7 @@ export const ContactSection: React.FC = () => {
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="text-xs font-sans tracking-[0.25em] text-[#B59A62] hover:text-[#F4F1EA] uppercase transition-colors"
+                    className="text-xs font-sans tracking-[0.25em] text-[#C7A46A] hover:text-[#F4F1EA] uppercase transition-colors"
                   >
                     Submit Another
                   </button>
@@ -118,7 +118,7 @@ export const ContactSection: React.FC = () => {
                         placeholder="NAME"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#333] focus:border-[#B59A62] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase"
+                        className="w-full bg-transparent border-b border-[#333] focus:border-[#C7A46A] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase"
                       />
                     </div>
                     <div className="relative">
@@ -127,7 +127,7 @@ export const ContactSection: React.FC = () => {
                         placeholder="COMPANY"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#333] focus:border-[#B59A62] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase"
+                        className="w-full bg-transparent border-b border-[#333] focus:border-[#C7A46A] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase"
                       />
                     </div>
                   </div>
@@ -140,14 +140,14 @@ export const ContactSection: React.FC = () => {
                         placeholder="EMAIL"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#333] focus:border-[#B59A62] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase"
+                        className="w-full bg-transparent border-b border-[#333] focus:border-[#C7A46A] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase"
                       />
                     </div>
                     <div className="relative">
                       <select
                         value={formData.interest}
                         onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                        className="w-full bg-transparent border-b border-[#333] focus:border-[#B59A62] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase appearance-none cursor-pointer"
+                        className="w-full bg-transparent border-b border-[#333] focus:border-[#C7A46A] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase appearance-none cursor-pointer"
                       >
                         {interests.map((opt) => (
                           <option key={opt} value={opt} className="bg-[#050505] text-[#F4F1EA]">
@@ -165,7 +165,7 @@ export const ContactSection: React.FC = () => {
                       placeholder="MESSAGE"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-transparent border-b border-[#333] focus:border-[#B59A62] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase resize-none"
+                      className="w-full bg-transparent border-b border-[#333] focus:border-[#C7A46A] text-[#F4F1EA] text-sm py-3 px-0 focus:outline-none transition-colors placeholder-[#666] font-sans tracking-widest uppercase resize-none"
                     />
                   </div>
 
@@ -173,10 +173,10 @@ export const ContactSection: React.FC = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#B59A62] transition-colors group"
+                      className="inline-flex items-center gap-4 text-xs font-sans tracking-[0.25em] uppercase text-[#F4F1EA] hover:text-[#C7A46A] transition-colors group"
                     >
                       <span>{loading ? 'SENDING...' : 'TRANSMIT'}</span>
-                      <span className="w-8 h-[1px] bg-[#B59A62] group-hover:w-12 transition-all"></span>
+                      <span className="w-8 h-[1px] bg-[#C7A46A] group-hover:w-12 transition-all"></span>
                     </button>
                   </div>
                 </form>

@@ -1,5 +1,6 @@
 /* RFR BY RIYAS — LUXURY DESIGN SYSTEM */
 @import "tailwindcss";
+@config "../../tailwind.config.js";
 
 :root {
   --bg-obsidian: #050505;
@@ -14,8 +15,8 @@
   --text-dark: #0A0A0A;
   --text-dark-muted: #555555;
   
-  --gold-primary: #B59A62;
-  --gold-muted: #C5A76A;
+  --gold-primary: #C7A46A;
+  --gold-muted: #C7A46A;
   --gold-glow: rgba(181, 154, 98, 0.15);
   --gold-border: rgba(181, 154, 98, 0.2);
   --gold-border-bright: rgba(181, 154, 98, 0.4);
@@ -31,8 +32,6 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html, body {
@@ -74,7 +73,7 @@ html, body {
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, #FAF9F6 0%, #E5C896 50%, #C7A46A 100%);
+  background: linear-gradient(135deg, #FAF9F6 0%, #C7A46A 50%, #C7A46A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

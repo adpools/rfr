@@ -37,7 +37,7 @@ export const BusinessCTASection: React.FC = () => {
           <Link
             href="/contact"
             data-cursor="CONNECT"
-            className="btn-luxury btn-luxury-gold rounded-full text-xs inline-flex items-center gap-2 px-8 py-4"
+            className="btn-luxury btn-luxury-gold rounded-2xl px-5 py-2.5"
           >
             <span>START A CONVERSATION</span>
             <ArrowUpRight size={14} />
@@ -46,7 +46,7 @@ export const BusinessCTASection: React.FC = () => {
           <Link
             href="/services"
             data-cursor="SERVICES"
-            className="btn-luxury rounded-full text-xs inline-flex items-center gap-2 px-8 py-4"
+            className="btn-luxury rounded-2xl px-5 py-2.5"
           >
             <span>VIEW SERVICES & IP</span>
           </Link>

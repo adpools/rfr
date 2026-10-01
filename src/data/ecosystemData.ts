@@ -32,7 +32,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     y: -1.2,
     z: 0.8,
     connections: ['rfr-core', 'brands', 'media'],
-    color: '#9E7C49'
+    color: '#C7A46A'
   },
   {
     id: 'influencers',
@@ -65,7 +65,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     y: -1.0,
     z: -0.7,
     connections: ['rfr-core', 'brands', 'media'],
-    color: '#9E7C49'
+    color: '#C7A46A'
   },
   {
     id: 'media',
@@ -98,7 +98,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     y: 2.8,
     z: 0.7,
     connections: ['rfr-core', 'brands', 'media'],
-    color: '#9E7C49'
+    color: '#C7A46A'
   },
   {
     id: 'audiences',

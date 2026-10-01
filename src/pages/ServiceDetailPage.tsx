@@ -125,7 +125,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
               </p>
               <Link
                 href="/contact"
-                className="btn-luxury btn-luxury-gold w-full rounded-full inline-flex items-center justify-center gap-2 text-xs"
+                className="btn-luxury btn-luxury-gold w-full rounded-2xl inline-flex items-center justify-center gap-2 text-xs"
               >
                 <span>COMMISSION THIS SERVICE</span>
                 <ArrowUpRight size={14} />

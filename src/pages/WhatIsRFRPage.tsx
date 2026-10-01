@@ -104,7 +104,7 @@ export const WhatIsRFRPage: React.FC = () => {
           <div className="text-center mt-12">
             <Link
               href="/services"
-              className="btn-luxury btn-luxury-gold rounded-full inline-flex items-center gap-2"
+              className="btn-luxury btn-luxury-gold rounded-2xl inline-flex items-center gap-2"
             >
               <span>EXPLORE ALL SERVICES & IP</span>
               <ArrowRight size={14} />

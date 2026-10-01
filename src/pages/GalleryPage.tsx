@@ -44,7 +44,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ initialCategory }) => 
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all ${
+              className={`px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest transition-all ${
                 activeCategory === cat
                   ? 'bg-[#C7A46A] text-black font-bold shadow-md shadow-[#C7A46A]/20'
                   : 'bg-[#121212] text-neutral-400 hover:text-white border border-neutral-800'

@@ -57,7 +57,7 @@ export const ClientsPage: React.FC = () => {
           <p className="text-neutral-400 text-sm max-w-xl mx-auto mb-6">
             Elevate your next product launch, festive campaign, or runway presence with RFR.
           </p>
-          <Link href="/contact" className="btn-luxury btn-luxury-gold rounded-full inline-flex items-center gap-2">
+          <Link href="/contact" className="btn-luxury btn-luxury-gold rounded-2xl inline-flex items-center gap-2">
             <span>REQUEST BRAND DECK</span>
             <ArrowUpRight size={14} />
           </Link>

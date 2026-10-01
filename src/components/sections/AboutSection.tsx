@@ -43,16 +43,16 @@ export const AboutSection: React.FC = () => {
           
           {/* Left: Interactive Category Selector (Single Item for Philosophy) */}
           <div className="lg:col-span-5 space-y-3">
-             <div className="w-full text-left px-6 py-4 rounded-full transition-all duration-300 flex items-center justify-between border border-[#C7A46A] bg-transparent shadow-[0_0_15px_rgba(199,164,106,0.1)]">
+             <div className="w-full text-left px-5 py-2.5 rounded-2xl transition-all duration-300 flex items-center justify-between border border-[#C7A46A] bg-transparent shadow-[0_0_15px_rgba(199,164,106,0.1)]">
                 <div className="flex items-center gap-4">
-                  <span className="font-mono text-[11px] text-[#C7A46A]">
+                  <span className="font-mono text-[22px] text-[#C7A46A]">
                     01
                   </span>
-                  <span className="text-sm sm:text-base font-serif uppercase tracking-wider text-[#F4F1EA]">
+                  <span className="text-xl sm:text-2xl font-serif uppercase tracking-wider text-[#F4F1EA]">
                     CORE MANIFESTO
                   </span>
                 </div>
-                <div className="w-2 h-2 rounded-full bg-[#C7A46A]" />
+                <div className="w-4 h-4 rounded-full bg-[#C7A46A]" />
              </div>
           </div>
 
@@ -101,7 +101,7 @@ export const AboutSection: React.FC = () => {
                 <div className="pt-6 flex items-center justify-between border-t border-[#333]">
                   <Link
                     href="/about"
-                    className="px-6 py-3 md:px-8 bg-[#C5A76A] text-[#050505] font-sans font-bold text-[10px] uppercase tracking-[0.2em] rounded-full inline-flex items-center gap-2 hover:bg-[#F4F1EA] transition-colors"
+                    className="px-5 py-2.5 md:px-8 bg-[#C7A46A] text-[#050505] font-sans font-bold text-[20px]rounded-2xlgap-4 hover:bg-[#F4F1EA] transition-colors"
                   >
                     <span>EXPLORE OUR HISTORY</span>
                     <ArrowUpRight size={14} />

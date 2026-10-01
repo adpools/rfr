@@ -81,7 +81,7 @@ export const FounderPage: React.FC = () => {
             <div className="pt-4">
               <Link
                 href="/contact"
-                className="btn-luxury btn-luxury-gold rounded-full inline-flex items-center gap-2 text-xs"
+                className="btn-luxury btn-luxury-gold rounded-2xl inline-flex items-center gap-2 text-xs"
               >
                 <span>REQUEST EXECUTIVE MEETING WITH RIYAS</span>
                 <ArrowUpRight size={14} />

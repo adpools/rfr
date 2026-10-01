@@ -96,7 +96,7 @@ export const AboutPage: React.FC = () => {
           </p>
           <Link
             href="/what-is-rfr"
-            className="btn-luxury btn-luxury-gold rounded-full"
+            className="btn-luxury btn-luxury-gold rounded-2xl"
           >
             EXPLORE WHAT IS RFR
           </Link>

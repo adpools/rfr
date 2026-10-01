@@ -60,7 +60,7 @@ export const PodcastPage: React.FC = () => {
           </div>
 
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#181818] border border-neutral-700 text-xs font-mono text-neutral-300">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#181818] border border-neutral-700 text-xs font-mono text-neutral-300">
               <Headphones size={13} className="text-[#C7A46A]" />
               <span>AVAILABLE ON SPOTIFY • YOUTUBE • APPLE PODCASTS</span>
             </div>
@@ -76,7 +76,7 @@ export const PodcastPage: React.FC = () => {
             <div className="pt-4 flex flex-wrap gap-4">
               <Link
                 href="/contact"
-                className="btn-luxury btn-luxury-gold rounded-full inline-flex items-center gap-2 text-xs"
+                className="btn-luxury btn-luxury-gold rounded-2xl inline-flex items-center gap-2 text-xs"
               >
                 <Mic size={14} />
                 <span>APPLY AS PODCAST GUEST / SPONSOR</span>
@@ -119,7 +119,7 @@ export const PodcastPage: React.FC = () => {
                     {ep.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 rounded-full bg-[#161616] border border-neutral-800 text-[10px] font-mono uppercase text-neutral-400"
+                        className="px-5 py-2.5 rounded-2xl bg-[#161616] border border-neutral-800 text-[10px] font-mono uppercase text-neutral-400"
                       >
                         {tag}
                       </span>

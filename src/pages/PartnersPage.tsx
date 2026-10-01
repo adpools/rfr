@@ -53,7 +53,7 @@ export const PartnersPage: React.FC = () => {
           <p className="text-neutral-400 text-sm max-w-xl mx-auto mb-6">
             Are you a venue operator, media agency, or production specialist looking to partner with RFR?
           </p>
-          <Link href="/contact" className="btn-luxury btn-luxury-gold rounded-full inline-flex items-center gap-2">
+          <Link href="/contact" className="btn-luxury btn-luxury-gold rounded-2xl inline-flex items-center gap-2">
             <span>PROPOSE PARTNERSHIP</span>
             <ArrowUpRight size={14} />
           </Link>

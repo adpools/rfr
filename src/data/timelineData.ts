@@ -27,7 +27,7 @@ export const timelineData: TimelineYear[] = [
       "Bespoke designer lookbook campaigns executed with boutique labels"
     ],
     image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
-    accent: "#9E7C49"
+    accent: "#C7A46A"
   },
   {
     year: 2022,
@@ -55,7 +55,7 @@ export const timelineData: TimelineYear[] = [
       "Out-of-Home (OOH) & digital screen placements integrated"
     ],
     image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80",
-    accent: "#E5C896"
+    accent: "#C7A46A"
   },
   {
     year: 2024,
@@ -83,7 +83,7 @@ export const timelineData: TimelineYear[] = [
       "Comprehensive partner agency and venue alliance network"
     ],
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80",
-    accent: "#9E7C49"
+    accent: "#C7A46A"
   },
   {
     year: 2026,

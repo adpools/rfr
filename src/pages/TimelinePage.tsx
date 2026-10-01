@@ -93,7 +93,7 @@ export const TimelinePage: React.FC = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/40 text-[#C7A46A] font-mono text-[10px] font-bold tracking-widest uppercase">
+                <div className="absolute top-4 left-4 px-5 py-2.5 rounded-2xl bg-black/85 backdrop-blur-md border border-[#C7A46A]/40 text-[#C7A46A] font-mono text-[10px] font-bold tracking-widest uppercase">
                   CHAPTER 0{idx + 1}
                 </div>
               </div>
@@ -104,7 +104,7 @@ export const TimelinePage: React.FC = () => {
                   <span className="text-5xl sm:text-6xl md:text-7xl font-sculptural font-bold text-[#C7A46A] leading-none select-none">
                     {item.year}
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-[#181818] border border-neutral-700 text-[10px] font-mono text-neutral-300 uppercase tracking-widest">
+                  <span className="px-5 py-2.5 rounded-2xl bg-[#181818] border border-neutral-700 text-[10px] font-mono text-neutral-300 uppercase tracking-widest">
                     {item.theme}
                   </span>
                 </div>

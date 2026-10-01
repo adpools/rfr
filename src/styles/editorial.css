@@ -108,7 +108,7 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 1.15rem 2.75rem;
+  padding: 0.75rem 1.5rem;
   margin: 0.25rem 0;
   background: #080808;
   color: #FAF9F6;
@@ -118,6 +118,7 @@
   letter-spacing: 0.24em;
   text-transform: uppercase;
   border: 1px solid rgba(199, 164, 106, 0.35);
+  border-radius: 1rem !important;
   text-decoration: none;
   transition: var(--transition-medium);
   overflow: hidden;
@@ -147,14 +148,14 @@
 
 .btn-luxury-gold {
   background: #C7A46A;
-  color: #080808;
+  color: #050505;
   border: 1px solid #C7A46A;
   font-weight: 600;
 }
 
 .btn-luxury-gold:hover {
   background: #FAF9F6;
-  color: #080808;
+  color: #050505;
   border-color: #FAF9F6;
   box-shadow: 0 0 30px rgba(250, 249, 246, 0.25);
 }

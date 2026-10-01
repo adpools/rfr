@@ -49,7 +49,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
             <span className="w-4 h-[1px] bg-[#C7A46A]/50 inline-block" />
           )}
           {category && (
-            <span className={isLight ? 'text-[#9E7C49]' : 'text-[#C7A46A]'}>
+            <span className={isLight ? 'text-[#C7A46A]' : 'text-[#C7A46A]'}>
               {category}
             </span>
           )}
