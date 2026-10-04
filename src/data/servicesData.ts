@@ -25,7 +25,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Fashion-forward shoppers, families, creative professionals, and lifestyle enthusiasts.',
     image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1K0wzOv8anMih62lWwAXbRJCZGkxyh3IW/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1JPcPSXu6NjKFLhj-_b0r9Xh4vxCTnLaM'
   },
   {
     id: 'new-year-events',
@@ -50,7 +52,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'High-net-worth attendees, urban tastemakers, and nightlife connoisseurs.',
     image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/15vI0jdpl_uq2VdSPrU4py6ylu-bs-4Yv/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'fashion-events',
@@ -75,7 +79,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Fashion houses, couture designers, luxury labels, media, and buyers.',
     image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1WMQC1KhSwMH8U973Iqfy7i_6K5fy7j5Y/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'kids-events',
@@ -100,7 +106,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Children, parents, youth fashion brands, and family lifestyle businesses.',
     image: 'https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1ZKOWzZ-6Gajyvv8faIPy6tLryX17VLt5/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'festival-events',
@@ -125,7 +133,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Cultural patrons, community communities, corporate partners, and families.',
     image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1Fg28k07NGX7Bd4RuxfJ2eIBHXRY3BeZ6/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
 
   // --- CAMPAIGNS ---
@@ -152,7 +162,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Lifestyle, beauty, fashion, tech, automobile, and hospitality brands.',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1YymReRbadPvKyAXFzmmGVSsm4lExjIoD/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'ugc',
@@ -177,7 +189,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Direct-to-consumer (D2C) brands, e-commerce labels, and digital apps.',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1u06VQPUy_karWcBOuLf10AFSGR_9PV35/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'ads',
@@ -202,7 +216,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Luxury labels, lifestyle conglomerates, retail chains, and enterprise brands.',
     image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'ooh',
@@ -227,7 +243,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Automotive, real estate, jewelry, apparel, and telecom enterprises.',
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1NhbGg_5G5ZUGLkUak9hZRp1rVmOymWEQ/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
   {
     id: 'digital-ads',
@@ -252,7 +270,9 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'E-commerce, consumer tech, lifestyle brands, and digital ventures.',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   },
 
   // --- PODCAST ---
@@ -279,6 +299,8 @@ export const servicesData: ServiceItem[] = [
     ],
     targetAudience: 'Creators, fashion students, brand executives, aspiring models, and cultural thinkers.',
     image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=80',
-    accentImage: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&q=80'
+    accentImage: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&q=80',
+    videoEmbedUrl: 'https://drive.google.com/file/d/1nFgMIl7bLGHxTcKk46iixQNo4n-MQJHt/preview',
+    driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
   }
 ];

@@ -14,6 +14,7 @@ import { TimelinePage } from './pages/TimelinePage';
 import { AboutPage } from './pages/AboutPage';
 import { FounderPage } from './pages/FounderPage';
 import { WhatIsRFRPage } from './pages/WhatIsRFRPage';
+import { AchievementsPage } from './pages/AchievementsPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { ServiceDetailPage } from './pages/ServiceDetailPage';
 import { PodcastPage } from './pages/PodcastPage';
@@ -50,47 +51,73 @@ export const App: React.FC = () => {
         {/* Sound Ambience Synthesizer Toggle */}
         <AudioAmbienceToggle />
 
-        {/* Application View Switcher */}
+        {/* Application View Switcher in 13-Order Structure */}
         <Switch>
+          {/* 00. Home */}
           <Route path="/" component={HomePage} />
+
+          {/* 01. Timeline (2020-2026) */}
           <Route path="/timeline" component={TimelinePage} />
+
+          {/* 02. About Us */}
           <Route path="/about" component={AboutPage} />
           <Route path="/founder" component={FounderPage} />
+
+          {/* 03. What is RFR? */}
           <Route path="/what-is-rfr" component={WhatIsRFRPage} />
+
+          {/* 04. Achievements */}
+          <Route path="/achievements" component={AchievementsPage} />
           
-          {/* Services & Categories */}
+          {/* 05. Services & Categories */}
           <Route path="/services" component={ServicesPage} />
           <Route path="/services/events" component={ServicesPage} />
+          <Route path="/services/events/flee-markets">
+            <Redirect to="/services/events/flea-markets" />
+          </Route>
           <Route path="/services/events/:slug" component={() => <ServiceDetailPage />} />
           <Route path="/services/campaigns" component={ServicesPage} />
           <Route path="/services/campaigns/:slug" component={() => <ServiceDetailPage />} />
           <Route path="/services/podcast" component={PodcastPage} />
 
-          {/* Business & Alliances */}
+          {/* 06. Do Business with us */}
           <Route path="/business" component={BusinessPage} />
+
+          {/* 07. Channel Partners */}
           <Route path="/partners" component={PartnersPage} />
+
+          {/* 08. Milestones */}
           <Route path="/milestones" component={MilestonesPage} />
+
+          {/* 09. Clients */}
           <Route path="/clients" component={ClientsPage} />
 
-          {/* Assets & Talent Guilds */}
+          {/* 10. Assets & Talent Guilds */}
           <Route path="/assets" component={AssetsNetworkPage} />
+          <Route path="/assets/career" component={() => <TalentDetailPage customId="careers" />} />
           <Route path="/assets/careers" component={() => <TalentDetailPage customId="careers" />} />
           <Route path="/assets/models" component={() => <TalentDetailPage customId="models" />} />
+          <Route path="/assets/influencer" component={() => <TalentDetailPage customId="influencers" />} />
           <Route path="/assets/influencers" component={() => <TalentDetailPage customId="influencers" />} />
+          <Route path="/assets/artist" component={() => <TalentDetailPage customId="artists" />} />
           <Route path="/assets/artists" component={() => <TalentDetailPage customId="artists" />} />
           <Route path="/assets/:id" component={() => <TalentDetailPage />} />
 
-          {/* Gallery Archives */}
+          {/* 11. Gallary & Gallery Archives */}
           <Route path="/gallery" component={() => <GalleryPage />} />
+          <Route path="/gallary" component={() => <GalleryPage />} />
           <Route path="/gallery/events" component={() => <GalleryPage initialCategory="events" />} />
+          <Route path="/gallary/events" component={() => <GalleryPage initialCategory="events" />} />
           <Route path="/gallery/shows" component={() => <GalleryPage initialCategory="shows" />} />
+          <Route path="/gallary/shows" component={() => <GalleryPage initialCategory="shows" />} />
           <Route path="/gallery/shoots" component={() => <GalleryPage initialCategory="shoots" />} />
+          <Route path="/gallary/shoots" component={() => <GalleryPage initialCategory="shoots" />} />
 
-          {/* Press & News */}
+          {/* 12. Press & News */}
           <Route path="/press" component={PressPage} />
           <Route path="/press/:slug" component={PressDetailPage} />
 
-          {/* Contact */}
+          {/* 13. Contact */}
           <Route path="/contact" component={ContactPage} />
 
           {/* Fallback */}

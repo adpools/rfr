@@ -1,132 +1,211 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, User, Award, Image as ImageIcon, Briefcase, Sparkles } from 'lucide-react';
+import { founderData } from '../../data/founderData';
 
 export const AboutSection: React.FC = () => {
-  const keywords = [
-    'FASHION',
-    'LIFESTYLE',
-    'CREATORS',
-    'BRANDS',
-    'EVENTS',
-    'MEDIA',
-    'CULTURE',
-    'OPPORTUNITY',
-    'RUNWAY',
-    'EXPERIENCE',
-  ];
+  const [activeTab, setActiveTab] = useState<'founder' | 'about'>('founder');
 
   return (
     <section
-      id="chapter-06"
-      className="full-viewport-scene bg-[#080808] border-b border-neutral-900 flex flex-col justify-between relative overflow-hidden"
+      id="chapter-02"
+      className="full-viewport-scene bg-[#080808] border-b border-neutral-900 flex flex-col justify-center relative overflow-hidden py-16 md:py-24"
     >
-      <div className="editorial-container relative z-10 my-auto py-10 w-full">
-        {/* Top Header */}
-        <div className="flex flex-col justify-start mb-12 pb-4 relative">
+      <div className="editorial-container relative z-10 w-full my-auto">
+        {/* Section Header */}
+        <div className="flex flex-col justify-start mb-8 pb-4">
           <div className="flex items-center gap-3 text-[10px] font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-2">
-            <span>06</span>
+            <span>02</span>
             <span className="w-12 h-[1px] bg-[#C7A46A]" />
-            <span>THE CREATIVE PHILOSOPHY</span>
+            <span>FOUNDATION & IDENTITY</span>
           </div>
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-[#333] pb-4 gap-4">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#F4F1EA] uppercase tracking-tight">
-              FROM FASHION TO POSSIBILITY
-            </h2>
+
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-800 pb-4 gap-4">
+            <div>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#F4F1EA] uppercase tracking-tight">
+                ABOUT US
+              </h2>
+              <p className="text-xs sm:text-sm font-light text-neutral-400 mt-2 max-w-xl">
+                Riyas Fashion Runway is an integrated creative platform built on runway heritage, artistic vision, and empowering possibility.
+              </p>
+            </div>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider transition-colors"
+            >
+              <span>VIEW FULL ABOUT PAGE</span>
+              <ArrowUpRight size={14} />
+            </Link>
           </div>
         </div>
 
-        {/* Interactive Master Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
-          
-          {/* Left: Interactive Category Selector (Single Item for Philosophy) */}
-          <div className="lg:col-span-5 space-y-3">
-             <div className="w-full text-left px-5 py-2.5 rounded-2xl transition-all duration-300 flex items-center justify-between border border-[#C7A46A] bg-transparent shadow-[0_0_15px_rgba(199,164,106,0.1)]">
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-[22px] text-[#C7A46A]">
-                    01
-                  </span>
-                  <span className="text-xl sm:text-2xl font-serif uppercase tracking-wider text-[#F4F1EA]">
-                    CORE MANIFESTO
-                  </span>
-                </div>
-                <div className="w-4 h-4 rounded-full bg-[#C7A46A]" />
-             </div>
-          </div>
+        {/* Tab Selection */}
+        <div className="flex items-center gap-3 mb-8">
+          <button
+            onClick={() => setActiveTab('founder')}
+            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
+              activeTab === 'founder'
+                ? 'bg-[#C7A46A] text-black font-semibold shadow-[0_0_15px_rgba(199,164,106,0.3)]'
+                : 'bg-[#111111] text-neutral-400 hover:text-white border border-neutral-800'
+            }`}
+          >
+            <User size={14} />
+            <span>a. Riyas Personal Profile - Founder</span>
+          </button>
 
-          {/* Right: Active Detail Plate */}
-          <div className="lg:col-span-7">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="p-8 md:p-10 rounded-[2rem] bg-[#0B0B0B]/60 backdrop-blur-md border border-[#333] flex flex-col justify-between h-full min-h-[420px]"
-              >
+          <button
+            onClick={() => setActiveTab('about')}
+            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all flex items-center gap-2 ${
+              activeTab === 'about'
+                ? 'bg-[#C7A46A] text-black font-semibold shadow-[0_0_15px_rgba(199,164,106,0.3)]'
+                : 'bg-[#111111] text-neutral-400 hover:text-white border border-neutral-800'
+            }`}
+          >
+            <Sparkles size={14} />
+            <span>b. About (Achievements, Gallary, Works)</span>
+          </button>
+        </div>
+
+        {/* Dynamic Tab Body */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'founder' ? (
+            <motion.div
+              key="founder-tab"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0d0d0d] border border-neutral-800 rounded-3xl p-6 sm:p-10"
+            >
+              <div className="lg:col-span-5 h-80 sm:h-96 rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative">
+                <img
+                  src={founderData.portraitImage}
+                  alt={founderData.name}
+                  className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
+                    FOUNDER & CREATIVE DIRECTOR
+                  </span>
+                  <span className="text-xl font-serif text-white uppercase">{founderData.name}</span>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 space-y-6">
                 <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase px-3 py-1 rounded border border-[#C7A46A] inline-block mb-6">
-                    ABOUT RFR
+                  <span className="text-[10px] font-mono text-[#C7A46A] tracking-widest uppercase block mb-1">
+                    LEADERSHIP DOSSIER
                   </span>
-                  <h3 className="text-3xl sm:text-4xl font-serif text-[#F4F1EA] uppercase mb-4 leading-tight italic">
-                    Where creativity meets opportunity.
+                  <h3 className="text-3xl font-serif text-white uppercase mb-4">
+                    THE VISIONARY BEHIND RFR
                   </h3>
-                  
-                  <div className="space-y-4 text-[#aaa] text-sm font-sans font-light leading-relaxed mb-8">
-                    <p>
-                      Riyas Fashion Runway is a creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media.
-                    </p>
-                    <p>
-                      From discovering new talent to creating brand experiences, RFR provides a platform where creativity meets opportunity. We engineer high-concept environments that elevate runway art into enduring cultural conversations.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col space-y-3 text-[10px] font-mono text-neutral-400 uppercase tracking-widest mb-8">
-                    <div className="flex items-center gap-3 text-[#FAF9F6]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C7A46A]" />
-                      <span>ESTABLISHED 2020</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-[#FAF9F6]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C7A46A]" />
-                      <span>MULTIDISCIPLINARY SPECTRUM</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-[#FAF9F6]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C7A46A]" />
-                      <span>GLOBAL EDITORIAL QUALITY</span>
-                    </div>
-                  </div>
+                  <p className="text-sm text-neutral-300 font-light leading-relaxed mb-4">
+                    {founderData.bioParagraphs[0]}
+                  </p>
+                  <p className="text-sm text-neutral-400 font-light leading-relaxed">
+                    {founderData.bioParagraphs[1]}
+                  </p>
                 </div>
 
-                <div className="pt-6 flex items-center justify-between border-t border-[#333]">
-                  <Link
-                    href="/about"
-                    className="px-5 py-2.5 md:px-8 bg-[#C7A46A] text-[#050505] font-sans font-bold text-[20px]rounded-2xlgap-4 hover:bg-[#F4F1EA] transition-colors"
-                  >
-                    <span>EXPLORE OUR HISTORY</span>
+                <div className="pt-4 flex flex-wrap items-center gap-4">
+                  <Link href="/founder" className="btn-luxury btn-luxury-gold rounded-xl py-2.5 px-6 text-xs inline-flex items-center gap-2">
+                    <span>EXPLORE FOUNDER DOSSIER</span>
                     <ArrowUpRight size={14} />
                   </Link>
+                  <span className="text-xs font-mono text-neutral-500">
+                    DIRECTOR • CHOREOGRAPHER • PRODUCER
+                  </span>
                 </div>
-              </motion.div>
-          </div>
-        </div>
-      </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="about-tab"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            >
+              {/* i. Achievements */}
+              <div className="p-6 md:p-8 rounded-2xl bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group">
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-[#141414] border border-neutral-700 flex items-center justify-center text-[#C7A46A] mb-4">
+                    <Award size={20} />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">
+                    SUB-SECTION I
+                  </span>
+                  <h3 className="text-2xl font-serif text-white uppercase mb-2 group-hover:text-[#C7A46A] transition-colors">
+                    ACHIEVEMENTS
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6">
+                    Over 100+ marquee runway showcases, 500+ talents mentored, and 50+ enterprise brand campaigns delivered with benchmark excellence.
+                  </p>
+                </div>
+                <Link
+                  href="/achievements"
+                  className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider"
+                >
+                  <span>VIEW ACHIEVEMENTS</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
 
-      {/* Infinite Animated Keywords Ribbon */}
-      <div className="py-4 bg-[#111111] border-y border-[#C7A46A]/20 overflow-hidden relative">
-        <div className="marquee-track flex items-center gap-8 text-xs md:text-sm font-sculptural tracking-[0.25em] text-[#C7A46A] uppercase">
-          {keywords.concat(keywords).map((kw, idx) => (
-            <React.Fragment key={idx}>
-              <span className="hover:text-white transition-colors select-none">{kw}</span>
-              <span className="text-neutral-700 select-none">✦</span>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+              {/* ii. Gallary */}
+              <div className="p-6 md:p-8 rounded-2xl bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group">
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-[#141414] border border-neutral-700 flex items-center justify-center text-[#C7A46A] mb-4">
+                    <ImageIcon size={20} />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">
+                    SUB-SECTION II
+                  </span>
+                  <h3 className="text-2xl font-serif text-white uppercase mb-2 group-hover:text-[#C7A46A] transition-colors">
+                    GALLARY
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6">
+                    A curated visual archive capturing couture runway presentations, editorial shoots, high-energy festival crowds, and behind-the-scenes artistry.
+                  </p>
+                </div>
+                <Link
+                  href="/gallery"
+                  className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider"
+                >
+                  <span>EXPLORE GALLARY</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
 
-      {/* Level 05: Directional Cue */}
-      <div className="scene-directional-cue">
-        <span>06 / 17 • SCROLL TO EVENTS ↓</span>
+              {/* iii. Works */}
+              <div className="p-6 md:p-8 rounded-2xl bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group">
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-[#141414] border border-neutral-700 flex items-center justify-center text-[#C7A46A] mb-4">
+                    <Briefcase size={20} />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">
+                    SUB-SECTION III
+                  </span>
+                  <h3 className="text-2xl font-serif text-white uppercase mb-2 group-hover:text-[#C7A46A] transition-colors">
+                    WORKS
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6">
+                    Landmark productions for Manyavar, Puma, Max Fashion, Mahindra, UDS Resorts, Lulu Fashion Week, and signature Koottam Flea editions.
+                  </p>
+                </div>
+                <Link
+                  href="/timeline"
+                  className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider"
+                >
+                  <span>BROWSE PRODUCTIONS</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

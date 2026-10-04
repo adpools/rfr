@@ -7,23 +7,19 @@ interface Chapter {
 }
 
 const chapters: Chapter[] = [
-  { id: 'chapter-01', num: '01', label: 'ENTER' },
-  { id: 'chapter-02', num: '02', label: 'STATEMENT' },
-  { id: 'chapter-03', num: '03', label: 'WHAT IS RFR' },
-  { id: 'chapter-04', num: '04', label: 'JOURNEY' },
-  { id: 'chapter-05', num: '05', label: 'RIYAS' },
-  { id: 'chapter-06', num: '06', label: 'PHILOSOPHY' },
-  { id: 'chapter-07', num: '07', label: 'EVENTS' },
-  { id: 'chapter-08', num: '08', label: 'CAMPAIGNS' },
-  { id: 'chapter-09', num: '09', label: 'PODCAST' },
-  { id: 'chapter-10', num: '10', label: 'ECOSYSTEM' },
-  { id: 'chapter-11', num: '11', label: 'NETWORK' },
-  { id: 'chapter-12', num: '12', label: 'ARCHIVE' },
-  { id: 'chapter-13', num: '13', label: 'PRESS' },
-  { id: 'chapter-14', num: '14', label: 'PARTNERS' },
-  { id: 'chapter-15', num: '15', label: 'DO BUSINESS' },
-  { id: 'chapter-16', num: '16', label: 'CONTACT' },
-  { id: 'chapter-17', num: '17', label: 'FINALE' },
+  { id: 'chapter-01', num: '01', label: 'TIMELINE' },
+  { id: 'chapter-02', num: '02', label: 'ABOUT US' },
+  { id: 'chapter-03', num: '03', label: 'WHAT IS RFR?' },
+  { id: 'chapter-04', num: '04', label: 'ACHIEVEMENTS' },
+  { id: 'chapter-05', num: '05', label: 'SERVICES' },
+  { id: 'chapter-06', num: '06', label: 'DO BUSINESS' },
+  { id: 'chapter-07', num: '07', label: 'PARTNERS' },
+  { id: 'chapter-08', num: '08', label: 'MILESTONES' },
+  { id: 'chapter-09', num: '09', label: 'CLIENTS' },
+  { id: 'chapter-10', num: '10', label: 'ASSETS' },
+  { id: 'chapter-11', num: '11', label: 'GALLARY' },
+  { id: 'chapter-12', num: '12', label: 'PRESS & NEWS' },
+  { id: 'chapter-13', num: '13', label: 'CONTACT' },
 ];
 
 export const SectionProgressRail: React.FC = () => {
@@ -40,7 +36,7 @@ export const SectionProgressRail: React.FC = () => {
 
     const observer = new IntersectionObserver(observerCallback, {
       root: null,
-      rootMargin: '-30% 0px -40% 0px',
+      rootMargin: '-25% 0px -35% 0px',
       threshold: 0.1,
     });
 
@@ -61,8 +57,8 @@ export const SectionProgressRail: React.FC = () => {
 
   return (
     <nav
-      aria-label="Chapter Navigation"
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-[7000] hidden xl:flex flex-col items-end gap-1.5 py-4 px-2 select-none pointer-events-auto"
+      aria-label="13-Chapter Navigation Rail"
+      className="fixed right-5 top-1/2 -translate-y-1/2 z-[7000] hidden xl:flex flex-col items-end gap-1.5 py-4 px-2 select-none pointer-events-auto"
     >
       {chapters.map((chap) => {
         const isActive = activeChapter === chap.id;
@@ -94,7 +90,7 @@ export const SectionProgressRail: React.FC = () => {
               {chap.num}
             </span>
 
-            {/* Indicator Dash / Line */}
+            {/* Indicator Dash */}
             <span
               className={`h-[1.5px] transition-all duration-300 rounded-full ${
                 isActive

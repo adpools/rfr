@@ -1,3 +1,17 @@
+export interface TimelineEventItem {
+  id: string;
+  name: string;
+  type: 'Event' | 'Campaign' | 'Ad' | 'Shoot' | 'Music Album' | 'Show' | 'Podcast';
+  categoryBadge?: string;
+  locationOrClient?: string;
+  description?: string;
+  image?: string;
+  videoUrl?: string; // direct MP4 or video source
+  videoEmbedUrl?: string; // YouTube / Vimeo / Drive embed
+  hasVideo?: boolean;
+  driveFolderUrl?: string;
+}
+
 export interface TimelineYear {
   year: number;
   title: string;
@@ -5,8 +19,11 @@ export interface TimelineYear {
   subtitle: string;
   description: string;
   milestones: string[];
+  eventsList: TimelineEventItem[];
   image: string;
   accent: string;
+  videoUrl?: string;
+  driveFolderUrl?: string;
 }
 
 export interface ServiceItem {
@@ -23,6 +40,8 @@ export interface ServiceItem {
   image: string;
   accentImage?: string;
   badge: string;
+  videoEmbedUrl?: string;
+  driveFolderUrl?: string;
 }
 
 export interface TalentCategory {
@@ -46,6 +65,9 @@ export interface GalleryItem {
   image: string;
   dimensions?: 'portrait' | 'landscape' | 'square';
   tags: string[];
+  videoEmbedUrl?: string;
+  driveViewUrl?: string;
+  hasVideo?: boolean;
 }
 
 export interface PressArticle {

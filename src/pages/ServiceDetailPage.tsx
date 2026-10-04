@@ -3,7 +3,7 @@ import { useRoute, Link } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { servicesData } from '../data/servicesData';
-import { CheckCircle2, ArrowLeft, ArrowUpRight, Sparkles } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, ArrowUpRight, Sparkles, Video, ExternalLink } from 'lucide-react';
 
 interface ServiceDetailPageProps {
   customSlug?: string;
@@ -68,6 +68,49 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
             </div>
           )}
         </div>
+
+        {/* Video Reel Showcase if available */}
+        {service.videoEmbedUrl && (
+          <div className="my-16 p-8 md:p-10 rounded-3xl bg-[#0e0e0e] border border-[#C7A46A]/40">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#181818] border border-neutral-700 flex items-center justify-center text-[#C7A46A]">
+                  <Video size={20} />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
+                    LIVE ARCHIVAL FOOTAGE
+                  </span>
+                  <h4 className="text-xl font-serif text-white uppercase">
+                    OFFICIAL EVENT & REEL SHOWCASE
+                  </h4>
+                </div>
+              </div>
+
+              {service.driveFolderUrl && (
+                <a
+                  href={service.driveFolderUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 rounded-xl bg-[#141414] border border-neutral-700 hover:border-[#C7A46A] text-neutral-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors inline-flex items-center gap-2"
+                >
+                  <span>VIEW FULL GOOGLE DRIVE ARCHIVE</span>
+                  <ExternalLink size={12} />
+                </a>
+              )}
+            </div>
+
+            <div className="w-full h-80 sm:h-[500px] rounded-2xl overflow-hidden border border-neutral-800 bg-black">
+              <iframe
+                src={service.videoEmbedUrl}
+                title={`${service.title} Video Showcase`}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
 
         {/* Detailed Breakdown Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 my-16">

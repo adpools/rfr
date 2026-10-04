@@ -35,6 +35,6 @@ export const founderData = {
       description: "Constantly challenging conventional formats by synthesizing runway fashion with digital media, UGC, and spatial experiences."
     }
   ],
-  portraitImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
+  portraitImage: "/images/riyas.jpg",
   secondaryImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80"
 };
