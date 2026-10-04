@@ -1,158 +1,139 @@
 import React, { useState } from 'react';
-import { Link } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'wouter';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { talentData } from '../../data/talentData';
-import { ArrowUpRight, ArrowRight } from 'lucide-react';
 
 export const TalentPortalsSection: React.FC = () => {
-  const [activePortal, setActivePortal] = useState(talentData[0]);
-
-  const letterList = ['a', 'b', 'c', 'd'];
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
 
   return (
     <section
       id="chapter-10"
-      className="full-viewport-scene bg-[#0a0a0a] border-b border-neutral-900 flex flex-col justify-center relative overflow-hidden py-16 md:py-24"
+      className="bg-[#050505] border-b border-neutral-900 flex flex-col justify-center relative overflow-hidden py-32 md:py-48"
     >
-      {/* Dynamic Background Image */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={activePortal.id}
-            src={activePortal.image}
-            alt={activePortal.title}
-            initial={{ opacity: 0, scale: 1.08 }}
-            animate={{ opacity: 0.3, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full object-cover grayscale brightness-50"
-          />
-        </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-[#0a0a0a]/85" />
-      </div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C7A46A]/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="editorial-container relative z-10 my-auto py-10 w-full">
-        {/* Top Header */}
-        <div className="flex flex-col justify-start mb-8 pb-4 relative">
-          <div className="flex items-center gap-3 text-[10px] font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-2">
-            <span>10</span>
-            <span className="w-12 h-[1px] bg-[#C7A46A]" />
-            <span>TALENT GUILDS & GUILDS</span>
+      <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 relative z-10">
+        
+        {/* Centered Editorial Header */}
+        <div className="flex flex-col items-center text-center mb-24 md:mb-32">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="text-xs sm:text-sm font-serif font-bold text-[#C7A46A]">10</span>
+            <div className="w-24 h-[1px] bg-[#C7A46A]/50" />
+            <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#C7A46A] uppercase">
+              TALENT & OPPORTUNITIES
+            </span>
           </div>
-
-          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-800 pb-4 gap-4">
-            <div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#F4F1EA] uppercase tracking-tight">
-                ASSETS
-              </h2>
-              <p className="text-xs sm:text-sm font-light text-neutral-400 mt-2 max-w-xl">
-                Dedicated talent portals across Career, Models, Influencers, and Artists.
-              </p>
-            </div>
-            <Link
-              href="/assets"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider transition-colors"
-            >
-              <span>VIEW ALL 4 ASSET GUILDS</span>
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
+          
+          <h2 className="text-7xl sm:text-8xl md:text-[130px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.8] mb-10 drop-shadow-2xl">
+            THE GUILDS
+          </h2>
+          <p className="text-base sm:text-lg font-serif font-light text-[#A09D96] leading-relaxed max-w-2xl mx-auto tracking-wide">
+            Exclusive talent portals designed for industry disruption. Discover global opportunities across Careers, Models, Influencers, and Artists.
+          </p>
         </div>
 
-        {/* Interactive Master Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
-          {/* Left: Interactive Category Selector */}
-          <div className="lg:col-span-6 space-y-3">
-            {talentData.map((portal, idx) => {
-              const isSelected = activePortal.id === portal.id;
-              return (
-                <button
-                  key={portal.id}
-                  onClick={() => setActivePortal(portal)}
-                  onMouseEnter={() => setActivePortal(portal)}
-                  className={`w-full text-left px-5 py-3.5 rounded-2xl transition-all duration-300 flex items-center justify-between border ${
-                    isSelected
-                      ? 'border-[#C7A46A] bg-[#121212] shadow-[0_0_15px_rgba(199,164,106,0.15)]'
-                      : 'border-neutral-800 bg-[#0a0a0a] hover:border-neutral-700'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`font-mono text-xs uppercase font-semibold ${
-                        isSelected ? 'text-[#C7A46A]' : 'text-neutral-500'
-                      }`}
-                    >
-                      {letterList[idx]}.
-                    </span>
-                    <span
-                      className={`text-lg sm:text-xl font-serif uppercase tracking-wider transition-colors ${
-                        isSelected ? 'text-[#F4F1EA]' : 'text-neutral-400'
-                      }`}
-                    >
-                      {portal.title}
-                    </span>
-                  </div>
-                  {isSelected ? (
-                    <ArrowRight size={14} className="text-[#C7A46A]" />
-                  ) : (
-                    <span className="text-[10px] font-mono text-neutral-600 uppercase">PORTAL</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+        {/* Horizontal Expanding Accordion (Flex Cards) */}
+        <div className="flex flex-col md:flex-row h-[80vh] min-h-[600px] max-h-[800px] w-full gap-4 md:gap-2">
+          {talentData.map((portal, idx) => {
+            const isActive = hoveredIndex === idx;
 
-          {/* Right: Active Detail Plate */}
-          <div className="lg:col-span-6">
-            <AnimatePresence mode="wait">
+            return (
               <motion.div
-                key={activePortal.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35 }}
-                className="p-8 md:p-10 rounded-3xl bg-[#0B0B0B]/80 backdrop-blur-md border border-neutral-800 flex flex-col justify-between h-full min-h-[380px]"
+                key={portal.id}
+                onHoverStart={() => setHoveredIndex(idx)}
+                className={`relative rounded-[24px] md:rounded-[32px] overflow-hidden cursor-pointer transition-all duration-700 ease-[0.16,1,0.3,1] ${
+                  isActive ? 'md:flex-[3] flex-[1]' : 'md:flex-[1] flex-[1]'
+                }`}
               >
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase px-3 py-1 rounded bg-[#161616] border border-[#C7A46A]/30 inline-block mb-4">
-                    {activePortal.tagline}
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-serif text-[#F4F1EA] uppercase mb-3 leading-tight">
-                    {activePortal.title}
-                  </h3>
-                  <p className="text-neutral-300 text-xs sm:text-sm font-light leading-relaxed mb-6">
-                    {activePortal.description}
-                  </p>
-
-                  <div className="space-y-1.5 pt-2 mb-6">
-                    <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
-                      KEY GUILD OPPORTUNITIES
-                    </span>
-                    {activePortal.opportunities.slice(0, 3).map((op, i) => (
-                      <div key={i} className="text-xs text-neutral-400 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#C7A46A]" />
-                        <span>{op}</span>
-                      </div>
-                    ))}
-                  </div>
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                  <img 
+                    src={portal.image} 
+                    alt={portal.title} 
+                    className={`w-full h-full object-cover transition-all duration-1000 ease-[0.16,1,0.3,1] ${isActive ? 'grayscale-0 scale-100 brightness-90' : 'grayscale brightness-50 scale-110'}`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
                 </div>
 
-                <div className="pt-4 flex items-center justify-between border-t border-neutral-800">
-                  <Link
-                    href={`/assets/${activePortal.id}`}
-                    className="btn-luxury btn-luxury-gold rounded-xl py-2 px-6 text-xs inline-flex items-center gap-2"
-                  >
-                    <span>{activePortal.ctaLabel}</span>
-                    <ArrowUpRight size={14} />
-                  </Link>
-                  <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
-                    RFR GUILD
-                  </span>
+                {/* Content */}
+                <div className="relative z-10 w-full h-full p-8 md:p-12 flex flex-col justify-end overflow-hidden">
+                  
+                  {/* Always visible vertical number / Title on non-active */}
+                  <div className={`absolute top-8 left-8 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-50'}`}>
+                    <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase">
+                      0{idx + 1}
+                    </span>
+                  </div>
+
+                  {/* Active Content Reveal */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        className="flex flex-col w-full md:w-[600px] max-w-full"
+                      >
+                        <span className="text-[9px] font-mono tracking-[0.2em] text-[#C7A46A] uppercase px-4 py-2 rounded-full bg-[#111111]/80 backdrop-blur-md border border-neutral-800 w-max mb-6">
+                          {portal.tagline}
+                        </span>
+                        
+                        <h3 className="text-4xl md:text-6xl font-serif text-[#F4F1EA] uppercase mb-4 leading-tight tracking-tight whitespace-nowrap">
+                          {portal.title}
+                        </h3>
+                        
+                        <p className="text-[#A09D96] text-sm md:text-base font-light leading-relaxed mb-8 line-clamp-2 md:line-clamp-none">
+                          {portal.description}
+                        </p>
+
+                        <div className="hidden md:block space-y-3 mb-10">
+                          {portal.opportunities.slice(0, 3).map((op, i) => (
+                            <div key={i} className="flex items-start gap-4 text-xs md:text-sm text-[#E0DDD5] font-light">
+                              <Sparkles size={16} className="text-[#C7A46A] flex-shrink-0 mt-0.5" />
+                              <span>{op}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <Link
+                          href={`/assets/${portal.id}`}
+                          className="inline-flex items-center gap-4 text-xs font-mono font-bold text-[#E0DDD5] hover:text-[#C7A46A] uppercase tracking-[0.2em] transition-colors w-max"
+                        >
+                          <span>{portal.ctaLabel}</span>
+                          <div className="w-10 h-10 rounded-full bg-[#111111]/80 backdrop-blur-md border border-neutral-700/50 flex items-center justify-center transition-colors">
+                            <ArrowUpRight size={16} className="text-[#E0DDD5]" />
+                          </div>
+                        </Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Inactive Vertical Title (Desktop Only) */}
+                  {!isActive && (
+                    <div className="hidden md:flex h-full items-end justify-center pb-8 absolute inset-0 pointer-events-none">
+                      <h3 className="text-4xl font-serif text-neutral-500 uppercase tracking-widest -rotate-90 origin-bottom transform translate-y-[-50%] whitespace-nowrap">
+                        {portal.title}
+                      </h3>
+                    </div>
+                  )}
+                  {/* Inactive Horizontal Title (Mobile) */}
+                  {!isActive && (
+                    <div className="flex md:hidden w-full items-center mt-auto">
+                      <h3 className="text-2xl font-serif text-neutral-500 uppercase tracking-widest">
+                        {portal.title}
+                      </h3>
+                    </div>
+                  )}
+
                 </div>
               </motion.div>
-            </AnimatePresence>
-          </div>
+            );
+          })}
         </div>
+
       </div>
     </section>
   );

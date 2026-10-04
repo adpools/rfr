@@ -61,7 +61,10 @@ export const App: React.FC = () => {
 
           {/* 02. About Us */}
           <Route path="/about" component={AboutPage} />
-          <Route path="/founder" component={FounderPage} />
+          <Route path="/riyas" component={FounderPage} />
+          <Route path="/founder">
+            <Redirect to="/riyas" />
+          </Route>
 
           {/* 03. What is RFR? */}
           <Route path="/what-is-rfr" component={WhatIsRFRPage} />

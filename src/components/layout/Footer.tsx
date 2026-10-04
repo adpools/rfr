@@ -1,48 +1,47 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { InstagramIcon, YoutubeIcon, LinkedinIcon } from '../common/SocialIcons';
-import { ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   const footerGroups = [
     {
-      title: '01 — 03 CORE',
+      title: 'CORE',
       links: [
-        { label: '1. Timeline (2020–2026)', href: '/timeline' },
-        { label: '2. About us', href: '/about' },
-        { label: '  • Riyas Personal Profile - Founder', href: '/founder' },
-        { label: '  • Achievements, Gallary, Works', href: '/about' },
-        { label: '3. What is RFR? (How, When, What)', href: '/what-is-rfr' },
+        { label: 'Timeline (2020–2026)', href: '/timeline' },
+        { label: 'About Us', href: '/about' },
+        { label: 'Riyas — Founder', href: '/riyas' },
+        { label: 'Achievements & Works', href: '/achievements' },
+        { label: 'What is RFR?', href: '/what-is-rfr' },
       ],
     },
     {
-      title: '04 — 06 SERVICES & VENTURES',
+      title: 'VENTURES',
       links: [
-        { label: '4. Achievements', href: '/achievements' },
-        { label: '5. Services', href: '/services' },
-        { label: '  • Events (Flee, New Year, Fashion, Kids, Festival)', href: '/services/events' },
-        { label: '  • Campaigns (Influencer, UGC, ADS, OOH, Digital)', href: '/services/campaigns' },
-        { label: '  • Podcast Studio', href: '/services/podcast' },
-        { label: '6. Do Business with us', href: '/business' },
+        { label: 'Services', href: '/services' },
+        { label: 'Events & Flea Markets', href: '/services/events' },
+        { label: 'Campaigns & Ads', href: '/services/campaigns' },
+        { label: 'Podcast Studio', href: '/services/podcast' },
+        { label: 'Do Business With Us', href: '/business' },
       ],
     },
     {
-      title: '07 — 10 NETWORK & ALLIANCES',
+      title: 'ALLIANCES',
       links: [
-        { label: '7. Channel Partners', href: '/partners' },
-        { label: '8. Milestones', href: '/milestones' },
-        { label: '9. Clients', href: '/clients' },
-        { label: '10. Assets (Career, Models, Influencers, Artist)', href: '/assets' },
+        { label: 'Channel Partners', href: '/partners' },
+        { label: 'Milestones', href: '/milestones' },
+        { label: 'Our Clients', href: '/clients' },
+        { label: 'Talent Guilds & Models', href: '/assets' },
       ],
     },
     {
-      title: '11 — 13 ARCHIVES & CONTACT',
+      title: 'ARCHIVES',
       links: [
-        { label: '11. Gallary (Events, Shows, Shoots)', href: '/gallery' },
-        { label: '12. Press & News', href: '/press' },
-        { label: '13. Contact', href: '/contact' },
+        { label: 'Gallery', href: '/gallery' },
+        { label: 'Press & News', href: '/press' },
+        { label: 'Contact', href: '/contact' },
       ],
     },
   ];
@@ -50,73 +49,87 @@ export const Footer: React.FC = () => {
   return (
     <footer
       id="footer-luxury"
-      className="w-full bg-[#050505] text-[#F4F1EA] pt-16 pb-12 border-t border-neutral-850 relative"
+      className="w-full bg-[#030303] text-[#F4F1EA] pt-24 pb-8 relative overflow-hidden"
     >
-      <div className="editorial-container">
-        {/* Top Brand Banner */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-12 border-b border-neutral-850">
-          <div>
-            <Link href="/" className="group inline-flex items-center gap-3 no-underline mb-2">
-              <span className="font-sculptural text-2xl font-bold tracking-widest text-[#C7A46A] group-hover:text-white transition-colors">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(199,164,106,0.03)_0%,transparent_70%)] pointer-events-none" />
+
+      <div className="editorial-container relative z-10">
+        {/* Massive Brand Typography Header */}
+        <div className="flex flex-col items-center justify-center mb-20">
+          <h2 className="text-[12vw] md:text-[8vw] font-sculptural font-bold leading-none text-[#101010] tracking-tighter w-full text-center select-none" style={{ WebkitTextStroke: '1px rgba(199,164,106,0.15)' }}>
+            RIYAS FASHION RUNWAY
+          </h2>
+        </div>
+
+        {/* Top Info & Socials */}
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 pb-16 border-b border-white/5">
+          <div className="max-w-md">
+            <Link href="/" className="inline-block mb-4">
+              <span className="font-sculptural text-3xl font-bold tracking-widest text-white transition-colors">
                 RFR BY RIYAS
               </span>
             </Link>
-            <p className="text-xs font-light text-neutral-400 max-w-md">
-              Riyas Fashion Runway — Creative ecosystem connecting luxury fashion, brand campaigns, talent networks, and cultural media.
+            <p className="text-sm font-light text-neutral-400 leading-relaxed">
+              A creative ecosystem connecting luxury fashion, brand campaigns, talent networks, and cultural media.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-              className="p-3 rounded-full bg-[#111111] border border-neutral-800 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
-            >
-              <InstagramIcon size={16} />
-            </a>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="YouTube"
-              className="p-3 rounded-full bg-[#111111] border border-neutral-800 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
-            >
-              <YoutubeIcon size={16} />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              className="p-3 rounded-full bg-[#111111] border border-neutral-800 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
-            >
-              <LinkedinIcon size={16} />
-            </a>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="flex items-center gap-4">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="w-12 h-12 rounded-full bg-[#0a0a0a] border border-white/5 hover:border-[#C7A46A] flex items-center justify-center hover:text-[#C7A46A] transition-all duration-300"
+              >
+                <InstagramIcon size={18} />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="YouTube"
+                className="w-12 h-12 rounded-full bg-[#0a0a0a] border border-white/5 hover:border-[#C7A46A] flex items-center justify-center hover:text-[#C7A46A] transition-all duration-300"
+              >
+                <YoutubeIcon size={18} />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="w-12 h-12 rounded-full bg-[#0a0a0a] border border-white/5 hover:border-[#C7A46A] flex items-center justify-center hover:text-[#C7A46A] transition-all duration-300"
+              >
+                <LinkedinIcon size={18} />
+              </a>
+            </div>
             <Link
               href="/contact"
-              className="btn-luxury btn-luxury-gold rounded-xl py-2 px-5 text-xs inline-flex items-center gap-2"
+              className="group relative inline-flex items-center justify-center px-8 py-3.5 bg-transparent border border-[#C7A46A] text-[#C7A46A] hover:text-black text-xs font-mono tracking-widest uppercase overflow-hidden rounded-full transition-colors duration-300"
             >
-              <span>CONNECT WITH RFR</span>
-              <ArrowUpRight size={14} />
+              <span className="relative z-10 flex items-center gap-2">
+                Connect With RFR
+                <ArrowUpRight size={14} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-[#C7A46A] transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
             </Link>
           </div>
         </div>
 
         {/* 4-Column Directory Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-b border-neutral-850">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 py-16 border-b border-white/5">
           {footerGroups.map((group) => (
-            <div key={group.title} className="space-y-4">
-              <span className="text-[10px] font-mono tracking-[0.25em] text-[#C7A46A] uppercase block">
+            <div key={group.title} className="flex flex-col">
+              <span className="text-[11px] font-mono tracking-[0.3em] text-white/40 uppercase mb-8">
                 {group.title}
               </span>
-              <ul className="space-y-2 text-xs font-sans text-neutral-400">
+              <ul className="space-y-4 text-[13px] font-sans font-light text-neutral-400">
                 {group.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="hover:text-[#FAF9F6] transition-colors inline-block py-0.5"
+                      className="hover:text-[#C7A46A] transition-colors duration-300 block w-fit"
                     >
                       {link.label}
                     </Link>
@@ -128,20 +141,18 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Sub-Footer */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-neutral-500">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] md:text-xs font-mono text-neutral-500 tracking-widest">
           <div>
             <span>© {currentYear} RFR BY RIYAS. ALL RIGHTS RESERVED.</span>
           </div>
-          <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-neutral-300 transition-colors">
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
+            <Link href="/privacy" className="hover:text-white transition-colors duration-300">
               PRIVACY POLICY
             </Link>
-            <span>•</span>
-            <Link href="/terms" className="hover:text-neutral-300 transition-colors">
+            <Link href="/terms" className="hover:text-white transition-colors duration-300">
               TERMS OF PRODUCTION
             </Link>
-            <span>•</span>
-            <Link href="/contact" className="hover:text-[#C7A46A] transition-colors">
+            <Link href="/contact" className="text-[#C7A46A] hover:text-white transition-colors duration-300">
               VIP INQUIRIES
             </Link>
           </div>

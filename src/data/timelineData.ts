@@ -103,7 +103,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FLAGSHIP FLEA IP • VIDEO REEL',
         locationOrClient: 'RFR Signature IP',
         description: 'The monumental launch of Koottam Flea Market Season 1, bringing together 50+ independent brands, creators, live music, and thousands of attendees.',
-        image: '/images/thumbnails/1K0wzOv8anMih62lWwAXbRJCZGkxyh3IW.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1K0wzOv8anMih62lWwAXbRJCZGkxyh3IW&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1K0wzOv8anMih62lWwAXbRJCZGkxyh3IW/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1JPcPSXu6NjKFLhj-_b0r9Xh4vxCTnLaM'
@@ -115,7 +115,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FESTIVAL REEL • LIVE STAGE',
         locationOrClient: 'Koottam 2022 Official Drive Archives',
         description: 'Atmospheric stage production, acoustic live sets, and high-energy festival crowds captured during Koottam Flea Season 1.',
-        image: '/images/thumbnails/1OTBpm6zjAgEcxKbGFWZ3k78zsAsLtnW4.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1OTBpm6zjAgEcxKbGFWZ3k78zsAsLtnW4&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1OTBpm6zjAgEcxKbGFWZ3k78zsAsLtnW4/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1JPcPSXu6NjKFLhj-_b0r9Xh4vxCTnLaM'
@@ -127,7 +127,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'EXPERIENTIAL REEL • RETAIL',
         locationOrClient: 'Koottam 2022 Official Drive Archives',
         description: 'Curated shopping lanes, artisanal lifestyle creators, gourmet pop-ups, and vibrant community celebrations.',
-        image: '/images/thumbnails/1N3uDi9gPVaolGuFGvVHwlhuZ2kVhp5_0.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1N3uDi9gPVaolGuFGvVHwlhuZ2kVhp5_0&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1N3uDi9gPVaolGuFGvVHwlhuZ2kVhp5_0/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1JPcPSXu6NjKFLhj-_b0r9Xh4vxCTnLaM'
@@ -151,7 +151,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'YOUTH RUNWAY & TALENT • VIDEO',
         locationOrClient: 'RFR Youth Platform & Citi Kids',
         description: 'Premier youth talent hunt and fashion runway show empowering kids with stage presence, styling, and grooming.',
-        image: '/images/thumbnails/1ZKOWzZ-6Gajyvv8faIPy6tLryX17VLt5.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1ZKOWzZ-6Gajyvv8faIPy6tLryX17VLt5&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1ZKOWzZ-6Gajyvv8faIPy6tLryX17VLt5/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -204,7 +204,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'BRAND LAUNCH EVENT • VIDEO',
         locationOrClient: 'Fitora Lifestyle',
         description: 'Grand store inauguration and celebrity brand launch event with full video coverage and VIP guest management.',
-        image: '/images/thumbnails/1-evN1cSYflA2Euej4pEzqVfHJ03NlNHz.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1-evN1cSYflA2Euej4pEzqVfHJ03NlNHz&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1-evN1cSYflA2Euej4pEzqVfHJ03NlNHz/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -216,7 +216,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'COMMERCIAL BRAND FILM • VIDEO',
         locationOrClient: 'Hanso Premium Lifestyle',
         description: 'Cinematic brand commercial highlighting contemporary fashion and retail aesthetic excellence.',
-        image: '/images/thumbnails/15HlASUrrPE6DeoQGJLklsHY1S2s5jJ8Y.jpg',
+        image: 'https://drive.google.com/thumbnail?id=15HlASUrrPE6DeoQGJLklsHY1S2s5jJ8Y&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/15HlASUrrPE6DeoQGJLklsHY1S2s5jJ8Y/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -257,7 +257,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'EUROPEAN AUTOMOTIVE • VIDEO REEL',
         locationOrClient: 'Škoda Auto India',
         description: 'Sophisticated lifestyle automotive campaign featuring curated creators exploring performance, safety, and European luxury drives.',
-        image: '/images/thumbnails/18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A.jpg',
+        image: 'https://drive.google.com/thumbnail?id=18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -269,7 +269,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'EV MOBILITY REEL • VIDEO',
         locationOrClient: 'Ather Energy',
         description: 'Forward-looking electric mobility campaign connecting sustainable urban commute with tech-savvy lifestyle creators featuring Riyas & Ganga.',
-        image: '/images/thumbnails/1YymReRbadPvKyAXFzmmGVSsm4lExjIoD.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1YymReRbadPvKyAXFzmmGVSsm4lExjIoD&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1YymReRbadPvKyAXFzmmGVSsm4lExjIoD/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -281,7 +281,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'EV LIFESTYLE CAMPAIGN • VIDEO',
         locationOrClient: 'Ather Energy',
         description: 'Urban mobility narrative capturing youth commute, fast charging, and contemporary electric scooter performance.',
-        image: '/images/thumbnails/1agM4IPcwpZHfsXjbA-o8SfP4kkpPW1t_.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1agM4IPcwpZHfsXjbA-o8SfP4kkpPW1t_&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1agM4IPcwpZHfsXjbA-o8SfP4kkpPW1t_/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -293,7 +293,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'HOLIDAY FESTIVE COMMERCIAL • VIDEO',
         locationOrClient: 'Ather Energy',
         description: 'High-energy festive holiday campaign celebrating the joy of electric rides with seasonal storytelling and Santa theme.',
-        image: '/images/thumbnails/1uyYLbEDv9vYWKTYV7MlkflIS9UATtEed.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1uyYLbEDv9vYWKTYV7MlkflIS9UATtEed&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1uyYLbEDv9vYWKTYV7MlkflIS9UATtEed/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -305,7 +305,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'SOLO INFLUENCER REEL • VIDEO',
         locationOrClient: 'Ather Energy',
         description: 'Solo creator highlight showcasing effortless city cruising and modern design aesthetics with Teena.',
-        image: '/images/thumbnails/1EMcdGC2j-HSGaON7ApBTC0k9himB2auq.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1EMcdGC2j-HSGaON7ApBTC0k9himB2auq&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1EMcdGC2j-HSGaON7ApBTC0k9himB2auq/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -317,7 +317,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'REAL ESTATE & INTERIOR • VIDEO',
         locationOrClient: 'Build Hub',
         description: 'Architectural video commercial spotlighting modern building solutions, luxury materials, and contemporary interior concepts.',
-        image: '/images/thumbnails/1GEWSZYSU8qQKNW05-dSMkmuUBd2AbOhV.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1GEWSZYSU8qQKNW05-dSMkmuUBd2AbOhV&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1GEWSZYSU8qQKNW05-dSMkmuUBd2AbOhV/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -341,7 +341,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'LIFESTYLE COMMERCIAL • VIDEO',
         locationOrClient: 'Build Hub',
         description: 'Exclusive interior design walkthrough and architectural finishes presented by Teena.',
-        image: '/images/thumbnails/1Xar8Hc2PUaoNoSrAsu9j2QqBCD5QOHtZ.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1Xar8Hc2PUaoNoSrAsu9j2QqBCD5QOHtZ&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1Xar8Hc2PUaoNoSrAsu9j2QqBCD5QOHtZ/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -353,7 +353,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'AUTOMOTIVE ADVERT • VIDEO',
         locationOrClient: 'Concept Tyres',
         description: 'Dynamic automotive commercial video capturing road grip, reliability, and precision tyre performance.',
-        image: '/images/thumbnails/1NhbGg_5G5ZUGLkUak9hZRp1rVmOymWEQ.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1NhbGg_5G5ZUGLkUak9hZRp1rVmOymWEQ&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1NhbGg_5G5ZUGLkUak9hZRp1rVmOymWEQ/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -431,7 +431,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FESTIVAL TEASER • VIDEO',
         locationOrClient: 'RFR Cultural Properties',
         description: 'Official teaser video capturing the vibrant rhythm, colorful costumes, and electrifying atmosphere of Dandiya Night.',
-        image: '/images/thumbnails/1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -508,7 +508,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FRENCH AUTOMOTIVE • VIDEO REEL',
         locationOrClient: 'Citroën India',
         description: 'Flagship commercial video production highlighting the dynamic comfort, modular space, and European design of Citroën Aircross.',
-        image: '/images/thumbnails/17xhWbUtxJePM8igOO7VADLDfiqcG6S04.jpg',
+        image: 'https://drive.google.com/thumbnail?id=17xhWbUtxJePM8igOO7VADLDfiqcG6S04&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/17xhWbUtxJePM8igOO7VADLDfiqcG6S04/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -520,7 +520,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FESTIVE AUTOMOTIVE REEL • VIDEO',
         locationOrClient: 'Citroën India',
         description: 'Vibrant Onam festival narrative featuring Riyas and Thara exploring Kerala’s heritage in contemporary Citroën vehicles.',
-        image: '/images/thumbnails/1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -532,7 +532,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FESTIVE LIFESTYLE REEL • VIDEO',
         locationOrClient: 'Citroën India',
         description: 'Festive Kerala ethnic styling meets modern automotive elegance featuring Thara in the Citroën Onam special.',
-        image: '/images/thumbnails/139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM.jpg',
+        image: 'https://drive.google.com/thumbnail?id=139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -544,7 +544,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'PRE-FESTIVE CAMPAIGN • VIDEO',
         locationOrClient: 'Citroën India',
         description: 'Excitement builds towards Onam celebrations with dynamic road trips, scenic Kerala routes, and Citroën comfort.',
-        image: '/images/thumbnails/1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -556,7 +556,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'SUV COUPE AD • VIDEO',
         locationOrClient: 'Citroën India',
         description: 'Sleek, high-fashion styling meets automotive innovation in the official Citroën Basalt launch video with Riyas.',
-        image: '/images/thumbnails/1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -568,7 +568,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'SUSTAINABLE EV AD • VIDEO',
         locationOrClient: 'Citroën India',
         description: 'Quiet luxury, smooth electric acceleration, and urban chic lifestyle video featuring Thara in the all-electric Citroën ë-C3.',
-        image: '/images/thumbnails/15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3.jpg',
+        image: 'https://drive.google.com/thumbnail?id=15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -580,7 +580,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'AUTOMOTIVE EDITORIAL • VIDEO',
         locationOrClient: 'Citroën India',
         description: 'Editorial commercial cut focusing on precision cockpit design, ambient textures, and lifestyle luxury with Thara.',
-        image: '/images/thumbnails/1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -604,7 +604,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'AUTOMOTIVE COMMUNITY IP • VIDEO',
         locationOrClient: 'Škoda Auto India',
         description: 'High-octane gathering for Skoda owners, automobile influencers, and rally enthusiasts featuring experiential drives.',
-        image: '/images/thumbnails/1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut.jpg',
+        image: 'https://drive.google.com/thumbnail?id=1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'

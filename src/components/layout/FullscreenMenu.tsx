@@ -206,16 +206,16 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
           animate={{ opacity: 1, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
           exit={{ opacity: 0, clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[9500] bg-[#070707] text-[#FAF9F6] flex flex-col justify-between overflow-y-auto"
+          className="fixed inset-0 z-[9500] bg-[#050505] text-[#FAF9F6] flex flex-col justify-between overflow-y-auto"
         >
           {/* Top Bar */}
-          <div className="sticky top-0 z-20 bg-[#070707]/95 backdrop-blur-md px-6 sm:px-12 py-5 border-b border-neutral-850 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/" onClick={onClose} className="group flex items-center gap-3 no-underline">
-                <span className="font-sculptural text-xl font-bold tracking-widest text-[#C7A46A] group-hover:text-white transition-colors">
+          <div className="z-20 bg-transparent px-6 md:px-16 py-6 border-b border-neutral-900 flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <Link href="/" onClick={onClose} className="group flex items-center gap-4 no-underline">
+                <span className="font-serif text-2xl font-bold text-[#C7A46A] group-hover:text-white transition-colors">
                   RFR
                 </span>
-                <span className="text-[11px] tracking-[0.25em] text-neutral-400 uppercase font-mono hidden sm:inline">
+                <span className="text-[10px] md:text-[11px] tracking-[0.25em] text-neutral-500 uppercase font-mono hidden sm:inline">
                   BY RIYAS • ECOSYSTEM DIRECTORY
                 </span>
               </Link>
@@ -224,38 +224,38 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
             {/* Quick Search */}
             <div className="flex items-center gap-4">
               <div className="relative hidden md:flex items-center">
-                <Search size={14} className="absolute left-3 text-neutral-500" />
+                <Search size={14} className="absolute left-4 text-neutral-600" />
                 <input
                   type="text"
                   placeholder="Filter 13 chapters..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-[#111111] border border-neutral-800 rounded-full pl-9 pr-4 py-1.5 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#C7A46A] w-48 transition-all"
+                  className="bg-[#111111] border border-neutral-800 rounded-full pl-10 pr-4 py-2.5 text-[11px] font-sans tracking-wide text-white placeholder-neutral-600 focus:outline-none focus:border-[#C7A46A] w-56 transition-all"
                 />
               </div>
 
               <button
                 onClick={onClose}
                 aria-label="Close Menu"
-                className="p-2.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
+                className="p-2.5 rounded-full bg-[#111111] border border-neutral-800 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
           </div>
 
           {/* Main Hierarchical Grid */}
-          <div className="max-w-7xl mx-auto w-full px-6 sm:px-12 py-8 flex-1">
-            <div className="mb-6 flex items-center justify-between">
-              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-[#C7A46A]">
+          <div className="max-w-[1400px] mx-auto w-full px-6 md:px-16 py-10 flex-1">
+            <div className="mb-8 flex items-center justify-between">
+              <span className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#C7A46A]">
                 COMPLETE ARCHITECTURAL ORDER (1 — 13)
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-neutral-500">
+              <span className="text-[10px] font-mono tracking-[0.2em] text-neutral-600 uppercase">
                 13 SECTIONS
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
               {filteredItems.map((item, idx) => {
                 const hasChildren = Boolean(item.subItems?.length || item.subGroups?.length);
                 const isExpanded = activeExpanded === item.id || searchQuery.length > 0;
@@ -266,36 +266,32 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, delay: idx * 0.02 }}
-                    className={`rounded-2xl border transition-all duration-300 ${
+                    className={`rounded-[14px] border transition-all duration-300 ${
                       isExpanded
-                        ? 'bg-[#0e0e0e] border-[#C7A46A]/50 shadow-[0_4px_20px_rgba(0,0,0,0.5)]'
-                        : 'bg-[#0a0a0a] border-neutral-850 hover:border-neutral-700'
+                        ? 'bg-[#0a0a0a] border-[#C7A46A]/50 shadow-[0_4px_20px_rgba(0,0,0,0.5)]'
+                        : 'bg-transparent border-neutral-800/80 hover:border-[#C7A46A]/40'
                     }`}
                   >
                     {/* Item Header */}
-                    <div className="p-4 sm:p-5 flex items-center justify-between gap-3">
+                    <div className="px-6 py-5 flex items-center justify-between gap-3">
                       <Link
                         href={item.href}
                         onClick={onClose}
-                        className="flex items-center gap-3.5 group flex-1 no-underline"
+                        className="flex items-center gap-4 group flex-1 no-underline"
                       >
-                        <span className="font-mono text-xs font-semibold text-[#C7A46A]">
+                        <span className="font-serif text-sm font-bold text-[#C7A46A]">
                           {item.num}.
                         </span>
-                        <span className="text-base sm:text-lg font-serif tracking-wide text-neutral-200 group-hover:text-white transition-colors">
+                        <span className="text-base sm:text-[17px] font-serif tracking-wide text-[#E0DDD5] group-hover:text-white transition-colors">
                           {item.title}
                         </span>
-                        <ArrowUpRight
-                          size={14}
-                          className="opacity-0 group-hover:opacity-100 text-[#C7A46A] transition-opacity"
-                        />
                       </Link>
 
                       {hasChildren && (
                         <button
                           onClick={() => toggleExpand(item.id)}
                           aria-label={`Toggle ${item.title} sub-items`}
-                          className="p-1.5 rounded-lg bg-[#141414] hover:bg-[#1f1f1f] text-neutral-400 hover:text-[#C7A46A] transition-colors"
+                          className="p-1.5 rounded-md bg-[#111111] border border-transparent hover:border-neutral-800 text-neutral-500 hover:text-[#C7A46A] transition-colors"
                         >
                           <ChevronDown
                             size={16}
@@ -313,7 +309,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="px-4 pb-4 sm:px-5 sm:pb-5 pt-1 border-t border-neutral-850/80 space-y-3"
+                        className="px-6 pb-6 pt-1 border-t border-neutral-900 space-y-4"
                       >
                         {/* Simple Flat Sub-Items */}
                         {item.subItems && (
@@ -323,7 +319,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                                 key={sub.label}
                                 href={sub.href}
                                 onClick={onClose}
-                                className="px-3 py-1.5 rounded-lg bg-[#121212] hover:bg-[#1a1a1a] text-xs font-sans text-neutral-300 hover:text-[#C7A46A] transition-colors flex items-center justify-between no-underline"
+                                className="px-3 py-1.5 rounded-lg bg-[#0e0e0e] hover:bg-[#151515] text-xs font-sans text-neutral-300 hover:text-[#C7A46A] transition-colors flex items-center justify-between no-underline"
                               >
                                 <span>{sub.label}</span>
                                 <ChevronRight size={12} className="text-neutral-600" />
@@ -338,7 +334,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                             {item.subGroups.map((grp) => (
                               <div
                                 key={grp.label}
-                                className="p-2.5 rounded-xl bg-[#121212] border border-neutral-850"
+                                className="p-2.5 rounded-xl bg-[#0e0e0e] border border-neutral-850"
                               >
                                 {grp.href ? (
                                   <Link
@@ -383,7 +379,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
           </div>
 
           {/* Bottom Row Information */}
-          <div className="bg-[#050505] border-t border-neutral-850 px-6 sm:px-12 py-5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
+          <div className="bg-[#050505] border-t border-neutral-900 px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
             <div className="flex flex-wrap items-center gap-6">
               <a
                 href="mailto:partnerships@rfrbyriyas.com"
@@ -392,22 +388,22 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                 <Mail size={14} className="text-[#C7A46A]" />
                 <span>partnerships@rfrbyriyas.com</span>
               </a>
-              <span className="hidden sm:inline text-neutral-700">•</span>
-              <span className="flex items-center gap-2">
+              <span className="hidden sm:inline text-neutral-800">•</span>
+              <span className="flex items-center gap-2 text-neutral-500">
                 <Phone size={14} className="text-[#C7A46A]" />
                 <span>RFR VIP Desk</span>
               </span>
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-widest uppercase font-mono text-[#C7A46A]">
-                Follow RFR:
+              <span className="text-[10px] tracking-[0.2em] uppercase font-mono text-[#C7A46A]">
+                FOLLOW RFR:
               </span>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 rounded-full bg-neutral-900 hover:text-[#C7A46A] transition-colors"
+                className="p-2 rounded-full bg-[#111111] hover:text-[#C7A46A] transition-colors"
               >
                 <InstagramIcon size={14} />
               </a>
@@ -415,7 +411,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                 href="https://youtube.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 rounded-full bg-neutral-900 hover:text-[#C7A46A] transition-colors"
+                className="p-2 rounded-full bg-[#111111] hover:text-[#C7A46A] transition-colors"
               >
                 <YoutubeIcon size={14} />
               </a>
@@ -423,7 +419,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 rounded-full bg-neutral-900 hover:text-[#C7A46A] transition-colors"
+                className="p-2 rounded-full bg-[#111111] hover:text-[#C7A46A] transition-colors"
               >
                 <LinkedinIcon size={14} />
               </a>

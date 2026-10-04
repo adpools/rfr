@@ -50,7 +50,7 @@ export const Navbar: React.FC = () => {
         </Link>
 
         {/* Desktop Curated Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-7">
+        <nav className="hidden 2xl:flex items-center gap-5">
           {primaryNavLinks.map((link) => {
             const isActive = location === link.href || (link.href !== '/' && location.startsWith(link.href));
             return (

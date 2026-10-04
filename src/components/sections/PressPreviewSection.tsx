@@ -1,156 +1,109 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'wouter';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { pressData } from '../../data/pressData';
-import { ArrowUpRight, ArrowRight, Newspaper } from 'lucide-react';
 
 export const PressPreviewSection: React.FC = () => {
-  const [activePress, setActivePress] = useState(pressData[0]);
-
   return (
     <section
       id="chapter-12"
-      className="full-viewport-scene bg-[#0a0a0a] border-b border-neutral-900 flex flex-col justify-center relative overflow-hidden py-16 md:py-24"
+      className="bg-[#050505] border-b border-neutral-900 flex flex-col justify-start relative overflow-hidden py-20 md:py-24"
     >
-      {/* Dynamic Background Image */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={activePress.id}
-            src={activePress.coverImage}
-            alt={activePress.title}
-            initial={{ opacity: 0, scale: 1.08 }}
-            animate={{ opacity: 0.35, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full object-cover grayscale brightness-50"
-          />
-        </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-[#0a0a0a]/85" />
-      </div>
+      <div className="absolute top-1/4 right-0 w-[1000px] h-[1000px] bg-[#C7A46A]/5 rounded-full blur-[200px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[1000px] h-[1000px] bg-[#C7A46A]/5 rounded-full blur-[200px] pointer-events-none" />
 
-      <div className="editorial-container relative z-10 my-auto py-10 w-full">
-        {/* Top Header */}
-        <div className="flex flex-col justify-start mb-8 pb-4 relative">
-          <div className="flex items-center gap-3 text-[10px] font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-2">
-            <span>12</span>
-            <span className="w-12 h-[1px] bg-[#C7A46A]" />
-            <span>EDITORIAL DISPATCHES</span>
+      <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 relative z-10">
+        
+        {/* Centered Header */}
+        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="text-xs sm:text-sm font-serif font-bold text-[#C7A46A]">12</span>
+            <div className="w-24 h-[1px] bg-[#C7A46A]/50" />
+            <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#C7A46A] uppercase">
+              EDITORIAL DISPATCHES
+            </span>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-800 pb-4 gap-4">
-            <div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#F4F1EA] uppercase tracking-tight">
-                PRESS & NEWS
-              </h2>
-              <p className="text-xs sm:text-sm font-light text-neutral-400 mt-2 max-w-xl">
-                National and regional press coverage, runway announcements, feature stories, and industry interviews.
-              </p>
-            </div>
-            <Link
-              href="/press"
-              className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider transition-colors"
-            >
-              <span>VIEW ALL EDITORIAL ARTICLES</span>
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
+          <h2 className="text-6xl sm:text-7xl md:text-[90px] lg:text-[110px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.8] mb-8 drop-shadow-2xl">
+            PRESS <br />& NEWS
+          </h2>
+          <p className="text-sm sm:text-base font-serif font-light text-[#A09D96] leading-relaxed max-w-xl mx-auto tracking-wide">
+            National and regional press coverage, runway announcements, feature stories, and exclusive industry interviews.
+          </p>
         </div>
 
-        {/* Interactive Master Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
-          {/* Left: Article List */}
-          <div className="lg:col-span-6 space-y-3">
-            {pressData.slice(0, 4).map((article, idx) => {
-              const isSelected = activePress.id === article.id;
-              return (
-                <button
-                  key={article.id}
-                  onClick={() => setActivePress(article)}
-                  onMouseEnter={() => setActivePress(article)}
-                  className={`w-full text-left p-4 rounded-2xl transition-all duration-300 flex items-center justify-between border ${
-                    isSelected
-                      ? 'border-[#C7A46A] bg-[#121212] shadow-[0_0_15px_rgba(199,164,106,0.15)]'
-                      : 'border-neutral-800 bg-[#0a0a0a] hover:border-neutral-700'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`font-mono text-xs uppercase font-semibold ${
-                        isSelected ? 'text-[#C7A46A]' : 'text-neutral-500'
-                      }`}
-                    >
-                      0{idx + 1}
-                    </span>
-                    <div>
-                      <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-wider block mb-0.5">
-                        {article.date} • {article.category}
-                      </span>
-                      <span
-                        className={`text-sm sm:text-base font-serif uppercase tracking-wider line-clamp-1 transition-colors ${
-                          isSelected ? 'text-[#F4F1EA]' : 'text-neutral-300'
-                        }`}
-                      >
-                        {article.title}
-                      </span>
-                    </div>
-                  </div>
-                  {isSelected ? (
-                    <ArrowRight size={14} className="text-[#C7A46A] flex-shrink-0" />
-                  ) : (
-                    <Newspaper size={14} className="text-neutral-600 flex-shrink-0" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+        {/* Space-Consuming Vertical Stack (Reduced Scale) */}
+        <div className="flex flex-col gap-16 md:gap-24">
+          {pressData.slice(0, 4).map((article, idx) => {
+            const isEven = idx % 2 === 0;
 
-          {/* Right: Active Detail Plate */}
-          <div className="lg:col-span-6">
-            <AnimatePresence mode="wait">
+            return (
               <motion.div
-                key={activePress.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35 }}
-                className="p-8 md:p-10 rounded-3xl bg-[#0B0B0B]/80 backdrop-blur-md border border-neutral-800 flex flex-col justify-between h-full min-h-[380px]"
+                key={article.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center group`}
               >
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase px-3 py-1 rounded bg-[#161616] border border-[#C7A46A]/30">
-                      {activePress.category}
+                <div className="w-full lg:w-1/2 h-[350px] md:h-[450px] rounded-[24px] overflow-hidden relative shadow-2xl">
+                  <div className="absolute inset-0 bg-[#C7A46A]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none mix-blend-overlay" />
+                  <img
+                    src={article.coverImage}
+                    alt={article.title}
+                    className="absolute inset-0 w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-110 group-hover:brightness-90 transition-all duration-1000 ease-out"
+                  />
+                </div>
+
+                <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="text-[10px] font-mono tracking-[0.2em] text-[#C7A46A] uppercase px-4 py-2 rounded-full border border-neutral-800 bg-[#0a0a0a]">
+                      {article.category}
                     </span>
-                    <span className="text-xs font-mono text-neutral-500">
-                      {activePress.date}
+                    <span className="text-xs text-[#A09D96] font-mono tracking-widest">
+                      {article.date}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl font-serif text-[#F4F1EA] uppercase mb-3 leading-tight">
-                    {activePress.title}
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#F4F1EA] uppercase mb-6 leading-[1.1] tracking-tight group-hover:text-white transition-colors duration-500">
+                    {article.title}
                   </h3>
 
-                  <p className="text-neutral-300 text-xs sm:text-sm font-light leading-relaxed mb-6">
-                    {activePress.excerpt}
+                  <p className="text-[#A09D96] text-xs sm:text-sm font-light leading-relaxed mb-8 max-w-lg">
+                    {article.excerpt}
                   </p>
-                </div>
 
-                <div className="pt-4 flex items-center justify-between border-t border-neutral-800">
                   <Link
-                    href={`/press/${activePress.slug}`}
-                    className="btn-luxury btn-luxury-gold rounded-xl py-2 px-6 text-xs inline-flex items-center gap-2"
+                    href={`/press/${article.slug}`}
+                    className="inline-flex items-center gap-4 text-xs font-mono font-bold text-[#E0DDD5] group-hover:text-[#C7A46A] uppercase tracking-[0.2em] transition-colors"
                   >
-                    <span>READ FULL ARTICLE</span>
-                    <ArrowUpRight size={14} />
+                    <span>READ FULL DISPATCH</span>
+                    <div className="w-10 h-10 rounded-full bg-[#111111] border border-neutral-800 group-hover:bg-[#C7A46A] flex items-center justify-center transition-all duration-500 group-hover:scale-110">
+                      <ArrowUpRight size={16} className="text-[#E0DDD5] group-hover:text-black transition-colors" />
+                    </div>
                   </Link>
-                  <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
-                    {activePress.readTime}
-                  </span>
                 </div>
               </motion.div>
-            </AnimatePresence>
-          </div>
+            );
+          })}
         </div>
+        
+        {/* View All Button Centered at Bottom */}
+        <div className="flex justify-center mt-20 md:mt-24">
+          <Link
+            href="/press"
+            className="group flex items-center gap-4 px-8 py-4 rounded-full border border-neutral-800 hover:border-[#C7A46A]/60 bg-[#0a0a0a] hover:bg-[#C7A46A]/10 transition-all duration-500"
+          >
+            <span className="text-[10px] font-mono text-[#E0DDD5] group-hover:text-[#C7A46A] uppercase tracking-[0.2em] transition-colors">
+              VIEW THE COMPLETE ARCHIVE
+            </span>
+            <div className="w-8 h-8 rounded-full bg-[#111111] group-hover:bg-[#C7A46A] flex items-center justify-center transition-colors">
+              <ArrowUpRight size={14} className="text-[#A09D96] group-hover:text-black transition-colors" />
+            </div>
+          </Link>
+        </div>
+
       </div>
     </section>
   );

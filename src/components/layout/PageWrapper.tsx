@@ -9,6 +9,7 @@ interface PageWrapperProps {
   children: React.ReactNode;
   canonical?: string;
   schema?: Record<string, unknown>;
+  noPaddingTop?: boolean;
 }
 
 export const PageWrapper: React.FC<PageWrapperProps> = ({
@@ -17,6 +18,7 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
   children,
   canonical = "https://rfrbyriyas.com",
   schema,
+  noPaddingTop = false,
 }) => {
   const [location] = useLocation();
   const isHome = location === '/';
@@ -50,7 +52,7 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`min-h-screen ${isHome ? 'pt-0' : 'pt-28 sm:pt-32 md:pt-36 pb-16 md:pb-24'}`}
+        className={`min-h-screen ${(isHome || noPaddingTop) ? 'pt-0' : 'pt-28 sm:pt-32 md:pt-36'} pb-16 md:pb-24`}
       >
         {children}
       </motion.main>

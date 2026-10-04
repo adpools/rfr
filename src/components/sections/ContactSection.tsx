@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle2, Mail, MapPin, Phone } from 'lucide-react';
+import { Send, CheckCircle2, ArrowUpRight } from 'lucide-react';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -21,14 +21,11 @@ export const ContactSection: React.FC = () => {
     'Influencer Campaign',
     'UGC & Ads Studio',
     'Commercial Advertising',
-    'OOH Media',
-    'Digital Performance Ads',
     'Podcast Guest / Sponsor',
-    'Model Guild Opportunity',
-    'Influencer Guild Opportunity',
+    'Model / Influencer Guild',
     'Artist / DJ Booking',
     'Careers at RFR',
-    'Other Executive Inquiry',
+    'Executive Inquiry',
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,51 +35,56 @@ export const ContactSection: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
-    }, 600);
+    }, 800);
   };
 
   return (
     <section
       id="chapter-13"
-      className="full-viewport-scene bg-[#050505] border-b border-neutral-900 flex flex-col justify-center relative overflow-hidden py-16 md:py-24"
+      className="bg-[#050505] border-b border-neutral-900 flex flex-col justify-center relative overflow-hidden py-24 md:py-32"
     >
-      <div className="editorial-container relative z-10 w-full my-auto">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center justify-between">
+      <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-[#C7A46A]/5 rounded-full blur-[150px] pointer-events-none" />
+
+      <div className="editorial-container relative z-10 w-full my-auto max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start justify-between">
           
           {/* Left: Contact Info */}
-          <div className="w-full lg:w-[45%] flex flex-col justify-center">
+          <div className="w-full lg:w-[45%] flex flex-col justify-start pt-4 sticky top-32">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
             >
-              <div className="flex items-center gap-3 text-[10px] font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-2">
-                <span>13</span>
-                <span className="w-12 h-[1px] bg-[#C7A46A]" />
-                <span>EXECUTIVE INQUIRY</span>
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[11px] sm:text-xs font-serif font-bold text-[#C7A46A]">13</span>
+                <div className="w-16 sm:w-24 h-[1px] bg-[#C7A46A]/50" />
+                <span className="text-[9px] sm:text-[10px] font-mono tracking-[0.4em] text-[#C7A46A] uppercase">
+                  EXECUTIVE INQUIRY
+                </span>
               </div>
               
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-[#F4F1EA] uppercase tracking-tight mb-6">
+              <h2 className="text-6xl sm:text-7xl lg:text-[110px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.85] mb-8 drop-shadow-2xl">
                 CONTACT
               </h2>
 
-              <p className="text-sm font-sans font-light text-neutral-400 mb-8 max-w-sm leading-relaxed">
+              <p className="text-sm sm:text-[15px] font-serif font-light text-[#A09D96] leading-relaxed max-w-md tracking-wide mb-12">
                 Connect directly with the RFR executive desk to explore brand campaigns, runway staging, talent representation, or commercial partnerships.
               </p>
 
-              <div className="space-y-4 text-xs font-mono text-[#F4F1EA]">
-                <div className="flex items-center gap-3">
-                  <Mail size={16} className="text-[#C7A46A]" />
-                  <span>partnerships@rfrbyriyas.com</span>
+              <div className="space-y-6">
+                <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
+                  <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Direct Desk</span>
+                  <a href="mailto:partnerships@rfrbyriyas.com" className="text-lg font-serif text-[#F4F1EA] hover:text-white transition-colors">
+                    partnerships@rfrbyriyas.com
+                  </a>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Phone size={16} className="text-[#C7A46A]" />
-                  <span>VIP Inquiries & Production Desk</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <MapPin size={16} className="text-[#C7A46A]" />
-                  <span>Creative Headquarters • South India & Global</span>
+
+                <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
+                  <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Global Headquarters</span>
+                  <span className="text-lg font-serif text-[#A09D96] group-hover:text-[#F4F1EA] transition-colors">
+                    South India & Worldwide
+                  </span>
                 </div>
               </div>
             </motion.div>
@@ -91,116 +93,122 @@ export const ContactSection: React.FC = () => {
           {/* Right: Luxury Form */}
           <div className="w-full lg:w-[55%]">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="p-8 sm:p-10 rounded-3xl bg-[#0b0b0b] border border-neutral-800"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="p-8 sm:p-12 rounded-[24px] bg-[#0a0a0a]/80 backdrop-blur-md border border-neutral-900 shadow-2xl relative overflow-hidden"
             >
-              {submitted ? (
-                <div className="text-center py-10">
-                  <CheckCircle2 size={44} className="text-[#C7A46A] mx-auto mb-4" />
-                  <h3 className="text-2xl font-serif text-white uppercase mb-2">
-                    Inquiry Received
-                  </h3>
-                  <p className="text-neutral-400 font-light text-xs max-w-sm mx-auto mb-6">
-                    Thank you, {formData.name}. The RFR executive desk will review your inquiry and respond promptly.
-                  </p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="text-xs font-mono tracking-widest text-[#C7A46A] hover:text-white uppercase transition-colors"
-                  >
-                    SUBMIT ANOTHER INQUIRY
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-1.5">
-                        YOUR NAME *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Alex Morgan"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-[#141414] border border-neutral-800 rounded-xl text-white text-xs py-3 px-4 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-1.5">
-                        COMPANY / BRAND
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. Luxury Couture Ltd"
-                        value={formData.company}
-                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full bg-[#141414] border border-neutral-800 rounded-xl text-white text-xs py-3 px-4 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600"
-                      />
-                    </div>
-                  </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#C7A46A]/5 to-transparent pointer-events-none" />
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-1.5">
-                        EMAIL ADDRESS *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="you@brand.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-[#141414] border border-neutral-800 rounded-xl text-white text-xs py-3 px-4 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600"
-                      />
+              <div className="relative z-10">
+                {submitted ? (
+                  <div className="text-center py-16 flex flex-col items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-[#111111] border border-[#C7A46A]/30 flex items-center justify-center mb-6 text-[#C7A46A]">
+                      <CheckCircle2 size={32} />
                     </div>
-                    <div>
-                      <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-1.5">
-                        NATURE OF INQUIRY
-                      </label>
-                      <select
-                        value={formData.interest}
-                        onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                        className="w-full bg-[#141414] border border-neutral-800 rounded-xl text-white text-xs py-3 px-4 focus:outline-none focus:border-[#C7A46A] transition-colors cursor-pointer"
-                      >
-                        {interests.map((opt) => (
-                          <option key={opt} value={opt} className="bg-[#050505] text-[#F4F1EA]">
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-1.5">
-                      MESSAGE / OBJECTIVES *
-                    </label>
-                    <textarea
-                      required
-                      rows={3}
-                      placeholder="Briefly describe your objectives, timelines, or collaboration details..."
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-[#141414] border border-neutral-800 rounded-xl text-white text-xs py-3 px-4 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 resize-none"
-                    />
-                  </div>
-
-                  <div className="pt-2 flex justify-end">
+                    <h3 className="text-3xl font-serif text-[#F4F1EA] uppercase mb-4 tracking-wide">
+                      Inquiry Received
+                    </h3>
+                    <p className="text-[#A09D96] font-light text-sm max-w-sm mx-auto mb-10 leading-relaxed">
+                      Thank you, {formData.name}. The RFR executive desk will review your submission and respond promptly.
+                    </p>
                     <button
-                      type="submit"
-                      disabled={loading}
-                      className="btn-luxury btn-luxury-gold rounded-xl py-3 px-8 text-xs inline-flex items-center gap-2 w-full sm:w-auto justify-center"
+                      onClick={() => setSubmitted(false)}
+                      className="group flex items-center gap-4 px-7 py-3.5 rounded-full border border-neutral-800 hover:border-[#C7A46A]/60 bg-[#0a0a0a] hover:bg-[#C7A46A]/10 transition-all duration-300"
                     >
-                      <span>{loading ? 'TRANSMITTING...' : 'TRANSMIT INQUIRY'}</span>
-                      <Send size={14} />
+                      <span className="text-[10px] font-mono text-[#E0DDD5] group-hover:text-[#C7A46A] uppercase tracking-[0.2em] transition-colors">
+                        SUBMIT ANOTHER
+                      </span>
+                      <div className="w-7 h-7 rounded-full bg-[#111111] group-hover:bg-[#C7A46A] flex items-center justify-center transition-colors">
+                        <ArrowUpRight size={14} className="text-[#A09D96] group-hover:text-black transition-colors" />
+                      </div>
                     </button>
                   </div>
-                </form>
-              )}
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      <div className="relative group">
+                        <input
+                          type="text"
+                          required
+                          placeholder="Your Name *"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 rounded-none"
+                        />
+                      </div>
+                      <div className="relative group">
+                        <input
+                          type="text"
+                          placeholder="Company / Brand"
+                          value={formData.company}
+                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                          className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 rounded-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      <div className="relative group">
+                        <input
+                          type="email"
+                          required
+                          placeholder="Email Address *"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 rounded-none"
+                        />
+                      </div>
+                      <div className="relative group">
+                        <select
+                          value={formData.interest}
+                          onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                          className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors cursor-pointer appearance-none rounded-none"
+                        >
+                          <option value="" disabled className="text-neutral-600 bg-[#050505]">Nature of Inquiry *</option>
+                          {interests.map((opt) => (
+                            <option key={opt} value={opt} className="bg-[#0a0a0a] text-[#F4F1EA]">
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-600 group-hover:text-[#C7A46A] transition-colors">
+                          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative group">
+                      <textarea
+                        required
+                        rows={3}
+                        placeholder="Message / Objectives *"
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 resize-none rounded-none"
+                      />
+                    </div>
+
+                    <div className="pt-6 flex justify-end">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="group flex items-center gap-4 px-8 py-4 rounded-full border border-neutral-800 hover:border-[#C7A46A]/60 bg-[#050505] hover:bg-[#C7A46A]/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+                      >
+                        <span className="text-[10px] font-mono text-[#E0DDD5] group-hover:text-[#C7A46A] uppercase tracking-[0.2em] transition-colors">
+                          {loading ? 'TRANSMITTING...' : 'TRANSMIT INQUIRY'}
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-[#111111] group-hover:bg-[#C7A46A] flex items-center justify-center transition-colors">
+                          <Send size={14} className="text-[#A09D96] group-hover:text-black transition-colors" />
+                        </div>
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
             </motion.div>
           </div>
 
