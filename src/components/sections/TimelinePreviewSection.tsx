@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { timelineData } from '../../data/timelineData';
 import { ArrowUpRight, Sparkles, ChevronRight } from 'lucide-react';
@@ -6,7 +6,29 @@ import { Link } from 'wouter';
 
 export const TimelinePreviewSection: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<number>(timelineData[0].year);
+  const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+
   const activeData = timelineData.find((d) => d.year === selectedYear) || timelineData[0];
+  const activeEvent = activeData.eventsList[activeEventIndex] || activeData.eventsList[0];
+
+  // Reset event index and re-enable autoplay when changing years
+  useEffect(() => {
+    setActiveEventIndex(0);
+    setIsAutoPlaying(true);
+  }, [selectedYear]);
+
+  // Auto-cycle through events for the selected year
+  useEffect(() => {
+    if (!isAutoPlaying || !activeData.eventsList || activeData.eventsList.length <= 1) return;
+    const interval = setInterval(() => {
+      setActiveEventIndex((prev) => (prev + 1) % activeData.eventsList.length);
+    }, 10000); // 10 seconds per event slide
+    return () => clearInterval(interval);
+  }, [activeData, selectedYear, isAutoPlaying, activeEventIndex]);
+
+  const currentVideoUrl = activeEvent?.videoEmbedUrl || activeData.videoEmbedUrl;
+  const currentImageUrl = activeEvent?.image || activeData.image;
 
   return (
     <section
@@ -72,7 +94,7 @@ export const TimelinePreviewSection: React.FC = () => {
         {/* Interactive Year Showcase Card */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeData.year}
+            key={`${activeData.year}-${activeEvent?.id || 'main'}`}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
@@ -98,10 +120,10 @@ export const TimelinePreviewSection: React.FC = () => {
 
               <div className="mb-10">
                 <h3 className="text-3xl sm:text-4xl font-serif text-[#F4F1EA] uppercase mb-5 leading-[1.15] tracking-tight">
-                  {activeData.title}
+                  {activeEvent?.name || activeData.title}
                 </h3>
                 <p className="text-[13px] sm:text-[15px] text-[#A09D96] font-light leading-relaxed max-w-lg">
-                  {activeData.description}
+                  {activeEvent?.description || activeData.description}
                 </p>
               </div>
 
@@ -112,13 +134,21 @@ export const TimelinePreviewSection: React.FC = () => {
                   LANDMARK EVENTS ({activeData.eventsList.length})
                 </span>
                 <div className="flex flex-wrap gap-2.5">
-                  {activeData.eventsList.map((ev) => (
-                    <span
+                  {activeData.eventsList.map((ev, idx) => (
+                    <button
                       key={ev.id}
-                      className="px-4 py-2 rounded-lg bg-[#111111] border border-neutral-800/80 hover:border-neutral-600 text-[11px] md:text-xs font-mono text-[#E0DDD5] tracking-wider transition-colors cursor-default"
+                      onClick={() => {
+                        setActiveEventIndex(idx);
+                        setIsAutoPlaying(false);
+                      }}
+                      className={`px-4 py-2 rounded-lg border text-[11px] md:text-xs font-mono tracking-wider transition-all duration-300 text-left ${
+                        idx === activeEventIndex 
+                        ? "bg-[#C7A46A] text-black border-[#C7A46A] shadow-[0_0_10px_rgba(199,164,106,0.3)] font-bold"
+                        : "bg-[#111111] text-[#E0DDD5] border-neutral-800/80 hover:border-neutral-500 hover:bg-neutral-900"
+                      }`}
                     >
                       ✦ {ev.name}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -135,16 +165,30 @@ export const TimelinePreviewSection: React.FC = () => {
             </div>
 
             {/* Right: Visual */}
-            <div className="lg:col-span-6 h-72 sm:h-[450px] rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative shadow-2xl">
-              <img
-                src={activeData.image}
-                alt={activeData.title}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 hover:scale-105 transition-all duration-700"
-              />
+            <div 
+              className="lg:col-span-6 h-72 sm:h-[450px] rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative shadow-2xl bg-black"
+              onMouseEnter={() => setIsAutoPlaying(false)}
+            >
+              {currentVideoUrl ? (
+                <iframe
+                  key={currentVideoUrl}
+                  src={currentVideoUrl}
+                  className="w-full h-full border-0 transition-all duration-700"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              ) : (
+                <img
+                  key={currentImageUrl}
+                  src={currentImageUrl}
+                  alt={activeEvent?.name || activeData.title}
+                  className="w-full h-full object-cover transition-all duration-700"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-xs font-mono text-neutral-300">
-                <span>RFR ARCHIVES • {activeData.year}</span>
-                <span className="text-[#C7A46A]">VERIFIED RECORD</span>
+              <div className="absolute bottom-5 left-5 right-5 flex flex-col md:flex-row items-start md:items-center justify-between text-xs font-mono text-neutral-300 pointer-events-none gap-2">
+                <span className="truncate w-full max-w-[70%]">RFR ARCHIVES • {activeData.year} • {activeEvent?.categoryBadge || 'RECORD'}</span>
+                <span className="text-[#C7A46A] flex-shrink-0">VERIFIED RECORD</span>
               </div>
             </div>
           </motion.div>

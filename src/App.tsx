@@ -82,6 +82,7 @@ export const App: React.FC = () => {
           <Route path="/services/campaigns" component={ServicesPage} />
           <Route path="/services/campaigns/:slug" component={() => <ServiceDetailPage />} />
           <Route path="/services/podcast" component={PodcastPage} />
+          <Route path="/podcast" component={PodcastPage} />
 
           {/* 06. Do Business with us */}
           <Route path="/business" component={BusinessPage} />

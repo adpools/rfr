@@ -273,16 +273,16 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                     }`}
                   >
                     {/* Item Header */}
-                    <div className="px-6 py-5 flex items-center justify-between gap-3">
+                    <div className="px-6 py-6 sm:py-8 flex items-center justify-between gap-4">
                       <Link
                         href={item.href}
                         onClick={onClose}
                         className="flex items-center gap-4 group flex-1 no-underline"
                       >
-                        <span className="font-serif text-sm font-bold text-[#C7A46A]">
+                        <span className="font-serif text-lg sm:text-xl font-bold text-[#C7A46A]">
                           {item.num}.
                         </span>
-                        <span className="text-base sm:text-[17px] font-serif tracking-wide text-[#E0DDD5] group-hover:text-white transition-colors">
+                        <span className="text-xl sm:text-2xl font-serif tracking-wide text-[#F4F1EA] group-hover:text-white transition-colors">
                           {item.title}
                         </span>
                       </Link>

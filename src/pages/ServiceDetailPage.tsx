@@ -69,8 +69,32 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
           )}
         </div>
 
+        {/* Real Stats Metrics Strip */}
+        {service.stats && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+            {service.stats.map((st) => (
+              <div key={st.label} className="p-5 rounded-2xl bg-[#0e0e0e] border border-neutral-800 flex flex-col justify-center">
+                <span className="text-2xl sm:text-3xl font-serif text-[#C7A46A] mb-1">{st.value}</span>
+                <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-wider">{st.label}</span>
+              </div>
+            ))}
+            {service.featuredBrands && (
+              <div className="p-5 rounded-2xl bg-[#0e0e0e] border border-neutral-800 flex flex-col justify-center col-span-2 sm:col-span-1">
+                <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-wider mb-2">FEATURED ALLIANCES</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {service.featuredBrands.slice(0, 2).map((b) => (
+                    <span key={b} className="text-[9px] font-mono px-2 py-0.5 rounded bg-black text-neutral-300 border border-neutral-800">
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Video Reel Showcase if available */}
-        {service.videoEmbedUrl && (
+        {(service.videoUrl || service.videoEmbedUrl) && (
           <div className="my-16 p-8 md:p-10 rounded-3xl bg-[#0e0e0e] border border-[#C7A46A]/40">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
@@ -79,10 +103,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
                 </div>
                 <div>
                   <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
-                    LIVE ARCHIVAL FOOTAGE
+                    LIVE ARCHIVAL FOOTAGE & REEL
                   </span>
                   <h4 className="text-xl font-serif text-white uppercase">
-                    OFFICIAL EVENT & REEL SHOWCASE
+                    OFFICIAL PRODUCTION SHOWCASE
                   </h4>
                 </div>
               </div>
@@ -94,20 +118,28 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
                   rel="noreferrer"
                   className="px-4 py-2 rounded-xl bg-[#141414] border border-neutral-700 hover:border-[#C7A46A] text-neutral-300 hover:text-white text-xs font-mono uppercase tracking-wider transition-colors inline-flex items-center gap-2"
                 >
-                  <span>VIEW FULL GOOGLE DRIVE ARCHIVE</span>
+                  <span>VIEW FULL DRIVE ARCHIVE</span>
                   <ExternalLink size={12} />
                 </a>
               )}
             </div>
 
             <div className="w-full h-80 sm:h-[500px] rounded-2xl overflow-hidden border border-neutral-800 bg-black">
-              <iframe
-                src={service.videoEmbedUrl}
-                title={`${service.title} Video Showcase`}
-                className="w-full h-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              {service.videoUrl && service.videoUrl.endsWith('.mp4') ? (
+                <video
+                  src={service.videoUrl}
+                  controls
+                  className="w-full h-full object-contain"
+                />
+              ) : service.videoEmbedUrl ? (
+                <iframe
+                  src={service.videoEmbedUrl}
+                  title={`${service.title} Video Showcase`}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : null}
             </div>
           </div>
         )}

@@ -23,6 +23,7 @@ export interface TimelineYear {
   image: string;
   accent: string;
   videoUrl?: string;
+  videoEmbedUrl?: string;
   driveFolderUrl?: string;
 }
 
@@ -40,8 +41,11 @@ export interface ServiceItem {
   image: string;
   accentImage?: string;
   badge: string;
+  videoUrl?: string;
   videoEmbedUrl?: string;
   driveFolderUrl?: string;
+  stats?: { value: string; label: string }[];
+  featuredBrands?: string[];
 }
 
 export interface TalentCategory {
@@ -107,4 +111,5 @@ export interface ClientPartner {
   description?: string;
   type: 'client' | 'partner';
   website?: string;
+  logo?: string;
 }

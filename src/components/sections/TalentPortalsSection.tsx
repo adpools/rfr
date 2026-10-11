@@ -17,19 +17,19 @@ export const TalentPortalsSection: React.FC = () => {
       <div className="w-full max-w-[100rem] mx-auto px-6 lg:px-12 relative z-10">
         
         {/* Centered Editorial Header */}
-        <div className="flex flex-col items-center text-center mb-24 md:mb-32">
-          <div className="flex items-center gap-4 mb-8">
-            <span className="text-xs sm:text-sm font-serif font-bold text-[#C7A46A]">10</span>
-            <div className="w-24 h-[1px] bg-[#C7A46A]/50" />
-            <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#C7A46A] uppercase">
+        <div className="flex flex-col items-center text-center mb-20 md:mb-28">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-sm font-sculptural font-bold text-[#C7A46A]">10</span>
+            <div className="w-20 sm:w-28 h-[1px] bg-[#C7A46A]/60" />
+            <span className="text-xs font-mono font-bold tracking-[0.35em] text-[#C7A46A] uppercase">
               TALENT & OPPORTUNITIES
             </span>
           </div>
           
-          <h2 className="text-7xl sm:text-8xl md:text-[130px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.8] mb-10 drop-shadow-2xl">
+          <h2 className="text-6xl sm:text-7xl md:text-[110px] lg:text-[130px] font-sculptural font-bold text-white uppercase tracking-tight leading-[0.9] mb-8 drop-shadow-[0_10px_35px_rgba(0,0,0,0.9)]">
             THE GUILDS
           </h2>
-          <p className="text-base sm:text-lg font-serif font-light text-[#A09D96] leading-relaxed max-w-2xl mx-auto tracking-wide">
+          <p className="text-base sm:text-lg font-sans font-normal text-[#D4D2CD] leading-relaxed max-w-2xl mx-auto tracking-wide">
             Exclusive talent portals designed for industry disruption. Discover global opportunities across Careers, Models, Influencers, and Artists.
           </p>
         </div>
@@ -61,8 +61,8 @@ export const TalentPortalsSection: React.FC = () => {
                 <div className="relative z-10 w-full h-full p-8 md:p-12 flex flex-col justify-end overflow-hidden">
                   
                   {/* Always visible vertical number / Title on non-active */}
-                  <div className={`absolute top-8 left-8 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-50'}`}>
-                    <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase">
+                  <div className={`absolute top-8 left-8 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-70'}`}>
+                    <span className="text-[11px] font-mono font-bold tracking-widest text-[#C7A46A] uppercase">
                       0{idx + 1}
                     </span>
                   </div>
@@ -77,21 +77,21 @@ export const TalentPortalsSection: React.FC = () => {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="flex flex-col w-full md:w-[600px] max-w-full"
                       >
-                        <span className="text-[9px] font-mono tracking-[0.2em] text-[#C7A46A] uppercase px-4 py-2 rounded-full bg-[#111111]/80 backdrop-blur-md border border-neutral-800 w-max mb-6">
+                        <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#C7A46A] uppercase px-4 py-2 rounded-full bg-[#111111]/90 backdrop-blur-md border border-neutral-700 w-max mb-6">
                           {portal.tagline}
                         </span>
                         
-                        <h3 className="text-4xl md:text-6xl font-serif text-[#F4F1EA] uppercase mb-4 leading-tight tracking-tight whitespace-nowrap">
+                        <h3 className="text-4xl md:text-6xl font-sculptural font-bold text-white uppercase mb-4 leading-tight tracking-tight whitespace-nowrap">
                           {portal.title}
                         </h3>
                         
-                        <p className="text-[#A09D96] text-sm md:text-base font-light leading-relaxed mb-8 line-clamp-2 md:line-clamp-none">
+                        <p className="text-[#D4D2CD] text-sm md:text-base font-normal leading-relaxed mb-8 line-clamp-2 md:line-clamp-none">
                           {portal.description}
                         </p>
 
                         <div className="hidden md:block space-y-3 mb-10">
                           {portal.opportunities.slice(0, 3).map((op, i) => (
-                            <div key={i} className="flex items-start gap-4 text-xs md:text-sm text-[#E0DDD5] font-light">
+                            <div key={i} className="flex items-start gap-4 text-xs md:text-sm text-[#F4F1EA] font-normal">
                               <Sparkles size={16} className="text-[#C7A46A] flex-shrink-0 mt-0.5" />
                               <span>{op}</span>
                             </div>
@@ -114,7 +114,7 @@ export const TalentPortalsSection: React.FC = () => {
                   {/* Inactive Vertical Title (Desktop Only) */}
                   {!isActive && (
                     <div className="hidden md:flex h-full items-end justify-center pb-8 absolute inset-0 pointer-events-none">
-                      <h3 className="text-4xl font-serif text-neutral-500 uppercase tracking-widest -rotate-90 origin-bottom transform translate-y-[-50%] whitespace-nowrap">
+                      <h3 className="text-3xl md:text-4xl font-sculptural font-bold text-neutral-400 uppercase tracking-widest -rotate-90 origin-bottom transform translate-y-[-50%] whitespace-nowrap">
                         {portal.title}
                       </h3>
                     </div>
@@ -122,7 +122,7 @@ export const TalentPortalsSection: React.FC = () => {
                   {/* Inactive Horizontal Title (Mobile) */}
                   {!isActive && (
                     <div className="flex md:hidden w-full items-center mt-auto">
-                      <h3 className="text-2xl font-serif text-neutral-500 uppercase tracking-widest">
+                      <h3 className="text-2xl font-sculptural font-bold text-neutral-300 uppercase tracking-widest">
                         {portal.title}
                       </h3>
                     </div>

@@ -80,6 +80,16 @@ export const ServicesPage: React.FC = () => {
                     <h3 className="text-xl md:text-2xl font-serif text-white uppercase tracking-wide mb-3 group-hover:text-[#C7A46A] transition-colors">
                       {service.title}
                     </h3>
+                    {service.stats && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {service.stats.slice(0, 2).map((st) => (
+                          <span key={st.label} className="text-[10px] font-mono px-2 py-0.5 rounded bg-black border border-neutral-800 text-neutral-300">
+                            <strong className="text-[#C7A46A] font-bold mr-1">{st.value}</strong>
+                            {st.label}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     <p className="text-neutral-400 text-xs md:text-sm font-light leading-relaxed mb-6">
                       {service.description}
                     </p>

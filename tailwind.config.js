@@ -19,8 +19,9 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Cinzel', 'serif'],
+        serif: ['Cinzel', 'Cormorant Garamond', 'serif'],
         sculptural: ['Cinzel', 'serif'],
+        editorial: ['Cormorant Garamond', 'serif'],
         sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
       },
     },

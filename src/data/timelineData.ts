@@ -2,82 +2,89 @@ import { TimelineYear } from '../types';
 
 export const timelineData: TimelineYear[] = [
   {
-    year: 2020,
-    title: "The Inception & First Marquee Stage",
-    theme: "CONCEPTION & CELEBRATION",
-    subtitle: "Foundational Vision & Historic First Landmark Production",
-    description: "RFR began its journey with defining vision by Riyas, orchestrating premier entertainment and luxury celebrations.",
+    year: 2021,
+    title: "The Inception, Brand Campaigns & Festive Launches",
+    theme: "CONCEPTION, EXPANSION & MULTI-MEDIA",
+    subtitle: "Foundational Vision, Brand Campaigns, Musical Albums & Couture Launches",
+    description: "RFR began its journey with a defining vision by Riyas, orchestrating premier entertainment and luxury celebrations, quickly expanding into high-frequency retail campaigns, commercial advertising, and designer holiday launches.",
     milestones: [
       "Inaugural flagship production curated by Riyas",
       "Premier luxury hospitality collaboration with UDS",
-      "Establishment of RFR's signature entertainment and event standard"
-    ],
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
-    accent: "#C7A46A",
-    eventsList: [
-      {
-        id: '2020-uds-new-year',
-        name: 'New Year Event At UDS',
-        type: 'Event',
-        categoryBadge: 'SIGNATURE EVENT • VIDEO',
-        locationOrClient: 'UDS Hotels & Resorts',
-        description: 'Grand New Year countdown and entertainment gala executed at UDS, setting the high standard for RFR luxury event productions.',
-        image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
-        hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/1aqqHq2lAQ5SLXhgteRT92P_aCIyG2eaq/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
-      }
-    ]
-  },
-  {
-    year: 2021,
-    title: "Brand Campaigns, Music & Festive Launches",
-    theme: "EXPANSION & MULTI-MEDIA",
-    subtitle: "3-Quarter Brand Campaigns, Musical Albums & Couture Launches",
-    description: "Expanded into high-frequency retail campaigns, commercial advertising, musical productions, and designer holiday launches.",
-    milestones: [
+      "Establishment of RFR's signature entertainment and event standard",
       "Multi-quarter Max Fashion influencer campaigns across Onam, Deepawali, and Xmas",
       "Musical video album production: 'Love You Too'",
       "High-profile Xmas collection runway launch at UDS"
     ],
     image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
+    videoEmbedUrl: "https://drive.google.com/file/d/1zhhm9Oj2Uz2Znskemv_8JL_OA9hWm4rT/preview",
     accent: "#C7A46A",
     eventsList: [
       {
-        id: '2021-max-q1-q3',
-        name: 'Max Influencer Campaigns (3 Quarters: Onam, Deepawali, Xmas)',
+        id: '2021-max-onam',
+        name: 'Max Influencer Campaigns — Onam',
         type: 'Campaign',
         categoryBadge: 'RETAIL INFLUENCER CAMPAIGN • VIDEO',
         locationOrClient: 'Max Fashion',
-        description: 'Comprehensive 3-quarter influencer marketing campaigns driving festive retail footfall and high-engagement digital storytelling.',
-        image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80',
+        description: 'Festive Onam influencer marketing campaign driving retail engagement.',
+        image: 'https://drive.google.com/thumbnail?id=13oW-kpjZX61Nwlljk3rtDIhyIxGgwtQX&sz=w1200',
         hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/1fjrTS7q0kSHRGTBQb1VKho8X25D9-gXZ/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        videoEmbedUrl: 'https://drive.google.com/file/d/13oW-kpjZX61Nwlljk3rtDIhyIxGgwtQX/preview'
       },
       {
-        id: '2021-max-xmas-uds',
-        name: 'Max Dec Show at UDS (Runway Fashion Launch)',
-        type: 'Event',
-        categoryBadge: 'FASHION LAUNCH EVENT • VIDEO',
-        locationOrClient: 'Max Fashion / UDS Resorts',
-        description: 'Exclusive holiday runway showcase and celebrity fashion launch for Max Xmas Collection at UDS.',
-        image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80',
+        id: '2021-max-deepawali-1',
+        name: 'Max Influencer Campaigns — Deepawali (Part 1)',
+        type: 'Campaign',
+        categoryBadge: 'RETAIL INFLUENCER CAMPAIGN • VIDEO',
+        locationOrClient: 'Max Fashion',
+        description: 'High-energy Deepawali influencer marketing campaign highlighting the festive collection.',
+        image: 'https://drive.google.com/thumbnail?id=1JW1hGphQRupw8ONzVud7_99wOU2Lpbkc&sz=w1200',
         hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/1CC9SQCDOADqMo4uMq-zbVKvWxyETh-bk/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        videoEmbedUrl: 'https://drive.google.com/file/d/1JW1hGphQRupw8ONzVud7_99wOU2Lpbkc/preview'
+      },
+      {
+        id: '2021-max-deepawali-2',
+        name: 'Max Influencer Campaigns — Deepawali (Part 2)',
+        type: 'Campaign',
+        categoryBadge: 'RETAIL INFLUENCER CAMPAIGN • VIDEO',
+        locationOrClient: 'Max Fashion',
+        description: 'Continuation of the high-energy Deepawali influencer marketing campaign.',
+        image: 'https://drive.google.com/thumbnail?id=1m1OshIid4g-19bkk8LfhEnGIPSbMqLYf&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1m1OshIid4g-19bkk8LfhEnGIPSbMqLYf/preview'
+      },
+      {
+        id: '2021-max-xmas-campaign',
+        name: 'Max Influencer Campaigns — Xmas',
+        type: 'Campaign',
+        categoryBadge: 'RETAIL INFLUENCER CAMPAIGN • VIDEO',
+        locationOrClient: 'Max Fashion',
+        description: 'Christmas season influencer marketing campaign for Max Fashion.',
+        image: 'https://drive.google.com/thumbnail?id=1-DOdgtZQyVc9Y0FaHn0iyKtAKaFJGP31&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1-DOdgtZQyVc9Y0FaHn0iyKtAKaFJGP31/preview'
       },
       {
         id: '2021-love-you-too-album',
-        name: 'Love You Too — Musical Album & Vincent POP',
+        name: 'Love You Too — Musical Album',
         type: 'Music Album',
         categoryBadge: 'MUSICAL ALBUM PRODUCTION • VIDEO',
         locationOrClient: 'RFR Music & Productions',
         description: 'Cinematic music video production and audio release capturing romantic visual storytelling and artistic direction.',
-        image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://img.youtube.com/vi/jRZ4zlS5PlA/maxresdefault.jpg',
         hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/1KyZfc-c5FMJ2gtKxV26-2uX1Yo5ZTkka/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        videoEmbedUrl: 'https://www.youtube.com/embed/jRZ4zlS5PlA'
+      },
+      {
+        id: '2021-max-xmas-uds',
+        name: 'MAX Xmas Collection Launch Event at UDS',
+        type: 'Event',
+        categoryBadge: 'FASHION LAUNCH EVENT • VIDEO',
+        locationOrClient: 'Max Fashion / UDS Resorts',
+        description: 'Exclusive holiday runway showcase and celebrity fashion launch for Max Xmas Collection at UDS.',
+        image: 'https://drive.google.com/thumbnail?id=1zhhm9Oj2Uz2Znskemv_8JL_OA9hWm4rT&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1zhhm9Oj2Uz2Znskemv_8JL_OA9hWm4rT/preview',
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1KeuGFZbCTFZgRCCSzHD44y-nZ5u4LOps'
       }
     ]
   },
@@ -192,9 +199,9 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FLAGSHIP FLEA IP • VIDEO REEL',
         locationOrClient: 'RFR Signature IP',
         description: 'The celebrated second edition of Koottam Flea Market featuring amplified shopping, celebrity acoustic performances, gourmet zones, and record footfalls.',
-        image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://img.youtube.com/vi/NTDkcWdruPs/maxresdefault.jpg',
         hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/1PmvkLoS92_YwwE0mXo3KtvKDERw96gu8/preview',
+        videoEmbedUrl: 'https://www.youtube.com/embed/NTDkcWdruPs?start=144',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
       },
       {

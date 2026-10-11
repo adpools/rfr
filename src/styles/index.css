@@ -21,8 +21,9 @@
   --gold-border: rgba(181, 154, 98, 0.2);
   --gold-border-bright: rgba(181, 154, 98, 0.4);
   
-  --font-serif: 'Cormorant Garamond', 'Cinzel', serif;
+  --font-serif: 'Cinzel', 'Cormorant Garamond', serif;
   --font-sculptural: 'Cinzel', serif;
+  --font-editorial: 'Cormorant Garamond', serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   
   --transition-slow: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
@@ -38,12 +39,19 @@ html, body {
   background-color: var(--bg-obsidian);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.6;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.02em;
 }
 
 /* Custom Scrollbar */
@@ -68,6 +76,9 @@ html, body {
 .font-sculptural {
   font-family: var(--font-sculptural);
 }
+.font-editorial {
+  font-family: var(--font-editorial);
+}
 .font-sans {
   font-family: var(--font-sans);
 }
@@ -83,15 +94,16 @@ html, body {
 }
 
 .editorial-title {
-  font-family: var(--font-serif);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
+  font-family: var(--font-sculptural);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
 .sculptural-title {
   font-family: var(--font-sculptural);
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
