@@ -1,6 +1,6 @@
 export const founderData = {
   name: "RIYAS",
-  title: "Founder — Riyas Fashion Runway",
+  title: "Co-Founder — Trivandrum Influencer Circle",
   tagline: "Creativity has no single format. It lives in the convergence of fashion, people, and boundless possibility.",
   bioParagraphs: [
     "Riyas is a fashion enthusiast, creative entrepreneur, influencer and event professional with extensive experience across fashion, advertising, events, social media and brand collaborations.",

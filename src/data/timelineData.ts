@@ -15,7 +15,7 @@ export const timelineData: TimelineYear[] = [
       "Musical video album production: 'Love You Too'",
       "High-profile Xmas collection runway launch at UDS"
     ],
-    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
+    image: "https://drive.google.com/thumbnail?id=1zhhm9Oj2Uz2Znskemv_8JL_OA9hWm4rT&sz=w1200",
     videoEmbedUrl: "https://drive.google.com/file/d/1zhhm9Oj2Uz2Znskemv_8JL_OA9hWm4rT/preview",
     accent: "#C7A46A",
     eventsList: [
@@ -189,7 +189,7 @@ export const timelineData: TimelineYear[] = [
       "Hanso 1 Commercial Brand Film Production",
       "Musical Album 'Koode Nee' with Manorama Music"
     ],
-    image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80",
+    image: "https://img.youtube.com/vi/clgdutCU5G8/hqdefault.jpg",
     accent: "#C7A46A",
     eventsList: [
       {
@@ -235,7 +235,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'CHART-TOPPING MUSICAL ALBUM • VIDEO',
         locationOrClient: 'Manorama Music / RFR Productions',
         description: 'Acclaimed musical video production released with major record label Manorama Music, generating widespread digital acclaim.',
-        image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://img.youtube.com/vi/clgdutCU5G8/hqdefault.jpg',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1KyZfc-c5FMJ2gtKxV26-2uX1Yo5ZTkka/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -254,7 +254,7 @@ export const timelineData: TimelineYear[] = [
       "Build Hub commercial ad films with Riyas, Teena & Reshma",
       "Concept Tyres high-impact commercial video"
     ],
-    image: "https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?auto=format&fit=crop&w=1200&q=80",
+    image: "https://drive.google.com/thumbnail?id=1agM4IPcwpZHfsXjbA-o8SfP4kkpPW1t_&sz=w1200",
     accent: "#C7A46A",
     eventsList: [
       {
@@ -336,7 +336,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'CREATOR REELS CAMPAIGN • VIDEO',
         locationOrClient: 'Build Hub / RFR Network',
         description: 'Engaging vertical video format highlighting luxury living spaces and construction excellence with Riyas & Reshma.',
-        image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://drive.google.com/thumbnail?id=1u0aURKkBDlL2OGBvTlBdObHisDbpAVf3&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1u06VQPUy_karWcBOuLf10AFSGR_9PV35/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -380,7 +380,7 @@ export const timelineData: TimelineYear[] = [
       "Hycinth Fashion Event with Rohas & Rohan",
       "Dandiya Deeshna Night & Event Highlights"
     ],
-    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80",
+    image: "https://drive.google.com/thumbnail?id=1pCPpzIG-bo2Z7wiq1rYvQ3Mm1xWQ6tOO&sz=w1200",
     accent: "#C7A46A",
     eventsList: [
       {
@@ -390,7 +390,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'ORIGINAL PODCAST STUDIO IP • VIDEO',
         locationOrClient: 'RFR Studio IP',
         description: 'Conversations beyond the runway. Intimate, unfiltered dialogues with film stars, fashion designers, top influencers, and creative pioneers.',
-        image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://drive.google.com/thumbnail?id=1BwkKNnLO0pV78_R2Cz-wjgL8pBP1eV7E&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1nFgMIl7bLGHxTcKk46iixQNo4n-MQJHt/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -426,7 +426,7 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'FESTIVE CULTURAL GALA • VIDEO',
         locationOrClient: 'RFR Cultural Properties',
         description: 'High-energy festive celebration uniting traditional Garba beats, dynamic DJ sets, ethnic fashion, and thousands of dancers.',
-        image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://drive.google.com/thumbnail?id=1k9VlXVJIsU2fwnC_Ff0P_np9FTbIatO3&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/12VKNlmgTDMnrom5oXBjj0fGXMUOjRYtp/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
@@ -505,7 +505,7 @@ export const timelineData: TimelineYear[] = [
       "Lemon Tree Hotels commercial video campaign with Jeevan",
       "Fans of Škoda brand community video productions"
     ],
-    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80",
+    image: "https://drive.google.com/thumbnail?id=13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf&sz=w1200",
     accent: "#C7A46A",
     eventsList: [
       {

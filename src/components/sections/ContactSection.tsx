@@ -64,7 +64,7 @@ export const ContactSection: React.FC = () => {
                 </span>
               </div>
               
-              <h2 className="text-6xl sm:text-7xl lg:text-[110px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.85] mb-8 drop-shadow-2xl">
+              <h2 className="text-5xl sm:text-[58px] lg:text-[clamp(3.2rem,5.2vw,88px)] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.85] mb-8 drop-shadow-2xl max-w-full break-words">
                 CONTACT
               </h2>
 

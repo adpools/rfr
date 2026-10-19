@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { motion } from 'framer-motion';
-import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, ArrowRight } from 'lucide-react';
+import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'wouter';
 import { founderData } from '../data/founderData';
+import { selectedWork, driveThumb, driveView } from '../data/selectedWorkData';
 
 export const AboutPage: React.FC = () => {
   const [selectedSubTab, setSelectedSubTab] = useState<'profile' | 'about'>('profile');
@@ -56,7 +57,7 @@ export const AboutPage: React.FC = () => {
             }`}
           >
             <User size={14} />
-            <span>a. Riyas Personal Profile - Founder</span>
+            <span>a. Riyas Personal Profile - Co-Founder</span>
           </button>
 
           <button
@@ -84,16 +85,16 @@ export const AboutPage: React.FC = () => {
               <div className="lg:col-span-5 h-96 lg:h-[480px] rounded-2xl overflow-hidden editorial-image-frame border border-[#C7A46A]/30 relative">
                 <img
                   src={founderData.portraitImage}
-                  alt="Riyas — Founder & Creative Director of RFR"
+                  alt="Riyas — Co-Founder, Trivandrum Influencer Circle"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white">
                   <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase block mb-1">
-                    FOUNDER & CREATIVE DIRECTOR
+                    CO-FOUNDER
                   </span>
                   <h4 className="text-3xl font-serif">RIYAS</h4>
-                  <p className="text-xs text-neutral-300 font-light">Riyas Fashion Runway</p>
+                  <p className="text-xs text-neutral-300 font-light">Trivandrum Influencer Circle</p>
                 </div>
               </div>
 
@@ -106,6 +107,12 @@ export const AboutPage: React.FC = () => {
                 <h3 className="text-2xl sm:text-3xl font-serif text-white uppercase">
                   BIOGRAPHY & CREATIVE VISION
                 </h3>
+                <p className="text-[#C7A46A] font-mono text-xs uppercase tracking-widest">
+                  {founderData.title}
+                </p>
+                <p>
+                  <strong className="text-white font-medium">Riyas</strong> is Co-Founder of <strong className="text-white font-medium">Trivandrum Influencer Circle</strong>. Since 2021 he has worked across influencer marketing, brand collaborations, events, advertising campaigns and creator-led content — including Max, Pothys Swarnamahal, Nissan, Toyota, Škoda, Ather, Citroën and Jeep campaigns, Koottam Flea Market, and the Rewind with Riyas podcast.
+                </p>
                 <p>
                   Founded by <strong className="text-white font-medium">Riyas</strong>, RFR was born out of a desire to move beyond standard event hosting and construct a prestige multi-disciplinary creative universe.
                 </p>
@@ -124,6 +131,54 @@ export const AboutPage: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Selected Work — original Drive media from client portfolio document */}
+            <section aria-labelledby="selected-work-heading">
+              <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
+                <div>
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">2021 — 2026</span>
+                  <h3 id="selected-work-heading" className="text-2xl sm:text-3xl font-serif text-white uppercase">Selected Work</h3>
+                </div>
+                <Link href="/timeline" className="text-xs font-mono uppercase tracking-wider text-[#C7A46A] hover:text-white inline-flex items-center gap-2">
+                  Full timeline <ArrowRight size={12} />
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {selectedWork.map((w) => (
+                  <a
+                    key={w.id}
+                    id={`selected-work-${w.id}`}
+                    href={driveView(w.driveFileId)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block rounded-2xl overflow-hidden bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/60 transition-colors"
+                  >
+                    <div className="relative aspect-[4/3] bg-[#161616] overflow-hidden">
+                      <img
+                        src={driveThumb(w.driveFileId)}
+                        alt={`${w.title} (${w.year}) — original project media`}
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden'; }}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/70 text-[10px] font-mono text-[#C7A46A]">{w.year}</span>
+                      {w.isTIC && (
+                        <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#C7A46A] text-black text-[10px] font-mono font-semibold">TIC</span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{w.category}</span>
+                      <h4 className="text-sm text-white font-medium mt-1 flex items-start justify-between gap-2">
+                        <span>{w.title}</span>
+                        <ExternalLink size={13} className="shrink-0 mt-0.5 text-neutral-500 group-hover:text-[#C7A46A]" aria-hidden />
+                      </h4>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
           </motion.div>
         )}
 
