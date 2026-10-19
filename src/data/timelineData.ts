@@ -258,6 +258,18 @@ export const timelineData: TimelineYear[] = [
     accent: "#C7A46A",
     eventsList: [
       {
+        id: '2024-aaravam-toi',
+        name: 'Aaravam — Times of India Event',
+        type: 'Event',
+        categoryBadge: 'MEDIA EVENT • VIDEO',
+        locationOrClient: 'Times of India',
+        description: 'Aaravam, a Times of India event.',
+        image: 'https://drive.google.com/thumbnail?id=1rmoPoNcownVaPXRYmkaSa3M-n7u6yqhc&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1rmoPoNcownVaPXRYmkaSa3M-n7u6yqhc/preview',
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1ztgFUcmtUSEv3sSrFcU3bKy2jI9xZWtL'
+      },
+      {
         id: '2024-skoda-full-highlights',
         name: 'Fans of Škoda — Full Highlights Video Campaign',
         type: 'Campaign',

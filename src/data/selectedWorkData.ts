@@ -28,6 +28,7 @@ export const selectedWork: SelectedWork[] = [
   { id: 'healing-swan', year: 2025, title: 'Healing Swan — Wellness Center Ad', category: 'Advertising', driveFileId: '1OlgBH9hHzF1GtYfPOlPvwaJaA_xtUmgc' },
   { id: 'nissan-2025', year: 2025, title: 'Influencer Campaign — Nissan', category: 'Automotive', driveFileId: '1gb6THCIg1MQ75dKOEKd7d52cea7Uh5L_' },
   { id: 'max-2025', year: 2025, title: 'Influencer Campaign — Max', category: 'Fashion & Retail', driveFileId: '1vLeEHWch-OxIwEdpMVSQCm4PL-h6cwbI' },
+  { id: 'aaravam', year: 2024, title: 'Aaravam — Times of India Event', category: 'Events', driveFileId: '1rmoPoNcownVaPXRYmkaSa3M-n7u6yqhc' },
   { id: 'ather', year: 2024, title: 'Ather Scooter — Influencer Campaign', category: 'Automotive', driveFileId: '1agM4IPcwpZHfsXjbA-o8SfP4kkpPW1t_' },
   { id: 'nissan-2024', year: 2024, title: 'Nissan Influencer Campaigns', category: 'Automotive', driveFileId: '1VwTvpaUWW_I9WpXsRP-CPdGz9AHAqRCV' },
   { id: 'buildhub', year: 2024, title: 'Build Hub Ad', category: 'Advertising', driveFileId: '1GEWSZYSU8qQKNW05-dSMkmuUBd2AbOhV' },
