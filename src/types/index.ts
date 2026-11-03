@@ -1,3 +1,11 @@
+export interface TimelineVideoItem {
+  id?: string;
+  title: string;
+  videoUrl?: string; // direct MP4 or video source
+  videoEmbedUrl?: string; // YouTube / Vimeo / Drive embed
+  image?: string;
+}
+
 export interface TimelineEventItem {
   id: string;
   name: string;
@@ -10,6 +18,7 @@ export interface TimelineEventItem {
   videoEmbedUrl?: string; // YouTube / Vimeo / Drive embed
   hasVideo?: boolean;
   driveFolderUrl?: string;
+  videos?: TimelineVideoItem[];
 }
 
 export interface TimelineYear {

@@ -27,8 +27,8 @@ export const TimelinePreviewSection: React.FC = () => {
     return () => clearInterval(interval);
   }, [activeData, selectedYear, isAutoPlaying, activeEventIndex]);
 
-  const currentVideoUrl = activeEvent?.videoEmbedUrl || activeData.videoEmbedUrl;
-  const currentImageUrl = activeEvent?.image || activeData.image;
+  const currentVideoUrl = activeEvent?.videos?.[0]?.videoEmbedUrl || activeEvent?.videoEmbedUrl || activeData.videoEmbedUrl;
+  const currentImageUrl = (activeEvent ? activeEvent.image : null) || activeEvent?.videos?.[0]?.image || activeData.image;
 
   return (
     <section
@@ -169,7 +169,14 @@ export const TimelinePreviewSection: React.FC = () => {
               className="lg:col-span-6 h-72 sm:h-[450px] rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative shadow-2xl bg-black"
               onMouseEnter={() => setIsAutoPlaying(false)}
             >
-              {currentVideoUrl ? (
+                            {activeEvent?.videoUrl ? (
+                <video
+                  key={activeEvent.videoUrl}
+                  src={activeEvent.videoUrl}
+                  controls
+                  className="w-full h-full object-cover transition-all duration-700"
+                />
+              ) : currentVideoUrl ? (
                 <iframe
                   key={currentVideoUrl}
                   src={currentVideoUrl}
@@ -177,19 +184,21 @@ export const TimelinePreviewSection: React.FC = () => {
                   allow="autoplay; encrypted-media"
                   allowFullScreen
                 />
-              ) : (
-                <img
-                  key={currentImageUrl}
-                  src={currentImageUrl}
-                  alt={activeEvent?.name || activeData.title}
-                  className="w-full h-full object-cover transition-all duration-700"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-5 left-5 right-5 flex flex-col md:flex-row items-start md:items-center justify-between text-xs font-mono text-neutral-300 pointer-events-none gap-2">
-                <span className="truncate w-full max-w-[70%]">RFR ARCHIVES • {activeData.year} • {activeEvent?.categoryBadge || 'RECORD'}</span>
-                <span className="text-[#C7A46A] flex-shrink-0">VERIFIED RECORD</span>
-              </div>
+              ) : currentImageUrl ? (
+                <>
+                  <img
+                    key={currentImageUrl}
+                    src={currentImageUrl}
+                    alt={activeEvent?.name || activeData.title}
+                    className="w-full h-full object-cover transition-all duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-5 left-5 right-5 flex flex-col md:flex-row items-start md:items-center justify-between text-xs font-mono text-neutral-300 pointer-events-none gap-2">
+                    <span className="truncate w-full max-w-[70%]">RFR ARCHIVES • {activeData.year} • {activeEvent?.categoryBadge || 'RECORD'}</span>
+                    <span className="text-[#C7A46A] flex-shrink-0">VERIFIED RECORD</span>
+                  </div>
+                </>
+              ) : null}
             </div>
           </motion.div>
         </AnimatePresence>

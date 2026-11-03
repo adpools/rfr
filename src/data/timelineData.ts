@@ -170,10 +170,35 @@ export const timelineData: TimelineYear[] = [
         categoryBadge: 'INTERNATIONAL RUNWAY',
         locationOrClient: 'Lulu International Mall',
         description: 'Spectacular multi-designer runway presentation bringing together top couture labels, international models, and media coverage.',
-        image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80',
+        image: '/images/thumbnails/global fashion week lulu.JPG',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1fjrTS7q0kSHRGTBQb1VKho8X25D9-gXZ/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+      },
+      {
+        id: '2022-maanyavar-shoot-shammy',
+        name: 'Maanyavar Shoot — SHAMMY',
+        type: 'Shoot',
+        categoryBadge: 'HAUTE COUTURE SHOOT • EDITORIAL',
+        locationOrClient: 'Manyavar / Shammy',
+        description: 'High-fashion ethnic couture and bridal styling editorial photoshoot featuring Shammy for Manyavar.'
+      },
+      {
+        id: '2022-mahindra-ad',
+        name: 'Mahindra Ad',
+        type: 'Ad',
+        categoryBadge: 'AUTOMOTIVE COMMERCIAL • AD FILM',
+        locationOrClient: 'Mahindra',
+        description: 'Commercial advertisement production and automotive lifestyle campaign directed for Mahindra.'
+      },
+      {
+        id: '2022-red-fm-kids-show',
+        name: 'Red FM Kids Show',
+        type: 'Show',
+        categoryBadge: 'YOUTH RUNWAY & TALENT • RADIO SHOW',
+        locationOrClient: '93.5 Red FM',
+        description: 'Premier youth talent runway and kids stage showcase conducted in media partnership with 93.5 Red FM.',
+        image: '/images/thumbnails/red fm.jpg'
       }
     ]
   },
@@ -239,6 +264,41 @@ export const timelineData: TimelineYear[] = [
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1KyZfc-c5FMJ2gtKxV26-2uX1Yo5ZTkka/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+      },
+      {
+        id: '2023-max-influencer-campaigns',
+        name: 'Max Influencer Campaigns',
+        type: 'Campaign',
+        categoryBadge: 'RETAIL INFLUENCER CAMPAIGN',
+        locationOrClient: 'Max Fashion',
+        description: 'Multi-quarter festive influencer marketing campaigns driving customer engagement and retail fashion reach for Max Fashion.'
+      },
+      {
+        id: '2023-max-little-icon-trivandrum',
+        name: 'Max Little Icon – Trivandrum Edition',
+        type: 'Show',
+        categoryBadge: 'KIDS TALENT & RUNWAY • SHOWCASE',
+        locationOrClient: 'Max Fashion / Trivandrum',
+        description: 'Premier youth talent hunt and fashion runway showcase celebrating young runway stars in Trivandrum.',
+        image: '/images/thumbnails/max little icon 2023.jpg'
+      },
+      {
+        id: '2023-techie-summer-fest',
+        name: 'Techie Summer Fest – Cultural Fest, Technopark',
+        type: 'Event',
+        categoryBadge: 'CULTURAL FESTIVAL • VIDEO',
+        locationOrClient: 'Technopark Trivandrum',
+        description: 'Vibrant corporate cultural festival and community celebration staged across the Technopark campus.',
+        hasVideo: true,
+        videoUrl: '/videos/techie summer fest.MP4'
+      },
+      {
+        id: '2023-lulu-funtura-ad',
+        name: 'Lulu Funtura Ad',
+        type: 'Ad',
+        categoryBadge: 'ENTERTAINMENT COMMERCIAL • AD FILM',
+        locationOrClient: 'Lulu Funtura / Lulu Mall',
+        description: 'High-energy family entertainment and amusement center commercial advertisement campaign produced for Lulu Funtura.'
       }
     ]
   },
@@ -376,6 +436,26 @@ export const timelineData: TimelineYear[] = [
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1NhbGg_5G5ZUGLkUak9hZRp1rVmOymWEQ/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+      },
+      {
+        id: '2024-scoria-lights-ad',
+        name: 'Scoria Lights Ad',
+        type: 'Ad',
+        categoryBadge: 'COMMERCIAL AD • VIDEO',
+        locationOrClient: 'Scoria Lights',
+        description: 'Commercial advertisement production and architectural lighting showcase produced for Scoria Lights.',
+        hasVideo: true,
+        videoUrl: '/videos/Scorio Lights .mp4'
+      },
+      {
+        id: '2024-nissan-influencer-campaigns',
+        name: 'Nissan Influencer Campaigns',
+        type: 'Campaign',
+        categoryBadge: 'AUTOMOTIVE INFLUENCER CAMPAIGN • VIDEO',
+        locationOrClient: 'Nissan Motors',
+        description: 'Dynamic automotive influencer campaign and road performance storytelling created for Nissan.',
+        hasVideo: true,
+        videoUrl: '/videos/Nissan Riyas 1.mp4'
       }
     ]
   },
@@ -399,13 +479,57 @@ export const timelineData: TimelineYear[] = [
         id: '2025-rewind-with-riyas',
         name: 'Rewind with Riyas — Celebrity Talk Show & Podcast',
         type: 'Podcast',
-        categoryBadge: 'ORIGINAL PODCAST STUDIO IP • VIDEO',
+        categoryBadge: 'ORIGINAL PODCAST STUDIO IP • 7 EPISODES',
         locationOrClient: 'RFR Studio IP',
         description: 'Conversations beyond the runway. Intimate, unfiltered dialogues with film stars, fashion designers, top influencers, and creative pioneers.',
         image: 'https://drive.google.com/thumbnail?id=1BwkKNnLO0pV78_R2Cz-wjgL8pBP1eV7E&sz=w1200',
         hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/1nFgMIl7bLGHxTcKk46iixQNo4n-MQJHt/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        videoEmbedUrl: 'https://drive.google.com/file/d/1BwkKNnLO0pV78_R2Cz-wjgL8pBP1eV7E/preview',
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs',
+        videos: [
+          {
+            id: 'podcast-1',
+            title: 'Podcast Vijay 1',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1BwkKNnLO0pV78_R2Cz-wjgL8pBP1eV7E/preview',
+            image: 'https://drive.google.com/thumbnail?id=1BwkKNnLO0pV78_R2Cz-wjgL8pBP1eV7E&sz=w1200'
+          },
+          {
+            id: 'podcast-2',
+            title: 'Podcast Shikha Highlights',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1RLQpL8q5bt2kF2WhnqnA2PCmVPLKBLXz/preview',
+            image: 'https://drive.google.com/thumbnail?id=1RLQpL8q5bt2kF2WhnqnA2PCmVPLKBLXz&sz=w1200'
+          },
+          {
+            id: 'podcast-3',
+            title: 'Podcast Shikha 2',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1GmbrqmVslqttr67VN_cC6R3MI23LeA6G/preview',
+            image: 'https://drive.google.com/thumbnail?id=1GmbrqmVslqttr67VN_cC6R3MI23LeA6G&sz=w1200'
+          },
+          {
+            id: 'podcast-4',
+            title: 'Podcast Shikha 1',
+            videoEmbedUrl: 'https://drive.google.com/file/d/13CvX5gywQ0hoFd4b08o2-MwdCb7oRyIv/preview',
+            image: 'https://drive.google.com/thumbnail?id=13CvX5gywQ0hoFd4b08o2-MwdCb7oRyIv&sz=w1200'
+          },
+          {
+            id: 'podcast-5',
+            title: 'Podcast Krishna 2',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1i-lBTYBgz7_LgaOdu1t65Cqcy4FcTvm0/preview',
+            image: 'https://drive.google.com/thumbnail?id=1i-lBTYBgz7_LgaOdu1t65Cqcy4FcTvm0&sz=w1200'
+          },
+          {
+            id: 'podcast-6',
+            title: 'Podcast Krishna',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1Q-ebpbx6ELdWoOmL0UcCkUuC9qI3EeVF/preview',
+            image: 'https://drive.google.com/thumbnail?id=1Q-ebpbx6ELdWoOmL0UcCkUuC9qI3EeVF&sz=w1200'
+          },
+          {
+            id: 'podcast-7',
+            title: 'Podcast Akhila 1',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1lh7P_9jS1szbaRMo2q2iSRheTKFRQzjM/preview',
+            image: 'https://drive.google.com/thumbnail?id=1lh7P_9jS1szbaRMo2q2iSRheTKFRQzjM&sz=w1200'
+          }
+        ]
       },
       {
         id: '2025-chakita-dd-retreat',
@@ -435,13 +559,33 @@ export const timelineData: TimelineYear[] = [
         id: '2025-dandiya-deeshna-event',
         name: 'Dandiya Deeshna Night & Highlights Video',
         type: 'Event',
-        categoryBadge: 'FESTIVE CULTURAL GALA • VIDEO',
+        categoryBadge: 'FESTIVE CULTURAL GALA • 3 REELS',
         locationOrClient: 'RFR Cultural Properties',
         description: 'High-energy festive celebration uniting traditional Garba beats, dynamic DJ sets, ethnic fashion, and thousands of dancers.',
-        image: 'https://drive.google.com/thumbnail?id=1k9VlXVJIsU2fwnC_Ff0P_np9FTbIatO3&sz=w1200',
+        image: 'https://drive.google.com/thumbnail?id=1HY30vLdhdsZ63PE4t8Hr0Iu5hgxoD6Mu&sz=w1200',
         hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/12VKNlmgTDMnrom5oXBjj0fGXMUOjRYtp/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        videoEmbedUrl: 'https://drive.google.com/file/d/1HY30vLdhdsZ63PE4t8Hr0Iu5hgxoD6Mu/preview',
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs',
+        videos: [
+          {
+            id: 'dandya-1',
+            title: 'Dandya Highlights',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1HY30vLdhdsZ63PE4t8Hr0Iu5hgxoD6Mu/preview',
+            image: 'https://drive.google.com/thumbnail?id=1HY30vLdhdsZ63PE4t8Hr0Iu5hgxoD6Mu&sz=w1200'
+          },
+          {
+            id: 'dandya-2',
+            title: 'Dandya Highlights 2',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1k9VlXVJIsU2fwnC_Ff0P_np9FTbIatO3/preview',
+            image: 'https://drive.google.com/thumbnail?id=1k9VlXVJIsU2fwnC_Ff0P_np9FTbIatO3&sz=w1200'
+          },
+          {
+            id: 'dandya-3',
+            title: 'Dandya Night Teaser',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw/preview',
+            image: 'https://drive.google.com/thumbnail?id=1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw&sz=w1200'
+          }
+        ]
       },
       {
         id: '2025-dandiya-night-teaser',
@@ -483,13 +627,39 @@ export const timelineData: TimelineYear[] = [
         id: '2025-nye-2026-hycinth-highlights',
         name: 'NYE 2026 Hycinth Highlights & Countdown',
         type: 'Event',
-        categoryBadge: '5-STAR LUXURY GALA • VIDEO REEL',
+        categoryBadge: '5-STAR LUXURY GALA • 4 MEDIA GALLERIES',
         locationOrClient: 'Hycinth Hotels',
         description: 'Exclusive countdown spectacle and VIP gala dinner produced with world-class light and sound architecture at Hycinth.',
-        image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://drive.google.com/thumbnail?id=15vI0jdpl_uq2VdSPrU4py6ylu-bs-4Yv&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/15vI0jdpl_uq2VdSPrU4py6ylu-bs-4Yv/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        driveFolderUrl: 'https://drive.google.com/drive/folders/15vI0jdpl_uq2VdSPrU4py6ylu-bs-4Yv',
+        videos: [
+          {
+            id: 'nye-1',
+            title: 'NYE 2026 Hycinth Highlights',
+            videoEmbedUrl: 'https://drive.google.com/file/d/15vI0jdpl_uq2VdSPrU4py6ylu-bs-4Yv/preview',
+            image: 'https://drive.google.com/thumbnail?id=15vI0jdpl_uq2VdSPrU4py6ylu-bs-4Yv&sz=w1200'
+          },
+          {
+            id: 'nye-2',
+            title: 'NYE 2026 Max Showcase',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1XihgDqv_tpyl8Otw4NQNLVDn-CgY3ZyD/preview',
+            image: 'https://drive.google.com/thumbnail?id=1XihgDqv_tpyl8Otw4NQNLVDn-CgY3ZyD&sz=w1200'
+          },
+          {
+            id: 'nye-3',
+            title: 'NYE 2026 FS Videos & Stage Production',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1aqqHq2lAQ5SLXhgteRT92P_aCIyG2eaq/preview',
+            image: 'https://drive.google.com/thumbnail?id=1aqqHq2lAQ5SLXhgteRT92P_aCIyG2eaq&sz=w1200'
+          },
+          {
+            id: 'nye-4',
+            title: 'NYE Roopesh Costume Showcase',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1-Z06ay5-PfYu8_MR0pRUb0EBN0WV2vq-/preview',
+            image: 'https://drive.google.com/thumbnail?id=1-Z06ay5-PfYu8_MR0pRUb0EBN0WV2vq-&sz=w1200'
+          }
+        ]
       },
       {
         id: '2025-nye-2026-fs-videos',
@@ -502,6 +672,156 @@ export const timelineData: TimelineYear[] = [
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1aqqHq2lAQ5SLXhgteRT92P_aCIyG2eaq/preview',
         driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+      },
+      {
+        id: '2025-pothys-swarnamahal-vishu',
+        name: 'Pothys Swarnamahal – Vishu Ad Influencer Campaign',
+        type: 'Campaign',
+        categoryBadge: 'JEWELLERY CAMPAIGN • 7 REELS',
+        locationOrClient: 'Pothys Swarnamahal',
+        description: 'Festive Vishu jewellery influencer campaigns and commercial digital reels produced for Pothys Swarnamahal.',
+        image: '/images/pothys.png',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1pCPpzIG-bo2Z7wiq1rYvQ3Mm1xWQ6tOO/preview',
+        videos: [
+          {
+            id: 'pothys-1',
+            title: 'Pothys Riyas & Ritu',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1pCPpzIG-bo2Z7wiq1rYvQ3Mm1xWQ6tOO/preview',
+            image: 'https://drive.google.com/thumbnail?id=1pCPpzIG-bo2Z7wiq1rYvQ3Mm1xWQ6tOO&sz=w1200'
+          },
+          {
+            id: 'pothys-2',
+            title: 'Pothys Riyas & Rithu 2',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1RSzFXbd4u-PudlNFLVdpMa_5w2r6be41/preview',
+            image: 'https://drive.google.com/thumbnail?id=1RSzFXbd4u-PudlNFLVdpMa_5w2r6be41&sz=w1200'
+          },
+          {
+            id: 'pothys-3',
+            title: 'Pothys Riyas & Geethu',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1bj3XbE2Cb4Y18U63x2bVeCcWErZLOLMt/preview',
+            image: 'https://drive.google.com/thumbnail?id=1bj3XbE2Cb4Y18U63x2bVeCcWErZLOLMt&sz=w1200'
+          },
+          {
+            id: 'pothys-4',
+            title: 'Pothys Niranjana',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1OqhS56YREPJ6z7fTTNFYgD9gQUd9UjGU/preview',
+            image: 'https://drive.google.com/thumbnail?id=1OqhS56YREPJ6z7fTTNFYgD9gQUd9UjGU&sz=w1200'
+          },
+          {
+            id: 'pothys-5',
+            title: 'Pothys Krishna Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1XSVcGEB6yHNAnFgIqRe96i0bN6nrdQv0/preview',
+            image: 'https://drive.google.com/thumbnail?id=1XSVcGEB6yHNAnFgIqRe96i0bN6nrdQv0&sz=w1200'
+          },
+          {
+            id: 'pothys-6',
+            title: 'Pothys Krishna',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1bdxycJk0sl3Qo8Tfvuy1N5JBzOuXaF_d/preview',
+            image: 'https://drive.google.com/thumbnail?id=1bdxycJk0sl3Qo8Tfvuy1N5JBzOuXaF_d&sz=w1200'
+          },
+          {
+            id: 'pothys-7',
+            title: 'Pothys Diwali Ganga',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1TWrKeCoGW087YSxqMA2ZcAfE2uf520EG/preview',
+            image: 'https://drive.google.com/thumbnail?id=1TWrKeCoGW087YSxqMA2ZcAfE2uf520EG&sz=w1200'
+          }
+        ]
+      },
+      {
+        id: '2025-chakita-designer-show',
+        name: 'Chakita Designer Show',
+        type: 'Show',
+        categoryBadge: 'COUTURE DESIGNER RUNWAY • VIDEO',
+        locationOrClient: 'Chakita Haute Couture',
+        description: 'High-fashion designer runway showcase and bespoke couture choreography for Chakita.',
+        image: 'https://drive.google.com/thumbnail?id=1WMQC1KhSwMH8U973Iqfy7i_6K5fy7j5Y&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1WMQC1KhSwMH8U973Iqfy7i_6K5fy7j5Y/preview',
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1WMQC1KhSwMH8U973Iqfy7i_6K5fy7j5Y'
+      },
+      {
+        id: '2025-max-designer-show',
+        name: 'Max Designer Show',
+        type: 'Show',
+        categoryBadge: 'FASHION DESIGNER RUNWAY • VIDEO GALLERY',
+        locationOrClient: 'Max Fashion',
+        description: 'Signature contemporary runway presentations and designer collection showcases for Max Fashion.',
+        image: 'https://drive.google.com/thumbnail?id=1nD_NabOGiZW4GT_jawFlXRpPh9ok1ckL&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1nD_NabOGiZW4GT_jawFlXRpPh9ok1ckL/preview',
+        videos: [
+          {
+            id: 'max-1',
+            title: 'Max Designer Runway — Reel 01',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1nD_NabOGiZW4GT_jawFlXRpPh9ok1ckL/preview',
+            image: 'https://drive.google.com/thumbnail?id=1nD_NabOGiZW4GT_jawFlXRpPh9ok1ckL&sz=w1200'
+          },
+          {
+            id: 'max-2',
+            title: 'Max Designer Runway — Reel 02',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1nhQCGv1wlvsZpVAfhI23eR5SccWEE_0E/preview',
+            image: 'https://drive.google.com/thumbnail?id=1nhQCGv1wlvsZpVAfhI23eR5SccWEE_0E&sz=w1200'
+          }
+        ]
+      },
+      {
+        id: '2025-influencer-campaign-nissan',
+        name: 'Influencer Campaign – Nissan',
+        type: 'Campaign',
+        categoryBadge: 'AUTOMOTIVE CAMPAIGN • VIDEO',
+        locationOrClient: 'Nissan',
+        description: 'High-impact commercial influencer campaign highlighting Nissan performance, agility, and modern styling.',
+        image: 'https://drive.google.com/thumbnail?id=1gb6THCIg1MQ75dKOEKd7d52cea7Uh5L_&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1gb6THCIg1MQ75dKOEKd7d52cea7Uh5L_/preview'
+      },
+      {
+        id: '2025-ather-scooter-campaign',
+        name: 'Ather Scooter',
+        type: 'Campaign',
+        categoryBadge: 'EV MOBILITY CAMPAIGN • 2 REELS',
+        locationOrClient: 'Ather Energy',
+        description: 'Next-generation electric scooter commercial campaign and festive holiday storytelling produced for Ather Energy.',
+        image: 'https://drive.google.com/thumbnail?id=1YymReRbadPvKyAXFzmmGVSsm4lExjIoD&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1YymReRbadPvKyAXFzmmGVSsm4lExjIoD/preview',
+        videos: [
+          {
+            id: 'ather-2025-1',
+            title: 'Ather Riyas & Ganga',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1YymReRbadPvKyAXFzmmGVSsm4lExjIoD/preview',
+            image: 'https://drive.google.com/thumbnail?id=1YymReRbadPvKyAXFzmmGVSsm4lExjIoD&sz=w1200'
+          },
+          {
+            id: 'ather-2025-2',
+            title: 'Ather Combo Santa',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1E5x3q55OZm8KmGBbbOHBMvJqvkf2WpPg/preview',
+            image: 'https://drive.google.com/thumbnail?id=1E5x3q55OZm8KmGBbbOHBMvJqvkf2WpPg&sz=w1200'
+          }
+        ]
+      },
+      {
+        id: '2025-healing-swan-wellness-ad',
+        name: 'Healing Swan – Wellness Center Ad',
+        type: 'Ad',
+        categoryBadge: 'WELLNESS & HEALTHCARE • AD FILM',
+        locationOrClient: 'Healing Swan Wellness Center',
+        description: 'Serene commercial brand film and holistic lifestyle visual showcase produced for Healing Swan Wellness Center.',
+        image: 'https://drive.google.com/thumbnail?id=1OlgBH9hHzF1GtYfPOlPvwaJaA_xtUmgc&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1OlgBH9hHzF1GtYfPOlPvwaJaA_xtUmgc/preview'
+      },
+      {
+        id: '2025-influencer-campaign-max',
+        name: 'Influencer Campaign – Max',
+        type: 'Campaign',
+        categoryBadge: 'FASHION INFLUENCER REEL • VIDEO',
+        locationOrClient: 'Max Fashion',
+        description: 'Dynamic retail fashion influencer campaign featuring Shikha showcasing seasonal collections for Max Fashion.',
+        image: 'https://drive.google.com/thumbnail?id=1vLeEHWch-OxIwEdpMVSQCm4PL-h6cwbI&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1vLeEHWch-OxIwEdpMVSQCm4PL-h6cwbI/preview'
       }
     ]
   },
@@ -524,13 +844,87 @@ export const timelineData: TimelineYear[] = [
         id: '2026-citroen-aircross-combo',
         name: 'Citroën Aircross Combo Video',
         type: 'Campaign',
-        categoryBadge: 'FRENCH AUTOMOTIVE • VIDEO REEL',
+        categoryBadge: 'FRENCH AUTOMOTIVE • 12 CAMPAIGN REELS',
         locationOrClient: 'Citroën India',
         description: 'Flagship commercial video production highlighting the dynamic comfort, modular space, and European design of Citroën Aircross.',
         image: 'https://drive.google.com/thumbnail?id=17xhWbUtxJePM8igOO7VADLDfiqcG6S04&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/17xhWbUtxJePM8igOO7VADLDfiqcG6S04/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs',
+        videos: [
+          {
+            id: 'citroen-1',
+            title: 'Citroën Aircross Combo',
+            videoEmbedUrl: 'https://drive.google.com/file/d/17xhWbUtxJePM8igOO7VADLDfiqcG6S04/preview',
+            image: 'https://drive.google.com/thumbnail?id=17xhWbUtxJePM8igOO7VADLDfiqcG6S04&sz=w1200'
+          },
+          {
+            id: 'citroen-2',
+            title: 'Citroën Onam — Riyas & Thara',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF/preview',
+            image: 'https://drive.google.com/thumbnail?id=1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF&sz=w1200'
+          },
+          {
+            id: 'citroen-3',
+            title: 'Citroën Onam — Thara Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM/preview',
+            image: 'https://drive.google.com/thumbnail?id=139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM&sz=w1200'
+          },
+          {
+            id: 'citroen-4',
+            title: 'Citroën Pre Onam',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1Zic99SZst13pSd0l8-adVZwzuSxSbZj8/preview',
+            image: 'https://drive.google.com/thumbnail?id=1Zic99SZst13pSd0l8-adVZwzuSxSbZj8&sz=w1200'
+          },
+          {
+            id: 'citroen-5',
+            title: 'Citroën Pre Onam — Riyas & Thara',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB/preview',
+            image: 'https://drive.google.com/thumbnail?id=1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB&sz=w1200'
+          },
+          {
+            id: 'citroen-6',
+            title: 'Citroën Riyas Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/157n4wQ7Mz5LvZcei3EuAnbwe9BIZlYR_/preview',
+            image: 'https://drive.google.com/thumbnail?id=157n4wQ7Mz5LvZcei3EuAnbwe9BIZlYR_&sz=w1200'
+          },
+          {
+            id: 'citroen-7',
+            title: 'Citroën Riyas & Thara',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1bokzX5PR6GaioY8KazckyQhM3RFpiDCl/preview',
+            image: 'https://drive.google.com/thumbnail?id=1bokzX5PR6GaioY8KazckyQhM3RFpiDCl&sz=w1200'
+          },
+          {
+            id: 'citroen-8',
+            title: 'Citroën Basalt — Riyas',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g/preview',
+            image: 'https://drive.google.com/thumbnail?id=1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g&sz=w1200'
+          },
+          {
+            id: 'citroen-9',
+            title: 'Citroën Thara Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1w004ZcoXcYgqMIwekDAOV3WwwRwULtei/preview',
+            image: 'https://drive.google.com/thumbnail?id=1w004ZcoXcYgqMIwekDAOV3WwwRwULtei&sz=w1200'
+          },
+          {
+            id: 'citroen-10',
+            title: 'Citroën EV — Thara Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3/preview',
+            image: 'https://drive.google.com/thumbnail?id=15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3&sz=w1200'
+          },
+          {
+            id: 'citroen-11',
+            title: 'Citroën WC — Riyas Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/10zpUbgg33lw8Jeoj2YlFGWdwZ6wuMWoN/preview',
+            image: 'https://drive.google.com/thumbnail?id=10zpUbgg33lw8Jeoj2YlFGWdwZ6wuMWoN&sz=w1200'
+          },
+          {
+            id: 'citroen-12',
+            title: 'Citroën WC — Thara Single',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr/preview',
+            image: 'https://drive.google.com/thumbnail?id=1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr&sz=w1200'
+          }
+        ]
       },
       {
         id: '2026-citroen-onam-riyas-thara',
@@ -608,25 +1002,169 @@ export const timelineData: TimelineYear[] = [
         id: '2026-lemon-tree-jeevan',
         name: 'Lemon Tree — Jeevan Video Campaign',
         type: 'Ad',
-        categoryBadge: 'HOSPITALITY COMMERCIAL • VIDEO',
+        categoryBadge: 'HOSPITALITY COMMERCIAL • 2 REELS',
         locationOrClient: 'Lemon Tree Hotels',
         description: 'Cinematic brand film and promotional digital campaign highlighting premier leisure hospitality, suites, and dining with Jeevan.',
-        image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+        image: 'https://drive.google.com/thumbnail?id=1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd',
+        videos: [
+          {
+            id: 'lemon-1',
+            title: 'Lemon Tree Jeevan',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd/preview',
+            image: 'https://drive.google.com/thumbnail?id=1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd&sz=w1200'
+          },
+          {
+            id: 'lemon-2',
+            title: 'Lemon Tree Pics & Showcase',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1vpzEX0IxFEPa4x8fdepzHl7KwGsQODDM/preview',
+            image: 'https://drive.google.com/thumbnail?id=1vpzEX0IxFEPa4x8fdepzHl7KwGsQODDM&sz=w1200'
+          }
+        ]
       },
       {
         id: '2026-fans-of-skoda',
         name: 'Fans of Škoda — Community Video',
         type: 'Event',
-        categoryBadge: 'AUTOMOTIVE COMMUNITY IP • VIDEO',
+        categoryBadge: 'AUTOMOTIVE COMMUNITY IP • 3 REELS',
         locationOrClient: 'Škoda Auto India',
         description: 'High-octane gathering for Skoda owners, automobile influencers, and rally enthusiasts featuring experiential drives.',
         image: 'https://drive.google.com/thumbnail?id=1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut&sz=w1200',
         hasVideo: true,
         videoEmbedUrl: 'https://drive.google.com/file/d/1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut/preview',
-        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs'
+        driveFolderUrl: 'https://drive.google.com/drive/folders/1PL1A8dZ9LIlOGLqV8gXT2KKTVUkNYexs',
+        videos: [
+          {
+            id: 'skoda-fans-1',
+            title: 'Fans Of Skoda',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut/preview',
+            image: 'https://drive.google.com/thumbnail?id=1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut&sz=w1200'
+          },
+          {
+            id: 'skoda-fans-2',
+            title: 'Fans Of Skoda Full Highlights',
+            videoEmbedUrl: 'https://drive.google.com/file/d/18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A/preview',
+            image: 'https://drive.google.com/thumbnail?id=18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A&sz=w1200'
+          },
+          {
+            id: 'skoda-fans-3',
+            title: 'Skoda Fans Teaser',
+            videoEmbedUrl: 'https://drive.google.com/file/d/13o-0qqwpA1ERsc7AnB67udNe5jQNAI4R/preview',
+            image: 'https://drive.google.com/thumbnail?id=13o-0qqwpA1ERsc7AnB67udNe5jQNAI4R&sz=w1200'
+          }
+        ]
+      },
+      {
+        id: '2026-tic-launch-event',
+        name: 'Trivandrum Influencer Circle Launch Event',
+        type: 'Event',
+        categoryBadge: 'FLAGSHIP INFLUENCER IP • VIDEO',
+        locationOrClient: 'Trivandrum Influencer Circle (TIC)',
+        description: 'The historic inaugural launch gala of Trivandrum Influencer Circle, uniting premier creators, media houses, and brand visionaries.',
+        image: 'https://drive.google.com/thumbnail?id=13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf/preview'
+      },
+      {
+        id: '2026-tic-event-2-hycinth',
+        name: 'TIC Event – 2 Hycinth',
+        type: 'Event',
+        categoryBadge: 'INFLUENCER CONCLAVE • PENDING MEDIA',
+        locationOrClient: 'Hycinth Hotels / TIC',
+        description: 'Exclusive influencer conclave and networking banquet hosted at Hycinth Hotel for Trivandrum Influencer Circle members.'
+      },
+      {
+        id: '2026-blnd-menu-launch',
+        name: 'BLND Menu Launch',
+        type: 'Event',
+        categoryBadge: 'CULINARY LAUNCH • PENDING MEDIA',
+        locationOrClient: 'BLND Resto-Bar',
+        description: 'High-profile menu unveiling and culinary tasting experience curated with leading lifestyle and food influencers.'
+      },
+      {
+        id: '2026-tic-onam-hyatt-news18',
+        name: 'TIC Onam Event – Hyatt & News 18',
+        type: 'Event',
+        categoryBadge: 'BROADCAST & FESTIVE • PENDING MEDIA',
+        locationOrClient: 'Hyatt Regency / News 18',
+        description: 'Grand festive Onam celebration and broadcast showcase organized in partnership with Hyatt Regency and News 18.'
+      },
+      {
+        id: '2026-tic-onam-imperial-kitchen',
+        name: 'TIC Onam Event – Imperial Kitchen',
+        type: 'Event',
+        categoryBadge: 'FESTIVE CULINARY • PENDING MEDIA',
+        locationOrClient: 'Imperial Kitchen',
+        description: 'Traditional Onam festive feast and lifestyle creator gathering celebrating Kerala culinary culture at Imperial Kitchen.'
+      },
+      {
+        id: '2026-skoda-ad-campaign',
+        name: 'Skoda Ad Campaign',
+        type: 'Ad',
+        categoryBadge: 'AUTOMOTIVE AD CAMPAIGN • 3 REELS',
+        locationOrClient: 'Škoda Auto India',
+        description: 'Comprehensive festive Onam automotive commercial ad series produced for Škoda Auto India featuring Riyas & Thara.',
+        image: 'https://drive.google.com/thumbnail?id=1azn97OLlVtjOUk4Wk_4_0iUr6TdYAtX0&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1azn97OLlVtjOUk4Wk_4_0iUr6TdYAtX0/preview',
+        videos: [
+          {
+            id: 'skoda-ad-1',
+            title: 'Skoda Onam Ad — Riyas & Thara',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1azn97OLlVtjOUk4Wk_4_0iUr6TdYAtX0/preview',
+            image: 'https://drive.google.com/thumbnail?id=1azn97OLlVtjOUk4Wk_4_0iUr6TdYAtX0&sz=w1200'
+          },
+          {
+            id: 'skoda-ad-2',
+            title: 'Skoda Onam Combo',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1XZsYfl4gb5SxIxOIgTgVhtmRDAErn4Kb/preview',
+            image: 'https://drive.google.com/thumbnail?id=1XZsYfl4gb5SxIxOIgTgVhtmRDAErn4Kb&sz=w1200'
+          },
+          {
+            id: 'skoda-ad-3',
+            title: 'Skoda Thara',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1ljkeLX6dlLT_jUgpKiNrDcnq34WC_wvX/preview',
+            image: 'https://drive.google.com/thumbnail?id=1ljkeLX6dlLT_jUgpKiNrDcnq34WC_wvX&sz=w1200'
+          }
+        ]
+      },
+      {
+        id: '2026-jeep-ad-campaign',
+        name: 'Jeep Ad Campaign',
+        type: 'Campaign',
+        categoryBadge: '4X4 ADVENTURE • 2 REELS',
+        locationOrClient: 'Jeep India',
+        description: 'High-octane off-road automotive commercial series exploring rugged capability, luxury trail design, and outdoor thrills with Jeep.',
+        image: 'https://drive.google.com/thumbnail?id=1IIbClQ4Af0jwZStOCRWdVGuS19YUiuYx&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/1IIbClQ4Af0jwZStOCRWdVGuS19YUiuYx/preview',
+        videos: [
+          {
+            id: 'jeep-1',
+            title: 'Jeep 1',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1IIbClQ4Af0jwZStOCRWdVGuS19YUiuYx/preview',
+            image: 'https://drive.google.com/thumbnail?id=1IIbClQ4Af0jwZStOCRWdVGuS19YUiuYx&sz=w1200'
+          },
+          {
+            id: 'jeep-2',
+            title: 'Jeep 2',
+            videoEmbedUrl: 'https://drive.google.com/file/d/1Dy1LKriiRMpgoQde6LlMlN0crd2dfh21/preview',
+            image: 'https://drive.google.com/thumbnail?id=1Dy1LKriiRMpgoQde6LlMlN0crd2dfh21&sz=w1200'
+          }
+        ]
+      },
+      {
+        id: '2026-rb-ad-campaign',
+        name: 'R&B Ad Campaign',
+        type: 'Ad',
+        categoryBadge: 'FASHION RETAIL COMMERCIAL • VIDEO',
+        locationOrClient: 'R&B Fashion',
+        description: 'Vibrant retail apparel brand commercial showcasing casual youth trends and lifestyle aesthetics featuring Riyas & Deepa.',
+        image: 'https://drive.google.com/thumbnail?id=15a_Xh_NZDPL60y73uq_752cJsAyN4S-a&sz=w1200',
+        hasVideo: true,
+        videoEmbedUrl: 'https://drive.google.com/file/d/15a_Xh_NZDPL60y73uq_752cJsAyN4S-a/preview'
       }
     ]
   }
