@@ -16,7 +16,6 @@ export const driveThumb = (id: string, w = 1000) => `https://drive.google.com/th
 export const driveView = (id: string) => `https://drive.google.com/file/d/${id}/view`;
 
 export const selectedWork: SelectedWork[] = [
-  { id: 'tic-launch', year: 2026, title: 'Trivandrum Influencer Circle Launch Event', category: 'Events', driveFileId: '13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf', isTIC: true },
   { id: 'citroen', year: 2026, title: 'Citroën Ad Campaign', category: 'Automotive', driveFileId: '17xhWbUtxJePM8igOO7VADLDfiqcG6S04' },
   { id: 'jeep', year: 2026, title: 'Jeep Ad Campaign', category: 'Automotive', driveFileId: '1Dy1LKriiRMpgoQde6LlMlN0crd2dfh21' },
   { id: 'skoda-ad', year: 2026, title: 'Škoda Ad Campaign', category: 'Automotive', driveFileId: '1ljkeLX6dlLT_jUgpKiNrDcnq34WC_wvX' },

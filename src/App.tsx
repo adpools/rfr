@@ -6,6 +6,7 @@ import { Footer } from './components/layout/Footer';
 import { CustomCursor } from './components/common/CustomCursor';
 import { Preloader } from './components/common/Preloader';
 import { AudioAmbienceToggle } from './components/common/AudioAmbienceToggle';
+import { FloatingWhatsAppButton } from './components/common/FloatingWhatsAppButton';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 
 // Multi-Route Pages
@@ -27,7 +28,10 @@ import { TalentDetailPage } from './pages/TalentDetailPage';
 import { GalleryPage } from './pages/GalleryPage';
 import { PressPage } from './pages/PressPage';
 import { PressDetailPage } from './pages/PressDetailPage';
+import { TICPage } from './pages/TICPage';
 import { ContactPage } from './pages/ContactPage';
+import { OurTeamPage } from './pages/OurTeamPage';
+import { RiyasGalleryPage } from './pages/RiyasGalleryPage';
 
 export const App: React.FC = () => {
   const [, setLoaded] = useState(false);
@@ -50,6 +54,7 @@ export const App: React.FC = () => {
 
         {/* Sound Ambience Synthesizer Toggle */}
         <AudioAmbienceToggle />
+        <FloatingWhatsAppButton />
 
         {/* Application View Switcher in 13-Order Structure */}
         <Switch>
@@ -61,6 +66,8 @@ export const App: React.FC = () => {
 
           {/* 02. About Us */}
           <Route path="/about" component={AboutPage} />
+          <Route path="/our-team" component={OurTeamPage} />
+          <Route path="/team" component={OurTeamPage} />
           <Route path="/riyas" component={FounderPage} />
           <Route path="/founder">
             <Redirect to="/riyas" />
@@ -107,7 +114,23 @@ export const App: React.FC = () => {
           <Route path="/assets/artists" component={() => <TalentDetailPage customId="artists" />} />
           <Route path="/assets/:id" component={() => <TalentDetailPage />} />
 
+          {/* Riyas Dedicated Photo Gallery */}
+          <Route path="/riyas-gallery" component={RiyasGalleryPage} />
+          <Route path="/rias" component={RiyasGalleryPage} />
+          <Route path="/rias-gallery" component={RiyasGalleryPage} />
+
+          {/* Testimonials direct route */}
+          <Route path="/testimonials">
+            <Redirect to="/#testimonials" />
+          </Route>
+
           {/* 11. Gallary & Gallery Archives */}
+          <Route path="/archives">
+            <Redirect to="/gallery" />
+          </Route>
+          <Route path="/archive">
+            <Redirect to="/gallery" />
+          </Route>
           <Route path="/gallery" component={() => <GalleryPage />} />
           <Route path="/gallary" component={() => <GalleryPage />} />
           <Route path="/gallery/events" component={() => <GalleryPage initialCategory="events" />} />
@@ -122,6 +145,8 @@ export const App: React.FC = () => {
           <Route path="/press/:slug" component={PressDetailPage} />
 
           {/* 13. Contact */}
+          <Route path="/tic" component={TICPage} />
+          <Route path="/trivandrum-influencer-circle" component={TICPage} />
           <Route path="/contact" component={ContactPage} />
 
           {/* Fallback */}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronDown, ChevronRight, ArrowUpRight, Mail, Phone, Search } from 'lucide-react';
-import { InstagramIcon, YoutubeIcon, LinkedinIcon } from '../common/SocialIcons';
+import { InstagramIcon, YoutubeIcon, LinkedinIcon, WhatsAppIcon } from '../common/SocialIcons';
 
 interface FullscreenMenuProps {
   isOpen: boolean;
@@ -55,20 +55,9 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
       num: '02',
       title: 'About us',
       href: '/about',
-      subGroups: [
-        {
-          label: 'a. Riyas Personal Profile - Founder',
-          href: '/founder',
-        },
-        {
-          label: 'b. About',
-          href: '/about',
-          items: [
-            { label: 'i. Achievements', href: '/achievements' },
-            { label: 'ii. Gallary', href: '/gallery' },
-            { label: 'iii. Works', href: '/about#works' },
-          ],
-        },
+      subItems: [
+        { label: 'About Riyas', href: '/about' },
+        { label: 'Our Team', href: '/our-team' },
       ],
     },
     {
@@ -161,12 +150,13 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
     {
       id: 'gallary',
       num: '11',
-      title: 'Gallary',
+      title: 'Gallary / Archives',
       href: '/gallery',
       subItems: [
         { label: 'a. Events', href: '/gallery/events' },
         { label: 'b. Shows', href: '/gallery/shows' },
         { label: 'c. Shoots', href: '/gallery/shoots' },
+        { label: 'd. Testimonials', href: '/#testimonials' },
       ],
     },
     {
@@ -174,6 +164,12 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
       num: '12',
       title: 'Press & News',
       href: '/press',
+    },
+    {
+      id: 'tic',
+      num: 'TIC',
+      title: 'Trivandrum Influencer Circle (TIC)',
+      href: '/tic',
     },
     {
       id: 'contact',
@@ -318,7 +314,16 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                               <Link
                                 key={sub.label}
                                 href={sub.href}
-                                onClick={onClose}
+                                onClick={() => {
+                                  onClose();
+                                  if (sub.href.startsWith('/#') || sub.href.startsWith('#')) {
+                                    const id = sub.href.replace(/^\/?#/, '');
+                                    const el = document.getElementById(id);
+                                    if (el) {
+                                      setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+                                    }
+                                  }
+                                }}
                                 className="px-3 py-1.5 rounded-lg bg-[#0e0e0e] hover:bg-[#151515] text-xs font-sans text-neutral-300 hover:text-[#C7A46A] transition-colors flex items-center justify-between no-underline"
                               >
                                 <span>{sub.label}</span>
@@ -389,10 +394,23 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                 <span>partnerships@rfrbyriyas.com</span>
               </a>
               <span className="hidden sm:inline text-neutral-800">•</span>
-              <span className="flex items-center gap-2 text-neutral-500">
+              <a
+                href="tel:+917736533346"
+                className="flex items-center gap-2 text-neutral-400 hover:text-[#C7A46A] transition-colors"
+              >
                 <Phone size={14} className="text-[#C7A46A]" />
-                <span>RFR VIP Desk</span>
-              </span>
+                <span>+91 77365 33346</span>
+              </a>
+              <span className="hidden sm:inline text-neutral-800">•</span>
+              <a
+                href="https://wa.me/917736533346"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-neutral-400 hover:text-[#25D366] transition-colors"
+              >
+                <WhatsAppIcon size={14} className="text-[#25D366]" />
+                <span>WhatsApp</span>
+              </a>
             </div>
 
             <div className="flex items-center gap-4">
@@ -422,6 +440,15 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
                 className="p-2 rounded-full bg-[#111111] hover:text-[#C7A46A] transition-colors"
               >
                 <LinkedinIcon size={14} />
+              </a>
+              <a
+                href="https://wa.me/917736533346"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="p-2 rounded-full bg-[#111111] hover:text-[#25D366] transition-colors"
+              >
+                <WhatsAppIcon size={14} />
               </a>
             </div>
           </div>

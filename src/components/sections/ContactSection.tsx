@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { Send, CheckCircle2, ArrowUpRight, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '../common/SocialIcons';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -73,6 +74,40 @@ export const ContactSection: React.FC = () => {
               </p>
 
               <div className="space-y-6">
+                {/* Active Mobile Contact */}
+                <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
+                  <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors flex items-center gap-2">
+                    <Phone size={12} className="text-[#C7A46A]" />
+                    <span>Direct Call / Mobile</span>
+                  </span>
+                  <a
+                    href="tel:+917736533346"
+                    className="text-xl sm:text-2xl font-serif text-[#F4F1EA] hover:text-[#C7A46A] transition-colors tracking-wide font-medium inline-block"
+                  >
+                    +91 77365 33346
+                  </a>
+                </div>
+
+                {/* WhatsApp Chat Integration */}
+                <div className="group border-l border-neutral-800 pl-6 hover:border-[#25D366] transition-colors duration-500">
+                  <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#25D366] transition-colors flex items-center gap-2">
+                    <WhatsAppIcon size={13} className="text-[#25D366]" />
+                    <span>Instant Messaging</span>
+                  </span>
+                  <a
+                    href="https://wa.me/917736533346"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Chat on WhatsApp"
+                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#111111] hover:bg-[#25D366] text-[#FAF9F6] hover:text-black border border-neutral-800 hover:border-[#25D366] text-xs font-mono tracking-wider transition-all duration-300 group/wa shadow-lg mt-1"
+                  >
+                    <WhatsAppIcon size={18} className="text-[#25D366] group-hover/wa:text-black transition-colors" />
+                    <span className="font-semibold uppercase tracking-wider">Chat on WhatsApp</span>
+                    <ArrowUpRight size={14} className="text-neutral-500 group-hover/wa:text-black transition-colors" />
+                  </a>
+                </div>
+
+                {/* Email Direct Desk */}
                 <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
                   <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Direct Desk</span>
                   <a href="mailto:partnerships@rfrbyriyas.com" className="text-lg font-serif text-[#F4F1EA] hover:text-white transition-colors">
@@ -80,6 +115,7 @@ export const ContactSection: React.FC = () => {
                   </a>
                 </div>
 
+                {/* Global Headquarters */}
                 <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
                   <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Global Headquarters</span>
                   <span className="text-lg font-serif text-[#A09D96] group-hover:text-[#F4F1EA] transition-colors">

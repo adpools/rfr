@@ -1,128 +1,416 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
-import { SectionHeading } from '../components/common/SectionHeading';
-import { pressData } from '../data/pressData';
-import { ArrowUpRight, Calendar, Clock, Search } from 'lucide-react';
-import { Link } from 'wouter';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, Maximize2, X, ChevronLeft, ChevronRight, Newspaper, Building2 } from 'lucide-react';
+
+export interface PressItem {
+  id: string;
+  brand: string; // BRAND OR ORGANISATION NAME ONLY
+  category: 'Print Press' | 'Television Broadcast' | 'Music & Entertainment' | 'Festivals & Events';
+  typeLabel: string;
+  filename: string;
+  src: string;
+}
+
+// Curated authentic press clippings — Deduplicated with Brand-Only titles
+// All duplicate crops, repeated snippets, and uncredited fragments removed.
+// Retained the single best-quality original for every unique publication and feature.
+const pressItems: PressItem[] = [
+  {
+    id: 'press-koottam-stage',
+    brand: 'Koottam',
+    category: 'Festivals & Events',
+    typeLabel: 'Stage Presentation & Felicitations • Technopark',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.04 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.04%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-asianet-news',
+    brand: 'Asianet News',
+    category: 'Television Broadcast',
+    typeLabel: 'Statewide Prime News Bulletin Coverage',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.04 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.04%20PM.jpeg'
+  },
+  {
+    id: 'press-global-fashion-week',
+    brand: 'Global Fashion Week',
+    category: 'Festivals & Events',
+    typeLabel: 'Season 2 Red Carpet & Runway Feature',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.05 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.05%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-koottam-announcement',
+    brand: 'Koottam',
+    category: 'Festivals & Events',
+    typeLabel: 'Official Flea Festival Announcement • Technopark',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.05 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.05%20PM.jpeg'
+  },
+  {
+    id: 'press-techies-summer-fest',
+    brand: "Techie's Summer Fest",
+    category: 'Festivals & Events',
+    typeLabel: 'Summer Festival Official Release • Genrobotics & Technopark',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.06 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.06%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-manorama-music',
+    brand: 'Manorama Music',
+    category: 'Music & Entertainment',
+    typeLabel: 'Koode Nee Musical Release Feature',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.06 PM (2).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.06%20PM%20(2).jpeg'
+  },
+  {
+    id: 'press-koottam-installation',
+    brand: 'Koottam',
+    category: 'Festivals & Events',
+    typeLabel: 'Technopark Amphitheatre Event Showcase',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.07 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.07%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-srishti-music',
+    brand: 'Srishti Music',
+    category: 'Music & Entertainment',
+    typeLabel: 'Love You Too Musical Release Feature',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.07 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.07%20PM.jpeg'
+  },
+  {
+    id: 'press-vanimahal-creations',
+    brand: 'Vanimahal Creations',
+    category: 'Music & Entertainment',
+    typeLabel: 'Vincent and the Pope Production Feature',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.08 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.08%20PM.jpeg'
+  },
+  {
+    id: 'press-dr-praveen-musical',
+    brand: 'Dr. Praveen Musical',
+    category: 'Music & Entertainment',
+    typeLabel: 'Kaun Disa Mein Cover Album Feature',
+    filename: 'WhatsApp Image 2026-11-04 at 9.41.09 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.09%20PM.jpeg'
+  },
+  {
+    id: 'press-chandrika-daily',
+    brand: 'Chandrika',
+    category: 'Print Press',
+    typeLabel: 'State Daily Newspaper Print Feature with Masthead',
+    filename: 'WhatsApp Image 2026-11-04 at 9.42.08 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.42.08%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-kerala-kaumudi',
+    brand: 'Kerala Kaumudi',
+    category: 'Print Press',
+    typeLabel: 'Daily Newspaper Clipping with Official Masthead',
+    filename: 'WhatsApp Image 2026-11-04 at 9.42.10 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.42.10%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-technopark-feature',
+    brand: 'Technopark',
+    category: 'Print Press',
+    typeLabel: 'Back to Campus Initiative Print Coverage',
+    filename: 'WhatsApp Image 2026-11-04 at 9.42.11 PM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.42.11%20PM%20(1).jpeg'
+  },
+  {
+    id: 'press-technopark-english-daily',
+    brand: 'Technopark',
+    category: 'Print Press',
+    typeLabel: 'English Daily Newspaper Feature on Flea Market Events',
+    filename: 'WhatsApp Image 2026-11-04 at 9.42.11 PM (2).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.42.11%20PM%20(2).jpeg'
+  },
+  {
+    id: 'press-metro-vartha',
+    brand: 'Metro Vartha',
+    category: 'Print Press',
+    typeLabel: 'Statewide Daily Newsprint Feature with Masthead',
+    filename: 'WhatsApp Image 2026-11-04 at 9.42.11 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.42.11%20PM.jpeg'
+  },
+  {
+    id: 'press-technopark-kerala-piravi',
+    brand: 'Technopark',
+    category: 'Print Press',
+    typeLabel: 'Kerala Piravi Flea Market English Newsprint Article',
+    filename: 'WhatsApp Image 2026-11-04 at 9.42.14 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.42.14%20PM.jpeg'
+  },
+  {
+    id: 'press-aynus-entertainments',
+    brand: 'Aynus Entertainments',
+    category: 'Music & Entertainment',
+    typeLabel: 'Thara Production Showcase Feature',
+    filename: 'WhatsApp Image 2026-11-04 at 9.46.07 PM.jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.46.07%20PM.jpeg'
+  }
+];
 
 export const PressPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
-  const categories = ['all', 'Press', 'News', 'Announcements', 'Collaborations'];
+  const categories = [
+    { label: 'All Clippings', value: 'all' },
+    { label: 'Print Press', value: 'Print Press' },
+    { label: 'Television Broadcast', value: 'Television Broadcast' },
+    { label: 'Music & Entertainment', value: 'Music & Entertainment' },
+    { label: 'Festivals & Events', value: 'Festivals & Events' }
+  ];
 
-  const filtered = pressData.filter((article) => {
-    const matchesCat = selectedCategory === 'all' || article.category === selectedCategory;
-    const matchesQuery = searchQuery === '' ||
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesQuery;
-  });
+  const filteredItems = selectedCategory === 'all'
+    ? pressItems
+    : pressItems.filter((item) => item.category === selectedCategory);
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImageIndex === null) return;
+      if (e.key === 'Escape') {
+        setSelectedImageIndex(null);
+      } else if (e.key === 'ArrowRight') {
+        setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : null));
+      } else if (e.key === 'ArrowLeft') {
+        setSelectedImageIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : null));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImageIndex, filteredItems.length]);
+
+  const activeImage = selectedImageIndex !== null ? filteredItems[selectedImageIndex] : null;
 
   return (
     <PageWrapper
-      title="Press, News & Editorial Dispatches"
-      description="Read the latest press releases, strategic announcements, and industry articles from Riyas Fashion Runway."
+      title="News & Press Archive | Riyas Fashion Runway"
+      description="Curated visual archive of print newspaper coverage, television broadcasts, and publication features documenting Riyas Fashion Runway."
     >
       <div className="editorial-container py-12 md:py-20">
-        <SectionHeading
-          number="PRESS"
-          category="MEDIA & NEWS"
-          title="EDITORIAL DISPATCHES"
-          subtitle="Explore in-depth editorial articles, industry think pieces, official announcements, and media releases from the RFR ecosystem."
-        />
+        
+        {/* Editorial Subpage Hero Header */}
+        <div className="max-w-4xl mb-12 md:mb-16">
+          <div className="flex items-center gap-3 text-xs font-mono tracking-[0.35em] text-[#C7A46A] uppercase mb-4">
+            <Sparkles size={14} className="text-[#C7A46A]" />
+            <span>EDITORIAL ARCHIVE • MEDIA & PRESS</span>
+          </div>
 
-        {/* Filter & Search Controls */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-neutral-800 mb-12">
-          <div className="flex items-center gap-2 overflow-x-auto">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-light text-white uppercase tracking-tight leading-[0.98] mb-6">
+            NEWS & <br />
+            <span className="italic text-[#C7A46A] font-normal">PRESS GALLERY.</span>
+          </h1>
+
+          <p className="text-neutral-300 text-sm md:text-base font-light leading-relaxed max-w-3xl">
+            A curated visual retrospective of print media features, newspaper clippings, and press publications documenting landmark runways, campaigns, and cultural milestones spearheaded by <strong>RFR</strong> and <strong>Riyas</strong>.
+          </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-mono text-neutral-400">
+            <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-[#C7A46A]">
+              ✦ {pressItems.length} Unique Verified Publications
+            </span>
+            <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-neutral-300">
+              ✦ Brand-Only Titles
+            </span>
+            <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-[#FAF9F6]">
+              ✦ High-Resolution Lightbox
+            </span>
+          </div>
+        </div>
+
+        {/* Minimal Category Filter & Control Bar */}
+        <div className="p-4 md:p-5 rounded-2xl bg-[#0e0e0e]/95 border border-neutral-800/80 backdrop-blur-xl mb-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shadow-xl">
+          {/* Category Tabs */}
+          <div className="flex flex-wrap items-center gap-2">
             {categories.map((cat) => (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest transition-all ${
-                  selectedCategory === cat
-                    ? 'bg-[#C7A46A] text-black font-bold'
-                    : 'bg-[#121212] text-neutral-400 hover:text-white border border-neutral-800'
+                key={cat.value}
+                onClick={() => {
+                  setSelectedCategory(cat.value);
+                  setSelectedImageIndex(null);
+                }}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-mono tracking-wider transition-all duration-200 ${
+                  selectedCategory === cat.value
+                    ? 'bg-[#C7A46A] text-black font-semibold shadow-md shadow-[#C7A46A]/20'
+                    : 'bg-[#141414] text-neutral-400 hover:text-white border border-neutral-800/80 hover:border-neutral-700'
                 }`}
               >
-                {cat === 'all' ? 'All Dispatches' : cat}
+                {cat.label}
               </button>
             ))}
           </div>
 
-          <div className="relative max-w-xs w-full">
-            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#141414] border border-neutral-800 rounded-2xl pl-9 pr-4 py-1 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#C7A46A] transition-colors"
-            />
+          <div className="flex items-center gap-2 text-[11px] font-mono text-neutral-500 uppercase tracking-wider">
+            <Newspaper size={14} className="text-[#C7A46A]" />
+            <span>CLICK ANY CLIPPING TO VIEW ORIGINAL HIGH-RES MEDIA</span>
           </div>
         </div>
 
-        {/* Articles List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filtered.map((article, idx) => (
-            <motion.article
-              key={article.id}
+        {/* Spacious Editorial Image Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7 md:gap-8">
+          {filteredItems.map((item, idx) => (
+            <motion.div
+              key={item.id}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="p-8 rounded-3xl bg-[#111111] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: (idx % 6) * 0.05 }}
+              onClick={() => setSelectedImageIndex(idx)}
+              className="group relative cursor-pointer rounded-2xl overflow-hidden bg-[#111111] border border-neutral-800 hover:border-[#C7A46A]/60 transition-all duration-300 flex flex-col shadow-lg hover:shadow-2xl hover:shadow-[#C7A46A]/5"
             >
-              <div>
-                <div className="h-60 rounded-2xl overflow-hidden mb-6 editorial-image-frame relative">
-                  <img
-                    src={article.coverImage}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded bg-black/80 backdrop-blur-md border border-[#C7A46A]/40 text-[#C7A46A] text-[10px] font-mono tracking-widest uppercase">
-                    {article.category}
+              {/* Image Frame with natural top-alignment for newspaper headers */}
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#0c0c0c]">
+                <img
+                  src={item.src}
+                  alt={`${item.brand} — Press Clipping`}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+
+                {/* Subtle Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 pointer-events-none">
+                  <div className="flex justify-end">
+                    <span className="p-2 rounded-full bg-black/80 backdrop-blur-md text-[#C7A46A] border border-[#C7A46A]/50 shadow-xl">
+                      <Maximize2 size={14} />
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1 text-xs">
+                    <span className="text-[#C7A46A] font-mono font-bold tracking-wider uppercase">
+                      {item.brand}
+                    </span>
+                    <span className="text-[11px] text-neutral-300 font-light line-clamp-1">
+                      {item.typeLabel}
+                    </span>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-center gap-4 text-xs font-mono text-neutral-400 mb-3">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar size={13} />
-                    {article.date}
+              {/* Clean Brand-Only Card Title Footer */}
+              <div className="p-4 bg-[#121212] border-t border-neutral-800/80 flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-white tracking-wide group-hover:text-[#C7A46A] transition-colors">
+                    {item.brand}
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#C7A46A] bg-[#C7A46A]/10 px-2 py-0.5 rounded-full border border-[#C7A46A]/20">
+                    {item.category === 'Print Press' ? 'PRINT' : item.category === 'Television Broadcast' ? 'TV' : 'FEATURE'}
                   </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock size={13} />
-                    {article.readTime}
+                </div>
+                <p className="text-[11px] text-neutral-400 font-mono tracking-tight line-clamp-1">
+                  {item.typeLabel}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Clean Lightbox Modal */}
+        <AnimatePresence>
+          {activeImage && selectedImageIndex !== null && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 md:p-8 select-none"
+              onClick={() => setSelectedImageIndex(null)}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedImageIndex(null)}
+                aria-label="Close Lightbox"
+                className="absolute top-5 right-5 z-50 p-3 rounded-full bg-neutral-900/90 text-white border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
+              >
+                <X size={20} />
+              </button>
+
+              {/* Prev / Next Floating Buttons */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedImageIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : 0));
+                }}
+                aria-label="Previous Image"
+                className="absolute left-4 sm:left-6 z-50 p-3 sm:p-3.5 rounded-full bg-neutral-900/90 text-white border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all flex items-center justify-center"
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : 0));
+                }}
+                aria-label="Next Image"
+                className="absolute right-4 sm:right-6 z-50 p-3 sm:p-3.5 rounded-full bg-neutral-900/90 text-white border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all flex items-center justify-center"
+              >
+                <ChevronRight size={22} />
+              </button>
+
+              {/* Modal Container */}
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative max-w-5xl w-full max-h-[92vh] flex flex-col items-center justify-center bg-[#0d0d0d] rounded-3xl border border-neutral-800 p-4 sm:p-6 shadow-2xl overflow-hidden"
+              >
+                {/* Header Information — Clean Brand Only */}
+                <div className="w-full flex items-center justify-between pb-4 mb-4 border-b border-neutral-800/80 text-xs font-mono">
+                  <div className="flex items-center gap-2.5">
+                    <Building2 size={15} className="text-[#C7A46A]" />
+                    <span className="text-white font-bold tracking-wider text-sm">{activeImage.brand}</span>
+                    <span className="text-neutral-500">•</span>
+                    <span className="text-neutral-400 text-xs">{activeImage.typeLabel}</span>
+                  </div>
+
+                  <span className="text-neutral-400 font-mono">
+                    {selectedImageIndex + 1} OF {filteredItems.length}
                   </span>
                 </div>
 
-                <h3 className="text-2xl font-serif text-white uppercase tracking-wide group-hover:text-[#C7A46A] transition-colors leading-snug mb-3">
-                  {article.title}
-                </h3>
+                {/* High-Resolution Uncropped Image Viewing Frame */}
+                <div className="w-full flex-1 flex items-center justify-center overflow-auto max-h-[75vh]">
+                  <img
+                    key={activeImage.id}
+                    src={activeImage.src}
+                    alt={`${activeImage.brand} — Original Press Feature`}
+                    className="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl"
+                  />
+                </div>
 
-                <p className="text-neutral-300 text-sm font-light leading-relaxed mb-6">
-                  {article.excerpt}
-                </p>
-              </div>
+                {/* Minimal Footer Controls */}
+                <div className="w-full pt-4 mt-4 border-t border-neutral-800/80 flex items-center justify-between text-xs font-mono text-neutral-400">
+                  <span className="text-[11px] text-neutral-500 hidden sm:inline">
+                    PRESS ARCHIVE • VERIFIED RECORD
+                  </span>
+                  <div className="flex items-center gap-3 ml-auto">
+                    <button
+                      onClick={() => setSelectedImageIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : 0))}
+                      className="px-3.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 text-white transition-all text-xs"
+                    >
+                      PREV
+                    </button>
+                    <button
+                      onClick={() => setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : 0))}
+                      className="px-3.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 text-white transition-all text-xs"
+                    >
+                      NEXT
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-              <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
-                <Link
-                  href={`/press/${article.slug}`}
-                  data-cursor="READ"
-                  className="inline-flex items-center gap-2 text-xs font-mono tracking-widest text-[#FAF9F6] hover:text-[#C7A46A] transition-colors uppercase"
-                >
-                  <span>FULL DISPATCH</span>
-                  <ArrowUpRight size={13} />
-                </Link>
-                <span className="text-[10px] font-mono text-neutral-500 uppercase">
-                  {article.author}
-                </span>
-              </div>
-            </motion.article>
-          ))}
-        </div>
       </div>
     </PageWrapper>
   );

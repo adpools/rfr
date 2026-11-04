@@ -10,7 +10,9 @@ import { BusinessCTASection } from '../components/sections/BusinessCTASection';
 import { PartnersSection } from '../components/sections/PartnersSection';
 import { MilestonesSection } from '../components/sections/MilestonesSection';
 import { ClientsSection } from '../components/sections/ClientsSection';
+import { TestimonialsSection } from '../components/sections/TestimonialsSection';
 import { TalentPortalsSection } from '../components/sections/TalentPortalsSection';
+import { InfluencerNetworkSection } from '../components/sections/InfluencerNetworkSection';
 import { GalleryPreviewSection } from '../components/sections/GalleryPreviewSection';
 import { PressPreviewSection } from '../components/sections/PressPreviewSection';
 import { ContactSection } from '../components/sections/ContactSection';
@@ -69,8 +71,14 @@ export const HomePage: React.FC = () => {
       {/* 09 — CLIENTS */}
       <ClientsSection />
 
+      {/* TESTIMONIALS */}
+      <TestimonialsSection />
+
       {/* 10 — ASSETS (CAREER, MODELS, INFLUENCERS, ARTIST) */}
       <TalentPortalsSection />
+
+      {/* INFLUENCER NETWORK */}
+      <InfluencerNetworkSection />
 
       {/* 11 — GALLARY (EVENTS, SHOWS, SHOOTS) */}
       <GalleryPreviewSection />

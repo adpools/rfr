@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'wouter';
-import { InstagramIcon, YoutubeIcon, LinkedinIcon } from '../common/SocialIcons';
+import { InstagramIcon, YoutubeIcon, LinkedinIcon, WhatsAppIcon } from '../common/SocialIcons';
 import { ArrowUpRight } from 'lucide-react';
 
 export const Footer: React.FC = () => {
@@ -34,13 +34,16 @@ export const Footer: React.FC = () => {
         { label: 'Milestones', href: '/milestones' },
         { label: 'Our Clients', href: '/clients' },
         { label: 'Talent Guilds & Models', href: '/assets' },
+        { label: 'TIC — Influencer Circle', href: '/tic' },
       ],
     },
     {
       title: 'ARCHIVES',
       links: [
         { label: 'Gallery', href: '/gallery' },
+        { label: 'Riyas Gallery', href: '/riyas-gallery' },
         { label: 'Press & News', href: '/press' },
+        { label: 'Testimonials', href: '/#testimonials' },
         { label: 'Contact', href: '/contact' },
       ],
     },
@@ -103,6 +106,15 @@ export const Footer: React.FC = () => {
               >
                 <LinkedinIcon size={18} />
               </a>
+              <a
+                href="https://wa.me/917736533346"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat on WhatsApp"
+                className="w-12 h-12 rounded-full bg-[#0a0a0a] border border-white/5 hover:border-[#25D366] flex items-center justify-center hover:text-[#25D366] transition-all duration-300"
+              >
+                <WhatsAppIcon size={18} />
+              </a>
             </div>
             <Link
               href="/contact"
@@ -127,12 +139,39 @@ export const Footer: React.FC = () => {
               <ul className="space-y-4 text-[13px] font-sans font-light text-neutral-400">
                 {group.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="hover:text-[#C7A46A] transition-colors duration-300 block w-fit"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.href.startsWith('/#') || link.href.startsWith('#') ? (
+                      <a
+                        href={link.href}
+                        onClick={(e) => {
+                          const id = link.href.replace(/^\/?#/, '');
+                          const target = document.getElementById(id);
+                          if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ behavior: 'smooth' });
+                            window.history.pushState(null, '', `#${id}`);
+                          }
+                        }}
+                        className="hover:text-[#C7A46A] transition-colors duration-300 block w-fit no-underline cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    ) : link.href.startsWith('tel:') || link.href.startsWith('http') || link.href.startsWith('mailto:') ? (
+                      <a
+                        href={link.href}
+                        target={link.href.startsWith('http') ? '_blank' : undefined}
+                        rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="hover:text-[#C7A46A] transition-colors duration-300 block w-fit no-underline"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="hover:text-[#C7A46A] transition-colors duration-300 block w-fit"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -155,6 +194,13 @@ export const Footer: React.FC = () => {
             <Link href="/contact" className="text-[#C7A46A] hover:text-white transition-colors duration-300">
               VIP INQUIRIES
             </Link>
+            <a href="tel:+917736533346" className="hover:text-[#C7A46A] transition-colors duration-300">
+              +91 77365 33346
+            </a>
+            <a href="https://wa.me/917736533346" target="_blank" rel="noopener noreferrer" className="hover:text-[#25D366] transition-colors duration-300 flex items-center gap-1.5">
+              <WhatsAppIcon size={13} className="text-[#25D366]" />
+              <span>WHATSAPP</span>
+            </a>
           </div>
         </div>
       </div>

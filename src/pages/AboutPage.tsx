@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { motion } from 'framer-motion';
-import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, ArrowRight, ExternalLink } from 'lucide-react';
+import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, Users, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'wouter';
 import { founderData } from '../data/founderData';
 import { selectedWork, driveThumb, driveView } from '../data/selectedWorkData';
 
 export const AboutPage: React.FC = () => {
-  const [selectedSubTab, setSelectedSubTab] = useState<'profile' | 'about'>('profile');
 
   const pillars = [
     {
@@ -46,35 +45,23 @@ export const AboutPage: React.FC = () => {
           subtitle="RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media."
         />
 
-        {/* Sub-Navigation Tabs matching Image hierarchy: a. Founder Profile, b. About (Achievements, Gallary, Works) */}
+        {/* Navigation Tabs: About Riyas & Our Team */}
         <div className="flex flex-wrap items-center gap-3 my-10">
-          <button
-            onClick={() => setSelectedSubTab('profile')}
-            className={`px-6 py-3 rounded-2xl font-mono text-xs uppercase tracking-wider transition-all flex items-center gap-2.5 ${
-              selectedSubTab === 'profile'
-                ? 'bg-[#C7A46A] text-black font-semibold shadow-[0_0_15px_rgba(199,164,106,0.3)]'
-                : 'bg-[#111111] text-neutral-400 hover:text-white border border-neutral-800'
-            }`}
-          >
+          <div className="px-6 py-3 rounded-2xl font-mono text-xs uppercase tracking-wider flex items-center gap-2.5 bg-[#C7A46A] text-black font-semibold shadow-[0_0_15px_rgba(199,164,106,0.3)]">
             <User size={14} />
-            <span>a. Riyas Personal Profile - Co-Founder</span>
-          </button>
+            <span>About Riyas</span>
+          </div>
 
-          <button
-            onClick={() => setSelectedSubTab('about')}
-            className={`px-6 py-3 rounded-2xl font-mono text-xs uppercase tracking-wider transition-all flex items-center gap-2.5 ${
-              selectedSubTab === 'about'
-                ? 'bg-[#C7A46A] text-black font-semibold shadow-[0_0_15px_rgba(199,164,106,0.3)]'
-                : 'bg-[#111111] text-neutral-400 hover:text-white border border-neutral-800'
-            }`}
+          <Link
+            href="/our-team"
+            className="px-6 py-3 rounded-2xl font-mono text-xs uppercase tracking-wider transition-all flex items-center gap-2.5 bg-[#111111] text-neutral-400 hover:text-[#C7A46A] hover:border-[#C7A46A]/50 border border-neutral-800 no-underline"
           >
-            <Sparkles size={14} />
-            <span>b. About (Achievements, Gallary, Works)</span>
-          </button>
+            <Users size={14} />
+            <span>Our Team</span>
+          </Link>
         </div>
 
-        {/* Tab 1: a. Riyas Personal Profile - Founder */}
-        {selectedSubTab === 'profile' && (
+        {/* Tab 1: About Riyas */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -128,6 +115,10 @@ export const AboutPage: React.FC = () => {
                     <span>VIEW COMPLETE FOUNDER DOSSIER</span>
                     <ArrowRight size={14} />
                   </Link>
+                  <Link href="/tic" className="btn-luxury rounded-xl py-2.5 px-6 text-xs inline-flex items-center gap-2 border border-neutral-700 hover:border-[#C7A46A] text-[#E0DDD5] hover:text-[#C7A46A]">
+                    <span>EXPLORE TIC CREATOR CIRCLE</span>
+                    <ArrowRight size={14} />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -164,9 +155,7 @@ export const AboutPage: React.FC = () => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/70 text-[10px] font-mono text-[#C7A46A]">{w.year}</span>
-                      {w.isTIC && (
-                        <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#C7A46A] text-black text-[10px] font-mono font-semibold">TIC</span>
-                      )}
+                      
                     </div>
                     <div className="p-4">
                       <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{w.category}</span>
@@ -180,110 +169,9 @@ export const AboutPage: React.FC = () => {
               </div>
             </section>
           </motion.div>
-        )}
-
-        {/* Tab 2: b. About with i. Achievements, ii. Gallary, iii. Works */}
-        {selectedSubTab === 'about' && (
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="space-y-12"
-          >
-            {/* Narrative Overview */}
-            <div className="p-8 md:p-10 rounded-3xl bg-[#0e0e0e] border border-neutral-800">
-              <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-2">
-                SECTION 2.B • THE PLATFORM ETHOS
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-serif text-white uppercase mb-4">
-                FROM FASHION TO POSSIBILITY
-              </h3>
-              <p className="text-neutral-300 text-sm md:text-base font-light leading-relaxed max-w-3xl">
-                Riyas Fashion Runway is an integrated platform where runway couture, commercial advertising, influencer campaigns, lifestyle flea markets, and podcast media collaborate seamlessly to transform creative vision into commercial reality.
-              </p>
-            </div>
-
-            {/* 3 Sub-Blocks: i. Achievements, ii. Gallary, iii. Works */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* i. Achievements */}
-              <div className="p-8 rounded-3xl bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#161616] border border-neutral-700 flex items-center justify-center text-[#C7A46A] mb-5">
-                    <Award size={22} />
-                  </div>
-                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">
-                    SUB-SECTION 2.B.I
-                  </span>
-                  <h4 className="text-2xl font-serif text-white uppercase mb-3 group-hover:text-[#C7A46A] transition-colors">
-                    ACHIEVEMENTS
-                  </h4>
-                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6">
-                    100+ marquee runway showcases, 500+ talents coached and launched, and premier collaborations with Manyavar, Puma, Max Fashion, and Mahindra.
-                  </p>
-                </div>
-                <Link
-                  href="/achievements"
-                  className="btn-luxury btn-luxury-gold rounded-xl text-xs py-2 px-4 text-center inline-flex items-center justify-center gap-2"
-                >
-                  <span>VIEW ACHIEVEMENTS</span>
-                  <ArrowRight size={12} />
-                </Link>
-              </div>
-
-              {/* ii. Gallary */}
-              <div className="p-8 rounded-3xl bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#161616] border border-neutral-700 flex items-center justify-center text-[#C7A46A] mb-5">
-                    <ImageIcon size={22} />
-                  </div>
-                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">
-                    SUB-SECTION 2.B.II
-                  </span>
-                  <h4 className="text-2xl font-serif text-white uppercase mb-3 group-hover:text-[#C7A46A] transition-colors">
-                    GALLARY
-                  </h4>
-                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6">
-                    High-definition visual archive featuring events, runway couture shows, and fashion editorial shoots across 2020–2026.
-                  </p>
-                </div>
-                <Link
-                  href="/gallery"
-                  className="btn-luxury btn-luxury-gold rounded-xl text-xs py-2 px-4 text-center inline-flex items-center justify-center gap-2"
-                >
-                  <span>EXPLORE GALLARY</span>
-                  <ArrowRight size={12} />
-                </Link>
-              </div>
-
-              {/* iii. Works */}
-              <div className="p-8 rounded-3xl bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#161616] border border-neutral-700 flex items-center justify-center text-[#C7A46A] mb-5">
-                    <Briefcase size={22} />
-                  </div>
-                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block mb-1">
-                    SUB-SECTION 2.B.III
-                  </span>
-                  <h4 className="text-2xl font-serif text-white uppercase mb-3 group-hover:text-[#C7A46A] transition-colors">
-                    WORKS
-                  </h4>
-                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-6">
-                    A comprehensive timeline catalog of productions, commercial ad films, musical albums, and multi-edition Koottam Flea Market events.
-                  </p>
-                </div>
-                <Link
-                  href="/timeline"
-                  className="btn-luxury btn-luxury-gold rounded-xl text-xs py-2 px-4 text-center inline-flex items-center justify-center gap-2"
-                >
-                  <span>DISCOVER WORKS</span>
-                  <ArrowRight size={12} />
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         {/* 4 Pillars */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
           {pillars.map((p, idx) => {
             const Icon = p.icon;

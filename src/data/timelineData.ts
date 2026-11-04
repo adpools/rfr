@@ -319,7 +319,7 @@ export const timelineData: TimelineYear[] = [
     eventsList: [
       {
         id: '2024-aaravam-toi',
-        name: 'Aaravam — Times of India Event',
+        name: 'Times of India – Aaravam',
         type: 'Event',
         categoryBadge: 'MEDIA EVENT • VIDEO',
         locationOrClient: 'Times of India',
@@ -331,7 +331,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-skoda-full-highlights',
-        name: 'Fans of Škoda — Full Highlights Video Campaign',
+        name: 'Škoda – Fans of Škoda',
         type: 'Campaign',
         categoryBadge: 'EUROPEAN AUTOMOTIVE • VIDEO REEL',
         locationOrClient: 'Škoda Auto India',
@@ -343,7 +343,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-ather-riyas-ganga',
-        name: 'Ather Electric Scooter — Riyas & Ganga Video',
+        name: 'Ather – Electric Scooter',
         type: 'Campaign',
         categoryBadge: 'EV MOBILITY REEL • VIDEO',
         locationOrClient: 'Ather Energy',
@@ -355,7 +355,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-ather-riyas-rithu',
-        name: 'Ather Electric Scooter — Riyas & Rithu Video',
+        name: 'Ather – Electric Scooter',
         type: 'Campaign',
         categoryBadge: 'EV LIFESTYLE CAMPAIGN • VIDEO',
         locationOrClient: 'Ather Energy',
@@ -367,7 +367,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-ather-santa-festive',
-        name: 'Ather Santa & Combo Festive Campaign Video',
+        name: 'Ather – Festive Campaign',
         type: 'Ad',
         categoryBadge: 'HOLIDAY FESTIVE COMMERCIAL • VIDEO',
         locationOrClient: 'Ather Energy',
@@ -379,7 +379,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-ather-teena-single',
-        name: 'Ather — Teena Single Campaign Video',
+        name: 'Ather',
         type: 'Ad',
         categoryBadge: 'SOLO INFLUENCER REEL • VIDEO',
         locationOrClient: 'Ather Energy',
@@ -391,7 +391,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-buildhub-riyas-teena',
-        name: 'Buildhub Commercial Ad (Riyas & Teena Video)',
+        name: 'Build Hub',
         type: 'Ad',
         categoryBadge: 'REAL ESTATE & INTERIOR • VIDEO',
         locationOrClient: 'Build Hub',
@@ -403,7 +403,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-buildhub-reshma',
-        name: 'Buildhub Reels — Riyas & Reshma',
+        name: 'Build Hub',
         type: 'Campaign',
         categoryBadge: 'CREATOR REELS CAMPAIGN • VIDEO',
         locationOrClient: 'Build Hub / RFR Network',
@@ -415,7 +415,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-buildhub-teena-single',
-        name: 'Build Hub — Teena Commercial Video',
+        name: 'Build Hub',
         type: 'Ad',
         categoryBadge: 'LIFESTYLE COMMERCIAL • VIDEO',
         locationOrClient: 'Build Hub',
@@ -427,7 +427,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-concept-tyres',
-        name: 'Concept Tyres Commercial Video',
+        name: 'Concept Tyres',
         type: 'Ad',
         categoryBadge: 'AUTOMOTIVE ADVERT • VIDEO',
         locationOrClient: 'Concept Tyres',
@@ -439,7 +439,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-scoria-lights-ad',
-        name: 'Scoria Lights Ad',
+        name: 'Scoria Lights',
         type: 'Ad',
         categoryBadge: 'COMMERCIAL AD • VIDEO',
         locationOrClient: 'Scoria Lights',
@@ -449,7 +449,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2024-nissan-influencer-campaigns',
-        name: 'Nissan Influencer Campaigns',
+        name: 'Nissan',
         type: 'Campaign',
         categoryBadge: 'AUTOMOTIVE INFLUENCER CAMPAIGN • VIDEO',
         locationOrClient: 'Nissan Motors',
@@ -827,22 +827,22 @@ export const timelineData: TimelineYear[] = [
   },
   {
     year: 2026,
-    title: "Trivandrum Influencer Circle, Automotive Conglomerates & Luxury Alliances",
+    title: "Automotive Conglomerates & Luxury Alliances",
     theme: "INFLUENCER GUILDS & ENTERPRISE MEDIA",
-    subtitle: "Citroën Suite, Lemon Tree Campaign, Fans of Škoda & TIC Launch",
-    description: "Launch of the official Trivandrum Influencer Circle (TIC) ecosystem, marquee broadcast alliances, and advertising campaigns with Skoda, Citroën, Lemon Tree and luxury lifestyle partners.",
+    subtitle: "Citroën Suite, Lemon Tree Campaign, Škoda & Jeep 4x4",
+    description: "Dominating European automotive commercial campaigns, hospitality brand films, and marquee multi-sector commercial ad shoots with Citroën, Lemon Tree, Skoda and Jeep.",
     milestones: [
-      "Inaugural launch of Trivandrum Influencer Circle (TIC)",
-      "Citroën Aircross, Basalt & EV commercial campaigns with Riyas & Thara",
+      "Citroën Aircross, Basalt & EV commercial campaigns",
+      "Jeep 4x4 off-road adventure campaigns",
       "Lemon Tree Hotels commercial video campaign with Jeevan",
       "Fans of Škoda brand community video productions"
     ],
-    image: "https://drive.google.com/thumbnail?id=13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf&sz=w1200",
+    image: "https://drive.google.com/thumbnail?id=17xhWbUtxJePM8igOO7VADLDfiqcG6S04&sz=w1200",
     accent: "#C7A46A",
     eventsList: [
       {
         id: '2026-citroen-aircross-combo',
-        name: 'Citroën Aircross Combo Video',
+        name: 'Citroën – Aircross Campaign',
         type: 'Campaign',
         categoryBadge: 'FRENCH AUTOMOTIVE • 12 CAMPAIGN REELS',
         locationOrClient: 'Citroën India',
@@ -854,73 +854,73 @@ export const timelineData: TimelineYear[] = [
         videos: [
           {
             id: 'citroen-1',
-            title: 'Citroën Aircross Combo',
+            title: 'Citroën – Aircross Showcase',
             videoEmbedUrl: 'https://drive.google.com/file/d/17xhWbUtxJePM8igOO7VADLDfiqcG6S04/preview',
             image: 'https://drive.google.com/thumbnail?id=17xhWbUtxJePM8igOO7VADLDfiqcG6S04&sz=w1200'
           },
           {
             id: 'citroen-2',
-            title: 'Citroën Onam — Riyas & Thara',
+            title: 'Citroën – Onam Campaign',
             videoEmbedUrl: 'https://drive.google.com/file/d/1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF/preview',
             image: 'https://drive.google.com/thumbnail?id=1Jpf1n_swCBJtTytbskrRNVNIa_CMUeMF&sz=w1200'
           },
           {
             id: 'citroen-3',
-            title: 'Citroën Onam — Thara Single',
+            title: 'Citroën – Onam Showcase',
             videoEmbedUrl: 'https://drive.google.com/file/d/139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM/preview',
             image: 'https://drive.google.com/thumbnail?id=139wztoY-mC0R8Y5x0v_tZWbEqd1XyCmM&sz=w1200'
           },
           {
             id: 'citroen-4',
-            title: 'Citroën Pre Onam',
+            title: 'Citroën – Pre-Onam Campaign',
             videoEmbedUrl: 'https://drive.google.com/file/d/1Zic99SZst13pSd0l8-adVZwzuSxSbZj8/preview',
             image: 'https://drive.google.com/thumbnail?id=1Zic99SZst13pSd0l8-adVZwzuSxSbZj8&sz=w1200'
           },
           {
             id: 'citroen-5',
-            title: 'Citroën Pre Onam — Riyas & Thara',
+            title: 'Citroën – Pre-Onam Showcase',
             videoEmbedUrl: 'https://drive.google.com/file/d/1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB/preview',
             image: 'https://drive.google.com/thumbnail?id=1kPqk0SWzlqcGt3dn1ZWGN5GWDuRXevQB&sz=w1200'
           },
           {
             id: 'citroen-6',
-            title: 'Citroën Riyas Single',
+            title: 'Citroën – Lifestyle Drive',
             videoEmbedUrl: 'https://drive.google.com/file/d/157n4wQ7Mz5LvZcei3EuAnbwe9BIZlYR_/preview',
             image: 'https://drive.google.com/thumbnail?id=157n4wQ7Mz5LvZcei3EuAnbwe9BIZlYR_&sz=w1200'
           },
           {
             id: 'citroen-7',
-            title: 'Citroën Riyas & Thara',
+            title: 'Citroën – Festive Drive',
             videoEmbedUrl: 'https://drive.google.com/file/d/1bokzX5PR6GaioY8KazckyQhM3RFpiDCl/preview',
             image: 'https://drive.google.com/thumbnail?id=1bokzX5PR6GaioY8KazckyQhM3RFpiDCl&sz=w1200'
           },
           {
             id: 'citroen-8',
-            title: 'Citroën Basalt — Riyas',
+            title: 'Citroën – Basalt Launch',
             videoEmbedUrl: 'https://drive.google.com/file/d/1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g/preview',
             image: 'https://drive.google.com/thumbnail?id=1qwwQ8wxW-wOCRN9bG1bW23nJT9OSPN1g&sz=w1200'
           },
           {
             id: 'citroen-9',
-            title: 'Citroën Thara Single',
+            title: 'Citroën – Urban Drive',
             videoEmbedUrl: 'https://drive.google.com/file/d/1w004ZcoXcYgqMIwekDAOV3WwwRwULtei/preview',
             image: 'https://drive.google.com/thumbnail?id=1w004ZcoXcYgqMIwekDAOV3WwwRwULtei&sz=w1200'
           },
           {
             id: 'citroen-10',
-            title: 'Citroën EV — Thara Single',
+            title: 'Citroën – EV Campaign',
             videoEmbedUrl: 'https://drive.google.com/file/d/15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3/preview',
             image: 'https://drive.google.com/thumbnail?id=15hsMQ6JIMxRxibiGZx8l5sIpubMQSCe3&sz=w1200'
           },
           {
             id: 'citroen-11',
-            title: 'Citroën WC — Riyas Single',
+            title: 'Citroën – Brand Film',
             videoEmbedUrl: 'https://drive.google.com/file/d/10zpUbgg33lw8Jeoj2YlFGWdwZ6wuMWoN/preview',
             image: 'https://drive.google.com/thumbnail?id=10zpUbgg33lw8Jeoj2YlFGWdwZ6wuMWoN&sz=w1200'
           },
           {
             id: 'citroen-12',
-            title: 'Citroën WC — Thara Single',
+            title: 'Citroën – Interior & Cockpit Feature',
             videoEmbedUrl: 'https://drive.google.com/file/d/1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr/preview',
             image: 'https://drive.google.com/thumbnail?id=1SHBH3ggfVo2xlZSV8mgcsOMrj7KB3yZr&sz=w1200'
           }
@@ -928,7 +928,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-citroen-onam-riyas-thara',
-        name: 'Citroën Onam — Riyas & Thara Video',
+        name: 'Citroën – Onam Campaign',
         type: 'Campaign',
         categoryBadge: 'FESTIVE AUTOMOTIVE REEL • VIDEO',
         locationOrClient: 'Citroën India',
@@ -940,7 +940,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-citroen-onam-thara-single',
-        name: 'Citroën Onam — Thara Single Video',
+        name: 'Citroën – Onam Showcase',
         type: 'Ad',
         categoryBadge: 'FESTIVE LIFESTYLE REEL • VIDEO',
         locationOrClient: 'Citroën India',
@@ -952,7 +952,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-citroen-pre-onam-riyas-thara',
-        name: 'Citroën Pre Onam — Riyas & Thara Video',
+        name: 'Citroën – Pre-Onam Campaign',
         type: 'Campaign',
         categoryBadge: 'PRE-FESTIVE CAMPAIGN • VIDEO',
         locationOrClient: 'Citroën India',
@@ -964,7 +964,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-citroen-basalt-riyas',
-        name: 'Citroën Basalt — Riyas Video',
+        name: 'Citroën – Basalt Launch',
         type: 'Ad',
         categoryBadge: 'SUV COUPE AD • VIDEO',
         locationOrClient: 'Citroën India',
@@ -976,7 +976,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-citroen-thara-ev',
-        name: 'Citroën EV — Thara Single EV Video',
+        name: 'Citroën – EV Campaign',
         type: 'Ad',
         categoryBadge: 'SUSTAINABLE EV AD • VIDEO',
         locationOrClient: 'Citroën India',
@@ -988,7 +988,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-citroen-wc-thara',
-        name: 'Citroën WC — Thara Single Video',
+        name: 'Citroën – Commercial Showcase',
         type: 'Ad',
         categoryBadge: 'AUTOMOTIVE EDITORIAL • VIDEO',
         locationOrClient: 'Citroën India',
@@ -1000,7 +1000,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-lemon-tree-jeevan',
-        name: 'Lemon Tree — Jeevan Video Campaign',
+        name: 'Lemon Tree – Leisure Campaign',
         type: 'Ad',
         categoryBadge: 'HOSPITALITY COMMERCIAL • 2 REELS',
         locationOrClient: 'Lemon Tree Hotels',
@@ -1012,13 +1012,13 @@ export const timelineData: TimelineYear[] = [
         videos: [
           {
             id: 'lemon-1',
-            title: 'Lemon Tree Jeevan',
+            title: 'Lemon Tree – Brand Film',
             videoEmbedUrl: 'https://drive.google.com/file/d/1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd/preview',
             image: 'https://drive.google.com/thumbnail?id=1pZfSfv6dcuY2s2uQKI6JudJjJZVpTUOd&sz=w1200'
           },
           {
             id: 'lemon-2',
-            title: 'Lemon Tree Pics & Showcase',
+            title: 'Lemon Tree – Suites & Dining Showcase',
             videoEmbedUrl: 'https://drive.google.com/file/d/1vpzEX0IxFEPa4x8fdepzHl7KwGsQODDM/preview',
             image: 'https://drive.google.com/thumbnail?id=1vpzEX0IxFEPa4x8fdepzHl7KwGsQODDM&sz=w1200'
           }
@@ -1026,7 +1026,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-fans-of-skoda',
-        name: 'Fans of Škoda — Community Video',
+        name: 'Škoda – Fans of Škoda',
         type: 'Event',
         categoryBadge: 'AUTOMOTIVE COMMUNITY IP • 3 REELS',
         locationOrClient: 'Škoda Auto India',
@@ -1038,70 +1038,35 @@ export const timelineData: TimelineYear[] = [
         videos: [
           {
             id: 'skoda-fans-1',
-            title: 'Fans Of Skoda',
+            title: 'Škoda – Fans of Škoda',
             videoEmbedUrl: 'https://drive.google.com/file/d/1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut/preview',
             image: 'https://drive.google.com/thumbnail?id=1LOyGz3BF41nTpwEY00NtOwCt5CuKwPut&sz=w1200'
           },
           {
             id: 'skoda-fans-2',
-            title: 'Fans Of Skoda Full Highlights',
+            title: 'Škoda – Community Highlights',
             videoEmbedUrl: 'https://drive.google.com/file/d/18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A/preview',
             image: 'https://drive.google.com/thumbnail?id=18-WoWzGDIp7DnrCP6Cd7mA2XN-xr0e8A&sz=w1200'
           },
           {
             id: 'skoda-fans-3',
-            title: 'Skoda Fans Teaser',
+            title: 'Škoda – Experiential Drive Teaser',
             videoEmbedUrl: 'https://drive.google.com/file/d/13o-0qqwpA1ERsc7AnB67udNe5jQNAI4R/preview',
             image: 'https://drive.google.com/thumbnail?id=13o-0qqwpA1ERsc7AnB67udNe5jQNAI4R&sz=w1200'
           }
         ]
       },
       {
-        id: '2026-tic-launch-event',
-        name: 'Trivandrum Influencer Circle Launch Event',
-        type: 'Event',
-        categoryBadge: 'FLAGSHIP INFLUENCER IP • VIDEO',
-        locationOrClient: 'Trivandrum Influencer Circle (TIC)',
-        description: 'The historic inaugural launch gala of Trivandrum Influencer Circle, uniting premier creators, media houses, and brand visionaries.',
-        image: 'https://drive.google.com/thumbnail?id=13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf&sz=w1200',
-        hasVideo: true,
-        videoEmbedUrl: 'https://drive.google.com/file/d/13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf/preview'
-      },
-      {
-        id: '2026-tic-event-2-hycinth',
-        name: 'TIC Event – 2 Hycinth',
-        type: 'Event',
-        categoryBadge: 'INFLUENCER CONCLAVE • PENDING MEDIA',
-        locationOrClient: 'Hycinth Hotels / TIC',
-        description: 'Exclusive influencer conclave and networking banquet hosted at Hycinth Hotel for Trivandrum Influencer Circle members.'
-      },
-      {
         id: '2026-blnd-menu-launch',
-        name: 'BLND Menu Launch',
+        name: 'BLND – Menu Launch',
         type: 'Event',
         categoryBadge: 'CULINARY LAUNCH • PENDING MEDIA',
         locationOrClient: 'BLND Resto-Bar',
         description: 'High-profile menu unveiling and culinary tasting experience curated with leading lifestyle and food influencers.'
       },
       {
-        id: '2026-tic-onam-hyatt-news18',
-        name: 'TIC Onam Event – Hyatt & News 18',
-        type: 'Event',
-        categoryBadge: 'BROADCAST & FESTIVE • PENDING MEDIA',
-        locationOrClient: 'Hyatt Regency / News 18',
-        description: 'Grand festive Onam celebration and broadcast showcase organized in partnership with Hyatt Regency and News 18.'
-      },
-      {
-        id: '2026-tic-onam-imperial-kitchen',
-        name: 'TIC Onam Event – Imperial Kitchen',
-        type: 'Event',
-        categoryBadge: 'FESTIVE CULINARY • PENDING MEDIA',
-        locationOrClient: 'Imperial Kitchen',
-        description: 'Traditional Onam festive feast and lifestyle creator gathering celebrating Kerala culinary culture at Imperial Kitchen.'
-      },
-      {
         id: '2026-skoda-ad-campaign',
-        name: 'Skoda Ad Campaign',
+        name: 'Škoda – Onam Campaign',
         type: 'Ad',
         categoryBadge: 'AUTOMOTIVE AD CAMPAIGN • 3 REELS',
         locationOrClient: 'Škoda Auto India',
@@ -1112,19 +1077,19 @@ export const timelineData: TimelineYear[] = [
         videos: [
           {
             id: 'skoda-ad-1',
-            title: 'Skoda Onam Ad — Riyas & Thara',
+            title: 'Škoda – Onam Commercial',
             videoEmbedUrl: 'https://drive.google.com/file/d/1azn97OLlVtjOUk4Wk_4_0iUr6TdYAtX0/preview',
             image: 'https://drive.google.com/thumbnail?id=1azn97OLlVtjOUk4Wk_4_0iUr6TdYAtX0&sz=w1200'
           },
           {
             id: 'skoda-ad-2',
-            title: 'Skoda Onam Combo',
+            title: 'Škoda – Festive Drive',
             videoEmbedUrl: 'https://drive.google.com/file/d/1XZsYfl4gb5SxIxOIgTgVhtmRDAErn4Kb/preview',
             image: 'https://drive.google.com/thumbnail?id=1XZsYfl4gb5SxIxOIgTgVhtmRDAErn4Kb&sz=w1200'
           },
           {
             id: 'skoda-ad-3',
-            title: 'Skoda Thara',
+            title: 'Škoda – Festive Special',
             videoEmbedUrl: 'https://drive.google.com/file/d/1ljkeLX6dlLT_jUgpKiNrDcnq34WC_wvX/preview',
             image: 'https://drive.google.com/thumbnail?id=1ljkeLX6dlLT_jUgpKiNrDcnq34WC_wvX&sz=w1200'
           }
@@ -1132,7 +1097,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-jeep-ad-campaign',
-        name: 'Jeep Ad Campaign',
+        name: 'Jeep – 4x4 Adventure Campaign',
         type: 'Campaign',
         categoryBadge: '4X4 ADVENTURE • 2 REELS',
         locationOrClient: 'Jeep India',
@@ -1143,13 +1108,13 @@ export const timelineData: TimelineYear[] = [
         videos: [
           {
             id: 'jeep-1',
-            title: 'Jeep 1',
+            title: 'Jeep – Off-Road Adventure',
             videoEmbedUrl: 'https://drive.google.com/file/d/1IIbClQ4Af0jwZStOCRWdVGuS19YUiuYx/preview',
             image: 'https://drive.google.com/thumbnail?id=1IIbClQ4Af0jwZStOCRWdVGuS19YUiuYx&sz=w1200'
           },
           {
             id: 'jeep-2',
-            title: 'Jeep 2',
+            title: 'Jeep – Trail Capability',
             videoEmbedUrl: 'https://drive.google.com/file/d/1Dy1LKriiRMpgoQde6LlMlN0crd2dfh21/preview',
             image: 'https://drive.google.com/thumbnail?id=1Dy1LKriiRMpgoQde6LlMlN0crd2dfh21&sz=w1200'
           }
@@ -1157,7 +1122,7 @@ export const timelineData: TimelineYear[] = [
       },
       {
         id: '2026-rb-ad-campaign',
-        name: 'R&B Ad Campaign',
+        name: 'R&B Fashion – Casual Wear Campaign',
         type: 'Ad',
         categoryBadge: 'FASHION RETAIL COMMERCIAL • VIDEO',
         locationOrClient: 'R&B Fashion',

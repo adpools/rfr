@@ -24,6 +24,16 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
   const isHome = location === '/';
 
   useEffect(() => {
+    if (window.location.hash) {
+      const hashId = window.location.hash.replace(/^#/, '');
+      const targetEl = document.getElementById(hashId);
+      if (targetEl) {
+        const timer = setTimeout(() => {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [location]);
 

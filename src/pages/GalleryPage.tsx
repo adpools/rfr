@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { galleryData } from '../data/galleryData';
 import { GalleryItem } from '../types';
 import { LightboxModal } from '../components/common/LightboxModal';
-import { Maximize2, Tag } from 'lucide-react';
+import { Maximize2, Tag, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface GalleryPageProps {
@@ -38,21 +38,31 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ initialCategory }) => 
           subtitle="A high-contrast visual archive documenting runway presentations, experiential events, behind-the-scenes moments, and editorial campaigns."
         />
 
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-3 overflow-x-auto pb-6 border-b border-neutral-800 mb-12">
-          {(['all', 'events', 'shows', 'shoots'] as const).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest transition-all ${
-                activeCategory === cat
-                  ? 'bg-[#C7A46A] text-black font-bold shadow-md shadow-[#C7A46A]/20'
-                  : 'bg-[#121212] text-neutral-400 hover:text-white border border-neutral-800'
-              }`}
-            >
-              {cat === 'all' ? 'All Collections' : cat}
-            </button>
-          ))}
+        {/* Filter Tabs & Quick Links */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-neutral-800 mb-12">
+          <div className="flex items-center gap-3 overflow-x-auto">
+            {(['all', 'events', 'shows', 'shoots'] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest transition-all ${
+                  activeCategory === cat
+                    ? 'bg-[#C7A46A] text-black font-bold shadow-md shadow-[#C7A46A]/20'
+                    : 'bg-[#121212] text-neutral-400 hover:text-white border border-neutral-800'
+                }`}
+              >
+                {cat === 'all' ? 'All Collections' : cat}
+              </button>
+            ))}
+          </div>
+
+          <Link
+            href="/#testimonials"
+            className="self-start sm:self-auto px-5 py-2.5 rounded-2xl text-xs font-mono uppercase tracking-widest bg-[#121212] hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/40 transition-all flex items-center gap-2 group no-underline"
+          >
+            <span>TESTIMONIALS</span>
+            <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </Link>
         </div>
 
         {/* Dynamic Editorial Grid */}
