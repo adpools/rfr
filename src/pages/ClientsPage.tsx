@@ -33,7 +33,7 @@ export const ClientsPage: React.FC = () => {
             <div className="flex-1 h-[1px] bg-neutral-800" />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-5">
             {logoClients.map((client, idx) => (
               <motion.div
                 key={client.id}

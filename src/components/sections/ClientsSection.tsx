@@ -25,6 +25,12 @@ export const ClientsSection: React.FC = () => {
       badge: 'MOBILITY'
     },
     {
+      name: 'MARAIKAR GROUP',
+      category: 'Automotive & Commercial Verticals',
+      logo: '/logo/marikar-group.svg',
+      badge: 'AUTOMOTIVE'
+    },
+    {
       name: 'MAX FASHION',
       category: 'Festive Campaigns & Runways',
       logo: '/images/clients/max.png',
@@ -37,10 +43,10 @@ export const ClientsSection: React.FC = () => {
       badge: 'FASHION'
     },
     {
-      name: 'TIC GUILD',
-      category: 'Trivandrum Influencers Circle',
-      logo: '/images/clients/tic.png',
-      badge: 'CREATORS'
+      name: 'W',
+      category: "Women's Fashion & Runways",
+      logo: '/logo/w-logo.png',
+      badge: 'FASHION'
     },
   ];
 
@@ -87,7 +93,7 @@ export const ClientsSection: React.FC = () => {
         </div>
 
         {/* Featured Client Logos Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-5 mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-4 lg:gap-5 mb-16">
           {featuredBrands.map((b, idx) => (
             <motion.div
               key={b.name}

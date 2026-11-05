@@ -52,12 +52,27 @@ export const clientsAndPartnersList: ClientPartner[] = [
     logo: '/images/clients/rb.png'
   },
   {
+    id: 'c-marikar',
+    name: 'MARAIKAR GROUP',
+    category: 'Automotive & Mobility',
+    description: 'Premier automotive, commercial transport, and multi-vertical enterprise group across South India.',
+    type: 'client',
+    logo: '/logo/marikar-group.svg'
+  },
+  {
+    id: 'c-w',
+    name: 'W',
+    category: 'Fashion & Couture',
+    description: 'Contemporary women’s ethnic fashion and premium apparel brand with nationwide runway and retail presence.',
+    type: 'client',
+    logo: '/logo/w-logo.png'
+  },
+  {
     id: 'c-tic',
     name: 'TRIVANDRUM INFLUENCERS CIRCLE',
     category: 'Creator Guilds & Media',
     description: 'The premier South Indian creator guild uniting 45+ top influencers for enterprise brand campaigns.',
-    type: 'client',
-    logo: '/images/clients/tic.png'
+    type: 'client'
   },
   {
     id: 'c-max',

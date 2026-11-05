@@ -124,19 +124,25 @@ export const TICPage: React.FC = () => {
               </p>
             </div>
 
-            {/* TIC Official Guild Crest Badge */}
-            <div className="p-4 rounded-3xl bg-[#111111] border border-neutral-800 flex items-center gap-4 shadow-2xl">
-              <div className="w-16 h-16 rounded-2xl bg-black border border-neutral-700/80 p-2 flex items-center justify-center overflow-hidden">
+            {/* Prominent TIC Official Guild Logo */}
+            <div className="p-5 sm:p-6 rounded-[26px] bg-[#111111]/90 backdrop-blur-xl border border-[#C7A46A]/40 flex items-center gap-5 shadow-[0_12px_40px_rgba(0,0,0,0.8)] group hover:border-[#C7A46A]/80 transition-all duration-300">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-black border border-neutral-700 p-2.5 flex items-center justify-center overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
                 <img
                   src="/images/clients/tic.png"
-                  alt="TIC Guild Official Emblem"
-                  className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(199,164,106,0.3)]"
+                  alt="Trivandrum Influencer Circle (TIC) Official Logo"
+                  className="w-full h-full object-contain filter drop-shadow-[0_4px_16px_rgba(199,164,106,0.4)]"
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-mono font-bold text-white tracking-wider">TIC GUILD</span>
-                <span className="text-[11px] font-mono text-[#C7A46A]">VERIFIED COLLECTIVE</span>
-                <span className="text-[10px] text-neutral-500 font-mono">EST. TRIVANDRUM</span>
+                <span className="text-base sm:text-lg font-serif font-bold text-white tracking-wider">
+                  TIC GUILD
+                </span>
+                <span className="text-xs font-mono text-[#C7A46A] font-semibold tracking-widest mt-0.5">
+                  OFFICIAL CREATOR COLLECTIVE
+                </span>
+                <span className="text-[11px] text-neutral-400 font-mono mt-1">
+                  EST. TRIVANDRUM • BY RIYAS
+                </span>
               </div>
             </div>
           </div>
