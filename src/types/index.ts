@@ -66,6 +66,7 @@ export interface TalentCategory {
   requirements: string[];
   ctaLabel: string;
   image: string;
+  gallery?: string[];
 }
 
 export interface GalleryItem {

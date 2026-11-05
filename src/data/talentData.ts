@@ -21,7 +21,11 @@ export const talentData: TalentCategory[] = [
       'Demonstrated portfolio or relevant domain experience'
     ],
     ctaLabel: 'EXPLORE CAREERS',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'
+    image: '/images/thumbnails/max%20little%20icon%202023.jpg',
+    gallery: [
+      '/images/thumbnails/max%20little%20icon%202023.jpg',
+      '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.06%20PM%20(1).jpeg'
+    ]
   },
   {
     id: 'models',
@@ -43,7 +47,11 @@ export const talentData: TalentCategory[] = [
       'Updated comp card / portfolio photos'
     ],
     ctaLabel: 'JOIN AS MODEL',
-    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80'
+    image: '/images/thumbnails/global%20fashion%20week%20lulu.JPG',
+    gallery: [
+      '/images/thumbnails/global%20fashion%20week%20lulu.JPG',
+      '/images/thumbnails/red%20fm.jpg'
+    ]
   },
   {
     id: 'influencers',
@@ -65,7 +73,12 @@ export const talentData: TalentCategory[] = [
       'Active on Instagram, YouTube, or TikTok'
     ],
     ctaLabel: 'JOIN AS INFLUENCER',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80'
+    image: '/images/influencers/malavika.jpg',
+    gallery: [
+      '/images/influencers/malavika.jpg',
+      '/images/influencers/rudiya.jpg',
+      '/images/influencers/rhea-george.jpg'
+    ]
   },
   {
     id: 'artists',
@@ -87,6 +100,11 @@ export const talentData: TalentCategory[] = [
       'Audio/Video showreel or artistic portfolio submission'
     ],
     ctaLabel: 'JOIN AS ARTIST',
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80'
+    image: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.06%20PM%20(2).jpeg',
+    gallery: [
+      '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.06%20PM%20(2).jpeg',
+      '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.07%20PM.jpeg',
+      '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.41.08%20PM.jpeg'
+    ]
   }
 ];
