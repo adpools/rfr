@@ -209,17 +209,17 @@ export const TimelinePage: React.FC = () => {
               </div>
 
               {/* Individual Events & Productions Grid for this Year */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
                 {yearItem.eventsList.map((event, evIdx) => {
                   const Icon = getTypeIcon(event.type);
                   return (
                     <div
                       key={event.id}
-                      className="group rounded-2xl bg-[#121212] border border-neutral-800 hover:border-[#C7A46A]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden relative shadow-lg hover:shadow-2xl hover:shadow-[#C7A46A]/5"
+                      className="group rounded-2xl bg-[#121212] border border-neutral-800 hover:border-[#C7A46A]/60 transition-all duration-300 flex flex-col h-full overflow-hidden relative shadow-lg hover:shadow-2xl hover:shadow-[#C7A46A]/5"
                     >
                       {/* Event Media / Thumbnail Box */}
-                      <div className="h-52 sm:h-56 w-full relative overflow-hidden bg-black">
-                                                {event.image ? (
+                      <div className="h-52 sm:h-56 w-full relative overflow-hidden bg-black shrink-0">
+                        {event.image ? (
                           <>
                             <img
                               src={event.image}
@@ -267,54 +267,69 @@ export const TimelinePage: React.FC = () => {
                         {(event.image || event.hasVideo || event.videoEmbedUrl || event.videoUrl || (event.videos && event.videos.length > 0)) ? (
                           <button
                             onClick={() => handleOpenVideo(event)}
-                          className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover:bg-[#C7A46A] group-hover:text-black transition-all duration-300 transform group-hover:scale-110 shadow-xl"
-                          title="Watch Event Video & Visuals"
-                          aria-label={`Play video for ${event.name}`}
-                        >
-                          <Play size={18} className="fill-current ml-0.5" />
-                        </button>
+                            className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover:bg-[#C7A46A] group-hover:text-black transition-all duration-300 transform group-hover:scale-110 shadow-xl"
+                            title="Watch Event Video & Visuals"
+                            aria-label={`Play video for ${event.name}`}
+                          >
+                            <Play size={18} className="fill-current ml-0.5" />
+                          </button>
                         ) : null}
                       </div>
 
                       {/* Event Details Content */}
-                      <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                      <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                          {event.locationOrClient && (
-                            <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#C7A46A] uppercase tracking-wider mb-2">
-                              <MapPin size={12} className="shrink-0 text-[#C7A46A]" />
-                              <span className="truncate">{event.locationOrClient}</span>
-                            </div>
-                          )}
+                          {/* Consistent Location / Meta Row */}
+                          <div className="h-5 flex items-center gap-1.5 text-[11px] font-mono text-[#C7A46A] uppercase tracking-wider mb-2.5 overflow-hidden">
+                            {event.locationOrClient ? (
+                              <>
+                                <MapPin size={12} className="shrink-0 text-[#C7A46A]" />
+                                <span className="truncate">{event.locationOrClient}</span>
+                              </>
+                            ) : (
+                              <span className="text-neutral-500 text-[10px] tracking-widest uppercase truncate">
+                                OFFICIAL PRODUCTION
+                              </span>
+                            )}
+                          </div>
 
-                          <h3 className="text-lg sm:text-xl font-serif text-white uppercase tracking-wide group-hover:text-[#C7A46A] transition-colors leading-snug">
+                          {/* Heading with uniform reserved height and 2-line clamp */}
+                          <h3 
+                            className="text-lg sm:text-xl font-serif text-white uppercase tracking-wide group-hover:text-[#C7A46A] transition-colors leading-snug line-clamp-2 min-h-[3.25rem] sm:min-h-[3.5rem] flex items-start"
+                            title={event.name}
+                          >
                             {event.name}
                           </h3>
 
-                          {event.description && (
-                            <p className="mt-2.5 text-xs text-neutral-300 font-light leading-relaxed">
-                              {event.description}
-                            </p>
-                          )}
+                          {/* Description with uniform reserved height and 3-line clamp */}
+                          <p 
+                            className="mt-2.5 text-xs text-neutral-300 font-light leading-relaxed line-clamp-3 min-h-[3.75rem]"
+                            title={event.description}
+                          >
+                            {event.description || 'Exclusive landmark production and bespoke signature event experience curated by RFR.'}
+                          </p>
                         </div>
 
-                        {/* Card Footer Actions */}
-                        <div className="pt-4 border-t border-neutral-800/80 flex items-center justify-between">
+                        {/* Card Footer Actions - Perfectly Aligned Across All Cards */}
+                        <div className="pt-4 mt-6 border-t border-neutral-800/80 flex items-center justify-between gap-3 shrink-0">
                           {(event.image || event.hasVideo || event.videoEmbedUrl || event.videoUrl || (event.videos && event.videos.length > 0)) ? (
                             <button
                               onClick={() => handleOpenVideo(event)}
-                              className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider transition-colors"
+                              className="inline-flex items-center gap-2 text-xs font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider transition-colors py-1 truncate min-w-0"
                             >
-                              <Play size={12} className="fill-current" />
-                              <span>{event.videos && event.videos.length > 1 ? `WATCH VIDEO GALLERY (${event.videos.length})` : 'WATCH VIDEO / MEDIA'}</span>
+                              <Play size={12} className="fill-current shrink-0" />
+                              <span className="truncate">{event.videos && event.videos.length > 1 ? `GALLERY (${event.videos.length})` : 'WATCH MEDIA'}</span>
                             </button>
                           ) : (
-                            <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
+                            <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest py-1 truncate">
                               RECORD ARCHIVED
                             </span>
                           )}
 
-                          <span className="text-[10px] font-mono text-neutral-500 uppercase">
-                            {yearItem.year}
+                          {/* Consistent Date Badge - Locked in Identical Position */}
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#181818] border border-neutral-800 text-[11px] font-mono text-[#C7A46A] font-semibold uppercase tracking-wider shrink-0">
+                            <Calendar size={11} className="text-[#C7A46A] shrink-0" />
+                            <span>{yearItem.year}</span>
                           </span>
                         </div>
                       </div>

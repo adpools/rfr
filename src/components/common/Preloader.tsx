@@ -35,23 +35,23 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: -40 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[99999] bg-[#080808] flex flex-col items-center justify-center p-6 select-none"
+          className="fixed inset-0 z-[99999] bg-[#000000] flex flex-col items-center justify-center p-6 select-none"
         >
           {/* Subtle Background Glow */}
           <div className="absolute w-96 h-96 rounded-full bg-[#C7A46A]/5 blur-3xl pointer-events-none" />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-center relative z-10"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center relative z-10 flex flex-col items-center justify-center"
           >
-            <div className="text-4xl md:text-5xl font-sculptural tracking-[0.25em] text-[#C7A46A] font-bold mb-3">
-              RFR
-            </div>
-            <div className="text-xs md:text-sm font-sans tracking-[0.35em] text-[#FAF9F6]/80 uppercase font-light">
-              RIYAS FASHION RUNWAY
-            </div>
+            <img
+              src="/images/final bro.png"
+              alt="RFR by Riyas — Official Site Logo"
+              className="w-64 sm:w-80 md:w-[460px] max-w-[88vw] h-auto object-contain select-none"
+              draggable={false}
+            />
           </motion.div>
 
           {/* Luxury Progress Bar */}

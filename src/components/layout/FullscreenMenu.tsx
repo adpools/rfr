@@ -207,12 +207,14 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
           {/* Top Bar */}
           <div className="z-20 bg-transparent px-6 md:px-16 py-6 border-b border-neutral-900 flex items-center justify-between w-full">
             <div className="flex items-center">
-              <Link href="/" onClick={onClose} className="group flex items-center gap-4 no-underline">
-                <span className="font-serif text-2xl font-bold text-[#C7A46A] group-hover:text-white transition-colors">
-                  RFR
-                </span>
-                <span className="text-[10px] md:text-[11px] tracking-[0.25em] text-neutral-500 uppercase font-mono hidden sm:inline">
-                  BY RIYAS • ECOSYSTEM DIRECTORY
+              <Link href="/" onClick={onClose} className="group flex items-center gap-3 no-underline">
+                <img
+                  src="/images/final bro.png"
+                  alt="RFR by Riyas"
+                  className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+                <span className="font-sculptural text-lg md:text-xl font-bold tracking-[0.25em] text-[#F4F1EA] group-hover:text-[#C7A46A] transition-colors uppercase">
+                  RFR BY RIYAS
                 </span>
               </Link>
             </div>
@@ -387,11 +389,11 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({ isOpen, onClose 
           <div className="bg-[#050505] border-t border-neutral-900 px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
             <div className="flex flex-wrap items-center gap-6">
               <a
-                href="mailto:partnerships@rfrbyriyas.com"
-                className="flex items-center gap-2 hover:text-[#C7A46A] transition-colors"
+                href="mailto:advriyas@gmail.com"
+                className="flex items-center gap-2 hover:text-[#C7A46A] transition-colors font-sans lowercase"
               >
                 <Mail size={14} className="text-[#C7A46A]" />
-                <span>partnerships@rfrbyriyas.com</span>
+                <span className="font-sans lowercase">advriyas@gmail.com</span>
               </a>
               <span className="hidden sm:inline text-neutral-800">•</span>
               <a

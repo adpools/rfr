@@ -58,7 +58,12 @@ export const Navbar: React.FC = () => {
         className="fixed left-1/2 -translate-x-1/2 z-[8000] transition-all duration-700 w-[94%] max-w-7xl rounded-full flex items-center justify-between top-4 py-3 px-6 md:px-8 bg-[#0B0B0B]/90 backdrop-blur-xl border border-[#333] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
       >
         {/* Brand Monogram & Title */}
-        <Link href="/" className="group flex items-center gap-3 no-underline">
+        <Link href="/" className="group flex items-center gap-3 no-underline shrink-0" aria-label="RFR by Riyas Home">
+          <img
+            src="/images/final bro.png"
+            alt="RFR by Riyas"
+            className="h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
           <div className="flex flex-col">
             <span className="font-sculptural text-base md:text-lg font-bold tracking-[0.25em] text-[#F4F1EA] group-hover:text-[#C7A46A] transition-colors uppercase">
               RFR BY RIYAS

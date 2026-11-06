@@ -104,10 +104,10 @@ export const TimelinePreviewSection: React.FC = () => {
             {/* Left: Narrative */}
             <div className="lg:col-span-6 flex flex-col justify-center">
               <div className="flex items-center gap-5 mb-10">
-                <span className="text-6xl sm:text-7xl lg:text-[100px] font-serif text-[#C7A46A] font-medium tracking-tighter leading-none">
+                <span className="text-6xl sm:text-7xl lg:text-[100px] font-serif text-[#C7A46A] font-medium tracking-tighter leading-none shrink-0 min-w-[130px] sm:min-w-[160px] lg:min-w-[220px]">
                   {activeData.year}
                 </span>
-                <div className="h-14 w-[1px] bg-neutral-800" />
+                <div className="h-14 w-[1px] bg-neutral-800 shrink-0" />
                 <div className="flex flex-col justify-center gap-2">
                   <span className="text-[10px] font-mono text-[#8C8A85] uppercase tracking-widest block">
                     THEME
@@ -119,10 +119,10 @@ export const TimelinePreviewSection: React.FC = () => {
               </div>
 
               <div className="mb-10">
-                <h3 className="text-3xl sm:text-4xl font-serif text-[#F4F1EA] uppercase mb-5 leading-[1.15] tracking-tight">
+                <h3 className="text-3xl sm:text-4xl font-serif text-[#F4F1EA] uppercase mb-5 leading-[1.15] tracking-tight min-h-[4rem] sm:min-h-[4.5rem] flex items-center">
                   {activeEvent?.name || activeData.title}
                 </h3>
-                <p className="text-[13px] sm:text-[15px] text-[#A09D96] font-light leading-relaxed max-w-lg">
+                <p className="text-[13px] sm:text-[15px] text-[#A09D96] font-light leading-relaxed max-w-lg min-h-[4.5rem]">
                   {activeEvent?.description || activeData.description}
                 </p>
               </div>

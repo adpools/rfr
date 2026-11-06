@@ -57,18 +57,24 @@ export const Footer: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(199,164,106,0.03)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="editorial-container relative z-10">
-        {/* Massive Brand Typography Header */}
-        <div className="flex flex-col items-center justify-center mb-20">
-          <h2 className="text-[12vw] md:text-[8vw] font-sculptural font-bold leading-none text-[#101010] tracking-tighter w-full text-center select-none" style={{ WebkitTextStroke: '1px rgba(199,164,106,0.15)' }}>
-            RIYAS FASHION RUNWAY
-          </h2>
+        {/* Large Glossy Gold RFR Luxury Branding Area */}
+        <div className="flex flex-col items-center justify-center mb-16 md:mb-24 py-2 relative">
+          {/* Subtle elegant ambient golden glow */}
+          <div className="absolute w-[380px] sm:w-[500px] md:w-[650px] lg:w-[750px] h-[380px] sm:h-[500px] md:h-[650px] lg:h-[750px] rounded-full bg-[#C7A46A]/10 blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
+
+          <img
+            src="/images/final bro.png"
+            alt="RFR by Riyas — Official Luxury Logo"
+            className="w-64 sm:w-80 md:w-[480px] lg:w-[580px] xl:w-[640px] max-w-[92vw] h-auto object-contain relative z-10 select-none drop-shadow-[0_0_40px_rgba(199,164,106,0.25)]"
+            draggable={false}
+          />
         </div>
 
         {/* Top Info & Socials */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 pb-16 border-b border-white/5">
           <div className="max-w-md">
             <Link href="/" className="inline-block mb-4">
-              <span className="font-sculptural text-3xl font-bold tracking-widest text-white transition-colors">
+              <span className="font-sculptural text-2xl sm:text-3xl font-bold tracking-widest text-white hover:text-[#C7A46A] transition-colors">
                 RFR BY RIYAS
               </span>
             </Link>

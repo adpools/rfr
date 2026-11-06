@@ -110,8 +110,11 @@ export const ContactSection: React.FC = () => {
                 {/* Email Direct Desk */}
                 <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
                   <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Direct Desk</span>
-                  <a href="mailto:partnerships@rfrbyriyas.com" className="text-lg font-serif text-[#F4F1EA] hover:text-white transition-colors">
-                    partnerships@rfrbyriyas.com
+                  <a
+                    href="mailto:advriyas@gmail.com"
+                    className="text-base sm:text-lg font-sans lowercase text-[#F4F1EA] hover:text-[#C7A46A] transition-colors tracking-normal block"
+                  >
+                    advriyas@gmail.com
                   </a>
                 </div>
 
