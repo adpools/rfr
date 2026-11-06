@@ -48,6 +48,36 @@ export const ClientsSection: React.FC = () => {
       logo: '/logo/w-logo.png',
       badge: 'FASHION'
     },
+    {
+      name: 'ATHER ENERGY',
+      category: 'Electric Mobility & Ad Campaigns',
+      logo: '/logo/ather-transparent.png',
+      badge: 'EV MOBILITY'
+    },
+    {
+      name: 'BUILD HUB',
+      category: 'Commercial Ads & Architecture',
+      logo: '/logo/buildhub-transparent.png',
+      badge: 'COMMERCIAL'
+    },
+    {
+      name: 'INDUS MOTORS',
+      category: 'Automotive Network & Sales',
+      logo: '/logo/indus-motors-transparent.png',
+      badge: 'AUTOMOTIVE'
+    },
+    {
+      name: 'IMPERIAL KITCHEN',
+      category: 'Culinary Arts & Event Hospitality',
+      logo: '/logo/imperial-kitchen-transparent.png',
+      badge: 'HOSPITALITY'
+    },
+    {
+      name: 'HYCINTH HOTELS',
+      category: 'Luxury Venues & VIP Galas',
+      logo: '/logo/hycinth-logo.svg',
+      badge: 'LUXURY VENUE'
+    },
   ];
 
   return (
@@ -93,25 +123,25 @@ export const ClientsSection: React.FC = () => {
         </div>
 
         {/* Featured Client Logos Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-4 lg:gap-5 mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-5 mb-16">
           {featuredBrands.map((b, idx) => (
             <motion.div
               key={b.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
               className="p-6 rounded-[22px] bg-[#121212] backdrop-blur-md border border-neutral-800 shadow-xl hover:border-[#C7A46A]/70 transition-all duration-500 hover:-translate-y-1.5 text-center flex flex-col justify-between items-center min-h-[210px] group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#C7A46A]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
+
               {/* Badge */}
               <div className="w-full flex justify-between items-center mb-2 relative z-10">
                 <span className="text-[9px] font-mono font-bold text-[#C7A46A] uppercase tracking-[0.2em]">
                   {b.badge}
                 </span>
                 <span className="text-[10px] font-mono font-medium text-neutral-400">
-                  0{idx + 1}
+                  {idx < 9 ? '0' : ''}{idx + 1}
                 </span>
               </div>
 

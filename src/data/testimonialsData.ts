@@ -25,6 +25,22 @@ export const testimonialsData: TestimonialItem[] = [
       'Event Jury & Judging Panel',
       'Commercial Ad Shoots'
     ]
+  },
+  {
+    id: 'shalini-sharma',
+    name: 'Shalini Sharma',
+    designation: 'Fashion Model / Influencer / Core Team, DISHNA',
+    image: '/images/influencers/shalini-sharma.jpg',
+    quoteParagraphs: [
+      'It has been a wonderful experience working with Riyaz. We have had the opportunity to be part of several fashion shows, photoshoots, and also work together as part of the core team of DISHNA.',
+      'It has always been a pleasure to collaborate with him. His dedication, creativity, and passion for his work make every experience special. Beyond work, he is also a dear friend, always supportive, genuine, and a wonderful person to be around.',
+      'Grateful for all the beautiful experiences and memories we have shared, and looking forward to many more opportunities to work together in the future.'
+    ],
+    brandHighlights: [
+      'Fashion Shows & Runways',
+      'Editorial Photoshoots',
+      'Core Team, DISHNA'
+    ]
   }
 ];
 

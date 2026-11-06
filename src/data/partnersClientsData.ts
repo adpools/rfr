@@ -115,18 +115,44 @@ export const clientsAndPartnersList: ClientPartner[] = [
     name: 'ATHER ENERGY',
     category: 'Automotive & Mobility',
     description: 'Sustainable EV mobility reels, urban commute storytelling, and holiday festive ad campaigns.',
-    type: 'client'
+    type: 'client',
+    logo: '/logo/ather-transparent.png'
   },
   {
     id: 'c-buildhub',
     name: 'BUILD HUB',
     category: 'Commercial Films & Ads',
     description: 'Architectural video commercials and interior lifestyle showcase campaigns.',
-    type: 'client'
+    type: 'client',
+    logo: '/logo/buildhub-transparent.png'
+  },
+  {
+    id: 'c-indus',
+    name: 'INDUS MOTORS',
+    category: 'Automotive & Mobility',
+    description: 'Premier automotive sales and commercial mobility network brand partnerships across South India.',
+    type: 'client',
+    logo: '/logo/indus-motors-transparent.png'
+  },
+  {
+    id: 'c-imperia',
+    name: 'IMPERIAL KITCHEN',
+    category: 'Hospitality & Luxury Venues',
+    description: 'Authentic South Indian culinary feasts and premier lifestyle hospitality gatherings.',
+    type: 'client',
+    logo: '/logo/imperial-kitchen-transparent.png'
+  },
+  {
+    id: 'c-hycinth',
+    name: 'HYCINTH HOTELS',
+    category: 'Hospitality & Luxury Venues',
+    description: 'Five-star luxury hospitality, celebrity gala countdowns, and VIP destination brand showcases.',
+    type: 'client',
+    logo: '/logo/hycinth-logo.svg'
   },
   
   { id: 'p1', name: 'Manorama Music', category: 'Media Houses & Press Portals', type: 'partner' },
-  { id: 'p2', name: 'Hycinth Hotels Trivandrum', category: 'Premium Luxury Venues & Spaces', type: 'partner' },
+  { id: 'p2', name: 'Hycinth Hotels Trivandrum', category: 'Premium Luxury Venues & Spaces', type: 'partner', logo: '/logo/hycinth-logo.svg' },
   { id: 'p3', name: 'The Fourth News', category: 'Media Houses & Press Portals', type: 'partner' },
   { id: 'p4', name: 'Chakita Haute Couture', category: 'Production & Cinematography Teams', type: 'partner' },
   { id: 'p5', name: 'Citi Kids Foundation', category: 'Talent & Artist Representation Guilds', type: 'partner' },

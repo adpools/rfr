@@ -33,19 +33,19 @@ export const ClientsPage: React.FC = () => {
             <div className="flex-1 h-[1px] bg-neutral-800" />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-5">
             {logoClients.map((client, idx) => (
               <motion.div
                 key={client.id}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
                 className="p-6 rounded-2xl bg-[#141414] border border-neutral-800 hover:border-[#C7A46A]/70 shadow-xl transition-all duration-300 flex flex-col justify-between items-center min-h-[220px] group"
               >
                 <div className="w-full flex justify-between items-center text-[10px] font-mono font-medium text-neutral-400">
                   <span className="text-[#C7A46A] font-bold">{client.category}</span>
-                  <span>0{idx + 1}</span>
+                  <span>{idx < 9 ? '0' : ''}{idx + 1}</span>
                 </div>
 
                 <div className="w-full h-20 flex items-center justify-center my-3 group-hover:scale-105 transition-transform">

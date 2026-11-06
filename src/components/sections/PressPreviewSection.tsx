@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
-import { ArrowUpRight, Maximize2, X, ChevronLeft, ChevronRight, Newspaper } from 'lucide-react';
+import { ArrowUpRight, Maximize2, X, ChevronLeft, ChevronRight, Newspaper, ExternalLink } from 'lucide-react';
 
 interface HomepagePressFeature {
   id: string;
@@ -9,9 +9,18 @@ interface HomepagePressFeature {
   category: string;
   details: string;
   image: string;
+  articleUrl?: string;
 }
 
 const majorPressFeatures: HomepagePressFeature[] = [
+  {
+    id: 'press-success-kerala',
+    publication: 'Success Kerala',
+    category: 'Success Story',
+    details: "പാഷനുണ്ടോ? വിജയം താനേ വരും! ഇത് 'സർട്ടിഫൈഡ്' ഉറപ്പ്...! • Do You Have Passion? Success Will Come",
+    image: '/news%20and%20press/WhatsApp%20Image%202026-11-06%20at%2010.53.08%20AM%20(1).jpeg',
+    articleUrl: 'https://successkerala.com/do-you-have-passion-success-will-come-this-is-a-certified-guarantee/'
+  },
   {
     id: 'press-asianet',
     publication: 'Asianet News',
@@ -134,58 +143,109 @@ export const PressPreviewSection: React.FC = () => {
         </div>
 
         {/* Premium Press Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {majorPressFeatures.map((item, idx) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-5%' }}
-              transition={{ duration: 0.5, delay: idx * 0.06 }}
-              onClick={() => setSelectedIdx(idx)}
-              className="bg-[#121212] border border-neutral-800 hover:border-[#C7A46A]/80 rounded-[22px] overflow-hidden transition-all duration-300 group flex flex-col cursor-pointer shadow-xl hover:shadow-[0_12px_32px_rgba(199,164,106,0.12)] hover:-translate-y-1"
-            >
-              {/* Image Frame */}
-              <div className="w-full h-64 sm:h-68 relative bg-[#0a0a0a] overflow-hidden flex items-center justify-center">
-                <img
-                  src={item.image}
-                  alt={item.publication}
-                  className="w-full h-full object-cover object-top filter brightness-90 group-hover:brightness-100 group-hover:scale-105 transition-all duration-500 ease-out"
-                  loading="lazy"
-                />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {majorPressFeatures.map((item, idx) => {
+            const hasExternalUrl = !!item.articleUrl;
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-5%' }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                className="bg-[#121212] border border-neutral-800 hover:border-[#C7A46A]/80 rounded-[22px] overflow-hidden transition-all duration-300 group flex flex-col shadow-xl hover:shadow-[0_12px_32px_rgba(199,164,106,0.12)] hover:-translate-y-1 relative"
+              >
+                {/* Image Frame */}
+                <div
+                  className="w-full h-64 sm:h-68 relative bg-[#0a0a0a] overflow-hidden flex items-center justify-center cursor-pointer"
+                  onClick={() => {
+                    if (hasExternalUrl && item.articleUrl) {
+                      window.open(item.articleUrl, '_blank', 'noopener,noreferrer');
+                    } else {
+                      setSelectedIdx(idx);
+                    }
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.publication}
+                    className="w-full h-full object-cover object-top filter brightness-90 group-hover:brightness-100 group-hover:scale-105 transition-all duration-500 ease-out"
+                    loading="lazy"
+                  />
 
-                {/* Category Pill */}
-                <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-[9px] font-mono uppercase tracking-widest bg-black/80 border border-white/10 text-[#C7A46A] backdrop-blur-md z-10 shadow-md">
-                  {item.category}
-                </span>
-
-                {/* Hover Expand Overlay */}
-                <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                  <span className="px-4 py-2 rounded-full bg-[#121212]/95 border border-[#C7A46A]/80 text-[#F4F1EA] text-[11px] font-mono tracking-wider flex items-center gap-2 shadow-2xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <Maximize2 size={13} className="text-[#C7A46A]" />
-                    <span>VIEW CLIPPING</span>
+                  {/* Category Pill */}
+                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-[9px] font-mono uppercase tracking-widest bg-black/80 border border-white/10 text-[#C7A46A] backdrop-blur-md z-10 shadow-md">
+                    {item.category}
                   </span>
-                </div>
-              </div>
 
-              {/* Card Meta */}
-              <div className="p-5 flex flex-col justify-between flex-1 border-t border-neutral-800/80 bg-[#121212]">
-                <div>
-                  <h3 className="text-base sm:text-lg font-sculptural font-bold text-white group-hover:text-[#C7A46A] transition-colors mb-1.5 uppercase tracking-wide truncate">
-                    {item.publication}
-                  </h3>
-                  <p className="text-[11px] sm:text-xs text-[#A09D96] font-sans line-clamp-2 leading-relaxed">
-                    {item.details}
-                  </p>
+                  {/* Lightbox Quick-view Button (if external) */}
+                  {hasExternalUrl && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedIdx(idx);
+                      }}
+                      className="absolute top-3 right-3 p-2 rounded-full bg-black/80 border border-white/10 text-white/80 hover:text-[#C7A46A] backdrop-blur-md z-10 shadow-md hover:scale-110 transition-all"
+                      title="Enlarge Clipping"
+                      aria-label="Enlarge Clipping"
+                    >
+                      <Maximize2 size={13} />
+                    </button>
+                  )}
+
+                  {/* Hover Expand Overlay */}
+                  <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                    {hasExternalUrl ? (
+                      <span className="px-4 py-2 rounded-full bg-[#121212]/95 border border-[#C7A46A]/80 text-[#F4F1EA] text-[11px] font-mono tracking-wider flex items-center gap-2 shadow-2xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        <ExternalLink size={13} className="text-[#C7A46A]" />
+                        <span>READ FULL ARTICLE</span>
+                      </span>
+                    ) : (
+                      <span className="px-4 py-2 rounded-full bg-[#121212]/95 border border-[#C7A46A]/80 text-[#F4F1EA] text-[11px] font-mono tracking-wider flex items-center gap-2 shadow-2xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        <Maximize2 size={13} className="text-[#C7A46A]" />
+                        <span>VIEW CLIPPING</span>
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-neutral-800/50 flex items-center justify-between text-[10px] font-mono text-neutral-400 group-hover:text-[#C7A46A] transition-colors">
-                  <span>PRESS ARCHIVE</span>
-                  <ArrowUpRight size={14} className="text-[#C7A46A] opacity-70 group-hover:opacity-100 transition-opacity" />
+                {/* Card Meta */}
+                <div className="p-5 flex flex-col justify-between flex-1 border-t border-neutral-800/80 bg-[#121212]">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-sculptural font-bold text-white group-hover:text-[#C7A46A] transition-colors mb-1.5 uppercase tracking-wide truncate">
+                      {item.publication}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-[#A09D96] font-sans line-clamp-2 leading-relaxed">
+                      {item.details}
+                    </p>
+                  </div>
+
+                  {hasExternalUrl && item.articleUrl ? (
+                    <a
+                      href={item.articleUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 pt-3 border-t border-neutral-800/50 flex items-center justify-between text-[10px] font-mono font-bold text-[#C7A46A] hover:text-white transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="tracking-wider">READ ONLINE FEATURE</span>
+                      <ExternalLink size={14} className="text-[#C7A46A]" />
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedIdx(idx)}
+                      className="mt-4 pt-3 border-t border-neutral-800/50 flex items-center justify-between text-[10px] font-mono text-neutral-400 group-hover:text-[#C7A46A] transition-colors w-full text-left"
+                    >
+                      <span>PRESS ARCHIVE</span>
+                      <ArrowUpRight size={14} className="text-[#C7A46A] opacity-70 group-hover:opacity-100 transition-opacity" />
+                    </button>
+                  )}
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* View All Button Centered at Bottom */}
@@ -294,14 +354,27 @@ export const PressPreviewSection: React.FC = () => {
                 <span>
                   Clipping {selectedIdx + 1} of {majorPressFeatures.length}
                 </span>
-                <Link
-                  href="/press"
-                  className="text-[#C7A46A] hover:underline flex items-center gap-1.5"
-                  onClick={() => setSelectedIdx(null)}
-                >
-                  <span>Open Full Archive</span>
-                  <ArrowUpRight size={13} />
-                </Link>
+                <div className="flex items-center gap-4">
+                  {activeItem.articleUrl && (
+                    <a
+                      href={activeItem.articleUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#C7A46A] hover:underline flex items-center gap-1.5 font-bold"
+                    >
+                      <span>Read Online Article</span>
+                      <ExternalLink size={13} />
+                    </a>
+                  )}
+                  <Link
+                    href="/press"
+                    className="text-neutral-300 hover:text-[#C7A46A] hover:underline flex items-center gap-1.5"
+                    onClick={() => setSelectedIdx(null)}
+                  >
+                    <span>Open Full Archive</span>
+                    <ArrowUpRight size={13} />
+                  </Link>
+                </div>
               </div>
             </motion.div>
           </motion.div>
