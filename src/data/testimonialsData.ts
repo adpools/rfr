@@ -2,6 +2,8 @@ export interface TestimonialItem {
   id: string;
   name: string;
   designation: string;
+  position?: string;
+  organisation?: string;
   quoteParagraphs: string[];
   image: string;
   brandHighlights?: string[];
@@ -40,6 +42,24 @@ export const testimonialsData: TestimonialItem[] = [
       'Fashion Shows & Runways',
       'Editorial Photoshoots',
       'Core Team, DISHNA'
+    ]
+  },
+  {
+    id: 'anu',
+    name: 'Anu',
+    designation: 'Celebrity Fashion Designer & Style Consultant',
+    position: 'Founder & Managing Director',
+    organisation: 'ToU|By Aanu — Aanu Designs Pvt. Ltd.',
+    image: '/images/influencers/aanu.jpeg',
+    quoteParagraphs: [
+      'It has always been a pleasure associating with Riyaz, from my early collaborations at his events to being invited as a celebrity guest and serving on various judging panels. Having witnessed his journey over the years, what truly stands out is his passion, dedication and relentless hard work in building a name for himself. Every event he curates reflects his creativity, attention to detail and ability to bring people together.',
+      'One of his most remarkable initiatives is the Trivandrum Influencer Circle, a wonderful platform connecting talent, creativity and opportunities. It is inspiring to see how he has transformed his passion into a purposeful and successful journey. Beyond his professional achievements, Riyaz is a wonderful friend and a genuinely supportive person.',
+      'I am delighted to have been part of his journey and look forward to seeing him achieve even greater milestones.'
+    ],
+    brandHighlights: [
+      'Founder & Managing Director',
+      'ToU|By Aanu — Aanu Designs Pvt. Ltd.',
+      'Trivandrum Influencer Circle'
     ]
   }
 ];

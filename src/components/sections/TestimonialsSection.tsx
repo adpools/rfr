@@ -159,6 +159,11 @@ export const TestimonialsSection: React.FC = () => {
                     <p className="text-xs font-mono text-neutral-300 mt-1">
                       {item.designation}
                     </p>
+                    {(item.position || item.organisation) && (
+                      <p className="text-[11px] font-mono text-neutral-400 mt-0.5">
+                        {[item.position, item.organisation].filter(Boolean).join(' • ')}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -175,9 +180,16 @@ export const TestimonialsSection: React.FC = () => {
                   <h3 className="text-3xl sm:text-4xl font-serif text-white uppercase tracking-tight mb-2">
                     {item.name}
                   </h3>
-                  <p className="text-xs sm:text-sm font-mono text-[#C7A46A] uppercase tracking-widest mb-6 font-semibold">
-                    {item.designation}
-                  </p>
+                  <div className="mb-6">
+                    <p className="text-xs sm:text-sm font-mono text-[#C7A46A] uppercase tracking-widest font-semibold">
+                      {item.designation}
+                    </p>
+                    {(item.position || item.organisation) && (
+                      <p className="text-xs font-mono text-neutral-400 tracking-wider mt-1">
+                        {[item.position, item.organisation].filter(Boolean).join(' • ')}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Preserved Testimonial Paragraphs */}
                   <div className="space-y-4 text-neutral-300 text-sm sm:text-base md:text-lg font-light leading-relaxed">
