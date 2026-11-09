@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Menu, X, Compass, ChevronDown } from 'lucide-react';
 import { FullscreenMenu } from './FullscreenMenu';
+import { getWebsiteSettings } from '../../services/cmsService';
 
 export const Navbar: React.FC = () => {
   const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [brandLogo, setBrandLogo] = useState('/images/final bro.png');
+  const [brandTitle, setBrandTitle] = useState('RFR BY RIYAS');
+
+  useEffect(() => {
+    getWebsiteSettings().then((settings) => {
+      if (settings?.official_logo_url) setBrandLogo(settings.official_logo_url);
+      if (settings?.site_title) setBrandTitle(settings.site_title);
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,13 +70,13 @@ export const Navbar: React.FC = () => {
         {/* Brand Monogram & Title */}
         <Link href="/" className="group flex items-center gap-3 no-underline shrink-0" aria-label="RFR by Riyas Home">
           <img
-            src="/images/final bro.png"
-            alt="RFR by Riyas"
+            src={brandLogo}
+            alt={brandTitle}
             className="h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
           />
           <div className="flex flex-col">
             <span className="font-sculptural text-base md:text-lg font-bold tracking-[0.25em] text-[#F4F1EA] group-hover:text-[#C7A46A] transition-colors uppercase">
-              RFR BY RIYAS
+              {brandTitle}
             </span>
           </div>
         </Link>

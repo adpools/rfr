@@ -23,7 +23,8 @@ import {
   X, 
   ExternalLink,
   ChevronRight,
-  Database
+  Database,
+  BookOpen
 } from 'lucide-react';
 
 export type AdminModuleTab = 
@@ -35,6 +36,7 @@ export type AdminModuleTab =
   | 'models'
   | 'influencers'
   | 'testimonials'
+  | 'blog'
   | 'press'
   | 'clients'
   | 'tic'
@@ -74,12 +76,18 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
       ],
     },
     {
+      group: 'Editorial & Publishing',
+      items: [
+        { id: 'blog' as AdminModuleTab, label: 'Blog & Articles', icon: BookOpen },
+        { id: 'press' as AdminModuleTab, label: 'Press & Clippings', icon: Newspaper },
+      ],
+    },
+    {
       group: 'Guilds & Endorsements',
       items: [
         { id: 'models' as AdminModuleTab, label: 'Models Guild', icon: Users },
         { id: 'influencers' as AdminModuleTab, label: 'Influencer Network', icon: Radio },
         { id: 'testimonials' as AdminModuleTab, label: 'Testimonials', icon: Quote },
-        { id: 'press' as AdminModuleTab, label: 'News & Press', icon: Newspaper },
         { id: 'clients' as AdminModuleTab, label: 'Partners & Clients', icon: Briefcase },
         { id: 'tic' as AdminModuleTab, label: 'TIC Ecosystem', icon: Radio },
       ],

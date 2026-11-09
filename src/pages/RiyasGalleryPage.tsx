@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import {
   Sparkles,
   Camera,
@@ -100,7 +101,35 @@ const riyasImages: RiyasImageItem[] = [
 ];
 
 export const RiyasGalleryPage: React.FC = () => {
+  const [images, setImages] = useState<RiyasImageItem[]>(riyasImages);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      if (!isSupabaseConfigured) return;
+      try {
+        const { data, error } = await supabase
+          .from('riyas_gallery_items')
+          .select('*')
+          .eq('is_published', true)
+          .order('sort_order', { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          const cmsImages: RiyasImageItem[] = data.map((item: any) => ({
+            id: item.id || `cms-${item.title}`,
+            src: item.image || item.image_url,
+            alt: item.caption || item.title || 'Riyas gallery portrait',
+            orientation: (item.orientation === 'landscape' ? 'landscape' : 'portrait') as 'landscape' | 'portrait',
+          }));
+          setImages([...cmsImages, ...riyasImages]);
+        }
+      } catch {
+        // Fallback to local images
+      }
+    };
+
+    fetchGallery();
+  }, []);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -109,19 +138,19 @@ export const RiyasGalleryPage: React.FC = () => {
       if (e.key === 'Escape') {
         setSelectedImageIndex(null);
       } else if (e.key === 'ArrowRight') {
-        setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % riyasImages.length : null));
+        setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % images.length : null));
       } else if (e.key === 'ArrowLeft') {
         setSelectedImageIndex((prev) =>
-          prev !== null ? (prev - 1 + riyasImages.length) % riyasImages.length : null
+          prev !== null ? (prev - 1 + images.length) % images.length : null
         );
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImageIndex]);
+  }, [selectedImageIndex, images.length]);
 
-  const activeImage = selectedImageIndex !== null ? riyasImages[selectedImageIndex] : null;
+  const activeImage = selectedImageIndex !== null ? images[selectedImageIndex] : null;
 
   return (
     <PageWrapper
@@ -148,7 +177,7 @@ export const RiyasGalleryPage: React.FC = () => {
 
           <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-mono text-neutral-400">
             <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-[#C7A46A]">
-              ✦ {riyasImages.length} Curated Photographs
+              ✦ {images.length} Curated Photographs
             </span>
             <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-neutral-300">
               ✦ Original Master Quality
@@ -161,7 +190,7 @@ export const RiyasGalleryPage: React.FC = () => {
 
         {/* Spacious Masonry Photography Grid */}
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 sm:gap-8 space-y-6 sm:space-y-8">
-          {riyasImages.map((img, idx) => (
+          {images.map((img, idx) => (
             <motion.div
               key={img.id}
               initial={{ opacity: 0, y: 25 }}
@@ -189,7 +218,7 @@ export const RiyasGalleryPage: React.FC = () => {
                   </div>
                   <div className="flex items-center justify-between text-xs font-mono text-neutral-300">
                     <span className="text-[#C7A46A] font-bold tracking-widest">
-                      {String(idx + 1).padStart(2, '0')} / {String(riyasImages.length).padStart(2, '0')}
+                      {String(idx + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
                     </span>
                     <span className="uppercase tracking-wider text-[11px] text-white/80">
                       EXPAND PHOTO
@@ -260,7 +289,7 @@ export const RiyasGalleryPage: React.FC = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedImageIndex((prev) =>
-                    prev !== null ? (prev - 1 + riyasImages.length) % riyasImages.length : null
+                    prev !== null ? (prev - 1 + images.length) % images.length : null
                   );
                 }}
                 aria-label="Previous photograph"
@@ -290,7 +319,7 @@ export const RiyasGalleryPage: React.FC = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedImageIndex((prev) =>
-                    prev !== null ? (prev + 1) % riyasImages.length : null
+                    prev !== null ? (prev + 1) % images.length : null
                   );
                 }}
                 aria-label="Next photograph"
@@ -305,7 +334,7 @@ export const RiyasGalleryPage: React.FC = () => {
               className="w-full max-w-4xl mx-auto overflow-x-auto py-2 flex items-center justify-center gap-2 sm:gap-3"
               onClick={(e) => e.stopPropagation()}
             >
-              {riyasImages.map((img, i) => (
+              {images.map((img, i) => (
                 <button
                   key={img.id}
                   onClick={() => setSelectedImageIndex(i)}

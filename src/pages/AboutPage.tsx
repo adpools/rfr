@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { motion } from 'framer-motion';
 import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, Users, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'wouter';
 import { founderData } from '../data/founderData';
+import { getAboutRiyas } from '../services/cmsService';
 import { selectedWork, driveThumb, driveView } from '../data/selectedWorkData';
 
 export const AboutPage: React.FC = () => {
+  const [founder, setFounder] = useState({
+    name: founderData.name,
+    title: founderData.title,
+    portraitImage: founderData.portraitImage,
+    quote: 'Fashion is not merely what we wear; it is an architectural symphony of identity, passion and purpose.',
+  });
+
+  useEffect(() => {
+    getAboutRiyas().then((res) => {
+      if (res) {
+        setFounder({
+          name: res.founder_name || founderData.name,
+          title: res.official_title || founderData.title,
+          portraitImage: res.portrait_image || founderData.portraitImage,
+          quote: res.quote || 'Fashion is not merely what we wear; it is an architectural symphony of identity, passion and purpose.',
+        });
+      }
+    });
+  }, []);
 
   const pillars = [
     {
@@ -71,7 +91,7 @@ export const AboutPage: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-[#0d0d0d] border border-neutral-800 rounded-3xl p-8 lg:p-12">
               <div className="lg:col-span-5 h-96 lg:h-[480px] rounded-2xl overflow-hidden editorial-image-frame border border-[#C7A46A]/30 relative">
                 <img
-                  src={founderData.portraitImage}
+                  src={founder.portraitImage}
                   alt="Riyas — Co-Founder, Trivandrum Influencer Circle"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
@@ -95,7 +115,7 @@ export const AboutPage: React.FC = () => {
                   BIOGRAPHY & CREATIVE VISION
                 </h3>
                 <p className="text-[#C7A46A] font-mono text-xs uppercase tracking-widest">
-                  {founderData.title}
+                  {founder.title}
                 </p>
                 <p>
                   <strong className="text-white font-medium">Riyas</strong> is Co-Founder of <strong className="text-white font-medium">Trivandrum Influencer Circle</strong>. Since 2021 he has worked across influencer marketing, brand collaborations, events, advertising campaigns and creator-led content — including Max, Pothys Swarnamahal, Nissan, Toyota, Škoda, Ather, Citroën and Jeep campaigns, Koottam Flea Market, and the Rewind with Riyas podcast.

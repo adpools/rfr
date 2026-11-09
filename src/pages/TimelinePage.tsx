@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { timelineData } from '../data/timelineData';
-import { TimelineEventItem } from '../types';
+import { getTimelineYears } from '../services/cmsService';
+import { TimelineEventItem, TimelineYear } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, 
@@ -20,10 +21,19 @@ import {
 } from 'lucide-react';
 
 export const TimelinePage: React.FC = () => {
+  const [data, setData] = useState<TimelineYear[]>(timelineData);
   const [selectedYear, setSelectedYear] = useState<number | 'all'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeVideoEvent, setActiveVideoEvent] = useState<TimelineEventItem | null>(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(0);
+
+  useEffect(() => {
+    getTimelineYears().then((res) => {
+      if (res && res.length > 0) {
+        setData(res);
+      }
+    });
+  }, []);
 
   const handleOpenVideo = (event: TimelineEventItem) => {
     setActiveVideoEvent(event);
@@ -40,7 +50,7 @@ export const TimelinePage: React.FC = () => {
     { id: 'Podcast', label: 'Podcasts' },
   ];
 
-  const filteredYears = timelineData
+  const filteredYears = data
     .filter((item) => selectedYear === 'all' || item.year === selectedYear)
     .map((yearItem) => {
       const filteredEvents = yearItem.eventsList.filter((ev) => {
@@ -55,7 +65,7 @@ export const TimelinePage: React.FC = () => {
     })
     .filter((yearItem) => yearItem.eventsList.length > 0 || selectedCategory === 'all');
 
-  const totalEventsCount = timelineData.reduce((acc, curr) => acc + curr.eventsList.length, 0);
+  const totalEventsCount = data.reduce((acc, curr) => acc + (curr.eventsList ? curr.eventsList.length : 0), 0);
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -125,7 +135,7 @@ export const TimelinePage: React.FC = () => {
               >
                 All Years (2020–2026)
               </button>
-              {timelineData.map((item) => {
+              {data.map((item) => {
                 const isSelected = selectedYear === item.year;
                 return (
                   <button

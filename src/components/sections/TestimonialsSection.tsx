@@ -1,11 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Quote, Sparkles, Award, ChevronLeft, ChevronRight } from 'lucide-react';
-import { testimonialsData } from '../../data/testimonialsData';
+import { testimonialsData, TestimonialItem } from '../../data/testimonialsData';
+import { getTestimonials } from '../../services/cmsService';
 
 export const TestimonialsSection: React.FC = () => {
+  const [items, setItems] = useState<TestimonialItem[]>(testimonialsData);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getTestimonials().then((res) => {
+      if (res && res.length > 0) {
+        setItems(res);
+      }
+    });
+  }, []);
 
   const scrollTo = (index: number) => {
     if (!carouselRef.current) return;
@@ -23,7 +33,7 @@ export const TestimonialsSection: React.FC = () => {
   const scroll = (direction: 'left' | 'right') => {
     const nextIndex = direction === 'left'
       ? Math.max(0, currentIndex - 1)
-      : Math.min(testimonialsData.length - 1, currentIndex + 1);
+      : Math.min(items.length - 1, currentIndex + 1);
     scrollTo(nextIndex);
   };
 
@@ -127,7 +137,7 @@ export const TestimonialsSection: React.FC = () => {
           onScroll={handleScroll}
           className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pt-1 px-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full"
         >
-          {testimonialsData.map((item, idx) => (
+          {items.map((item, idx) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 25 }}
@@ -248,7 +258,7 @@ export const TestimonialsSection: React.FC = () => {
           {/* Slide Counter & Arrows */}
           <div className="flex items-center gap-4">
             <span className="text-xs font-mono text-neutral-400">
-              <span className="text-[#C7A46A] font-bold">0{currentIndex + 1}</span> / 0{testimonialsData.length}
+              <span className="text-[#C7A46A] font-bold">0{currentIndex + 1}</span> / 0{items.length}
             </span>
 
             <div className="flex items-center gap-2">
@@ -264,7 +274,7 @@ export const TestimonialsSection: React.FC = () => {
               <button
                 type="button"
                 onClick={() => scroll('right')}
-                disabled={currentIndex >= testimonialsData.length - 1}
+                disabled={currentIndex >= items.length - 1}
                 className="p-2.5 rounded-full border border-neutral-800 hover:border-[#C7A46A] bg-[#111111] hover:bg-[#C7A46A]/10 text-white disabled:opacity-30 disabled:pointer-events-none transition-all duration-300 shadow-md"
                 aria-label="Next Testimonial"
               >

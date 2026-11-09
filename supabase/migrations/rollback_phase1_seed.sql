@@ -1,5 +1,5 @@
 -- ==============================================================================
--- RFR BY RIYAS — PHASE 1 DETERMINISTIC & FAIL-CLOSED ROLLBACK SCRIPT (VERSION 17.10)
+-- RFR BY RIYAS — PHASE 1 DETERMINISTIC & FAIL-CLOSED ROLLBACK SCRIPT (VERSION 17.11)
 -- Target Schema: PostgreSQL 15+ / Supabase
 -- Operational Mode: ATOMIC TRANSACTION (BEGIN ... COMMIT)
 -- Object Identity Protection: Fail-Closed Ownership Ledger Verification
@@ -296,6 +296,75 @@ BEGIN
     END IF;
 
     RAISE NOTICE 'Ledger bootstrap verified: public._phase1_created_objects matches exact 10-column schema, types, nullability, defaults, PK on id, exact CHECK, complete index definition, 0 triggers, default-deny FORCE RLS, zero NULL/foreign migration_ids, zero duplicates, and exact 189-object distribution.';
+END $$;
+
+-- 9. Explicit Seed Table Identity Verification Gate:
+-- Verify that all 14 target seeded tables exist in the public schema and strictly conform
+-- to the expected seed identity structure: a single-column primary key named 'id' of type 'uuid'.
+-- Rejects composite primary keys, non-UUID primary keys, or altered identity columns before proceeding.
+DO $$
+DECLARE
+    v_seed_tables CONSTANT TEXT[] := ARRAY[
+        'timeline_years',
+        'timeline_events',
+        'gallery_categories',
+        'gallery_items',
+        'testimonials',
+        'partners_clients',
+        'press_articles',
+        'about_riyas',
+        'riyas_gallery_items',
+        'social_links',
+        'hero_banners',
+        'services_catalog',
+        'talent_guild_pillars',
+        'ecosystem_nodes'
+    ];
+    v_tbl TEXT;
+    v_pk_col_count INT;
+    v_pk_col_name TEXT;
+    v_pk_col_type TEXT;
+BEGIN
+    FOREACH v_tbl IN ARRAY v_seed_tables LOOP
+        -- Verify table exists in public schema
+        IF NOT EXISTS (
+            SELECT 1 FROM pg_class c
+            JOIN pg_namespace n ON c.relnamespace = n.oid
+            WHERE n.nspname = 'public' AND c.relname = v_tbl
+        ) THEN
+            RAISE EXCEPTION 'ROLLBACK_ABORTED (FAIL-CLOSED): Seed table public.% does not exist in database', v_tbl
+                USING ERRCODE = '55000';
+        END IF;
+
+        -- Verify exactly 1 primary key constraint on exactly 1 column named 'id'
+        SELECT count(*), min(att.attname::text)
+        INTO v_pk_col_count, v_pk_col_name
+        FROM pg_constraint con
+        JOIN pg_class c ON con.conrelid = c.oid
+        JOIN pg_namespace n ON c.relnamespace = n.oid
+        JOIN pg_attribute att ON att.attrelid = c.oid AND att.attnum = con.conkey[1]
+        WHERE n.nspname = 'public' AND c.relname = v_tbl
+          AND con.contype = 'p' AND array_length(con.conkey, 1) = 1;
+
+        IF v_pk_col_count != 1 OR v_pk_col_name != 'id' THEN
+            RAISE EXCEPTION 'ROLLBACK_ABORTED (FAIL-CLOSED): Seed table public.% does not conform to expected seed identity structure (expected single-column primary key on "id", found count: %, column: %)',
+                v_tbl, v_pk_col_count, v_pk_col_name
+                USING ERRCODE = '55000';
+        END IF;
+
+        -- Verify 'id' column data type is strictly uuid
+        SELECT data_type INTO v_pk_col_type
+        FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = v_tbl AND column_name = 'id';
+
+        IF v_pk_col_type != 'uuid' THEN
+            RAISE EXCEPTION 'ROLLBACK_ABORTED (FAIL-CLOSED): Primary key column "id" on seed table public.% must be of type "uuid" (found: %)',
+                v_tbl, v_pk_col_type
+                USING ERRCODE = '55000';
+        END IF;
+    END LOOP;
+
+    RAISE NOTICE 'Seed Table Identity Gate Passed: All 14 target seed tables confirmed to possess a single-column primary key on "id" of type "uuid".';
 END $$;
 
 -- ==============================================================================
@@ -736,14 +805,23 @@ BEGIN
     END IF;
 
     -- 10. Post-Restoration Assertion: Verify effective INSERT privileges match derived baseline expectations
+    -- Accounting for direct grants, PUBLIC grants, and PostgreSQL role memberships / inherited privileges
     v_expected_anon_insert := EXISTS (
         SELECT 1 FROM jsonb_array_elements(v_captured_acl) exp_item 
-        WHERE (exp_item->>'grantee_oid')::oid = v_anon_oid OR (exp_item->>'grantee_oid')::oid = 0
+        WHERE (exp_item->>'grantee_oid')::oid = 0
+           OR (
+               (exp_item->>'grantee_oid')::oid != 0 AND
+               pg_has_role(v_anon_oid, (exp_item->>'grantee_oid')::oid, 'MEMBER')
+           )
     );
 
     v_expected_auth_insert := EXISTS (
         SELECT 1 FROM jsonb_array_elements(v_captured_acl) exp_item 
-        WHERE (exp_item->>'grantee_oid')::oid = v_auth_oid OR (exp_item->>'grantee_oid')::oid = 0
+        WHERE (exp_item->>'grantee_oid')::oid = 0
+           OR (
+               (exp_item->>'grantee_oid')::oid != 0 AND
+               pg_has_role(v_auth_oid, (exp_item->>'grantee_oid')::oid, 'MEMBER')
+           )
     );
 
     IF has_table_privilege('anon', 'public.contact_inquiries', 'INSERT') != v_expected_anon_insert THEN
@@ -818,10 +896,6 @@ DECLARE
     v_curr_sig TEXT;
     v_edited_details TEXT[] := ARRAY[]::TEXT[];
     v_join_predicate TEXT;
-    v_parent_pk_cols TEXT[];
-    v_child_pk_cols TEXT[];
-    v_parent_pk_expr TEXT;
-    v_child_pk_expr TEXT;
     v_is_child_seeded BOOLEAN;
     v_query TEXT;
     rec RECORD;
@@ -932,27 +1006,6 @@ BEGIN
             ORDER BY k.ord
         ) cols;
 
-        -- Resolve all parent primary key columns dynamically from pg_constraint
-        SELECT array_agg(att.attname::text ORDER BY k.ord)
-        INTO v_parent_pk_cols
-        FROM pg_constraint pcon
-        JOIN LATERAL unnest(pcon.conkey) WITH ORDINALITY AS k(attnum, ord) ON true
-        JOIN pg_attribute att ON att.attrelid = rec.parent_oid AND att.attnum = k.attnum
-        WHERE pcon.conrelid = rec.parent_oid AND pcon.contype = 'p';
-
-        IF v_parent_pk_cols IS NULL OR array_length(v_parent_pk_cols, 1) = 0 THEN
-            RAISE EXCEPTION 'DEPENDENCY_SCANNER_ERROR (FAIL-CLOSED): Parent table %.% has no primary key. Cannot safely verify row identity; aborting.',
-                rec.parent_schema, rec.parent_table
-                USING ERRCODE = '55000';
-        END IF;
-
-        IF array_length(v_parent_pk_cols, 1) = 1 THEN
-            v_parent_pk_expr := format('parent.%I::text', v_parent_pk_cols[1]);
-        ELSE
-            SELECT format('ROW(%s)::text', string_agg('parent.' || quote_ident(c), ', '))
-            INTO v_parent_pk_expr
-            FROM unnest(v_parent_pk_cols) c;
-        END IF;
 
         -- Check whether child table itself is a seeded table from this migration
         SELECT EXISTS (
@@ -964,35 +1017,14 @@ BEGIN
         ) INTO v_is_child_seeded;
 
         IF v_is_child_seeded THEN
-            -- Child table is a seeded table: resolve all child primary key columns dynamically
-            SELECT array_agg(att.attname::text ORDER BY k.ord)
-            INTO v_child_pk_cols
-            FROM pg_constraint ccon
-            JOIN LATERAL unnest(ccon.conkey) WITH ORDINALITY AS k(attnum, ord) ON true
-            JOIN pg_attribute att ON att.attrelid = rec.child_oid AND att.attnum = k.attnum
-            WHERE ccon.conrelid = rec.child_oid AND ccon.contype = 'p';
-
-            IF v_child_pk_cols IS NULL OR array_length(v_child_pk_cols, 1) = 0 THEN
-                RAISE EXCEPTION 'DEPENDENCY_SCANNER_ERROR (FAIL-CLOSED): Seeded child table %.% has no primary key. Cannot safely verify row identity; aborting.',
-                    rec.child_schema, rec.child_table
-                    USING ERRCODE = '55000';
-            END IF;
-
-            IF array_length(v_child_pk_cols, 1) = 1 THEN
-                v_child_pk_expr := format('child.%I::text', v_child_pk_cols[1]);
-            ELSE
-                SELECT format('ROW(%s)::text', string_agg('child.' || quote_ident(c), ', '))
-                INTO v_child_pk_expr
-                FROM unnest(v_child_pk_cols) c;
-            END IF;
-
+            -- Child table is a verified seeded table (verified in Section 1 to have single-column PK on 'id' of type 'uuid'):
             -- Find any child records that reference a seeded parent but are NOT themselves recorded in the migration ledger
             v_query := format(
                 'SELECT count(*) FROM %I.%I child 
                  WHERE EXISTS (
                      SELECT 1 FROM %I.%I parent 
-                     WHERE %s IN (
-                         SELECT object_name FROM public._phase1_created_objects 
+                     WHERE parent.id IN (
+                         SELECT object_name::uuid FROM public._phase1_created_objects 
                          WHERE migration_id = ''20261107_phase1_hardened_seed'' 
                            AND object_type = ''SEED_RECORD'' 
                            AND schema_name = %L
@@ -1000,8 +1032,8 @@ BEGIN
                      )
                      AND %s
                  )
-                 AND %s NOT IN (
-                     SELECT object_name FROM public._phase1_created_objects 
+                 AND child.id NOT IN (
+                     SELECT object_name::uuid FROM public._phase1_created_objects 
                      WHERE migration_id = ''20261107_phase1_hardened_seed'' 
                        AND object_type = ''SEED_RECORD'' 
                        AND schema_name = %L
@@ -1009,21 +1041,19 @@ BEGIN
                  )',
                 rec.child_schema, rec.child_table,
                 rec.parent_schema, rec.parent_table,
-                v_parent_pk_expr,
                 rec.parent_schema, rec.parent_table,
                 v_join_predicate,
-                v_child_pk_expr,
                 rec.child_schema, rec.child_table
             );
         ELSE
-            -- Child table is NOT a seeded table (e.g. user-created table, junction table, table without ''id'', composite PK):
+            -- Child table is NOT a seeded table (e.g. user-created table, junction table, composite PK, table without ''id''):
             -- ANY row referencing a seeded parent row is an external user dependency!
             v_query := format(
                 'SELECT count(*) FROM %I.%I child 
                  WHERE EXISTS (
                      SELECT 1 FROM %I.%I parent 
-                     WHERE %s IN (
-                         SELECT object_name FROM public._phase1_created_objects 
+                     WHERE parent.id IN (
+                         SELECT object_name::uuid FROM public._phase1_created_objects 
                          WHERE migration_id = ''20261107_phase1_hardened_seed'' 
                            AND object_type = ''SEED_RECORD'' 
                            AND schema_name = %L
@@ -1033,7 +1063,6 @@ BEGIN
                  )',
                 rec.child_schema, rec.child_table,
                 rec.parent_schema, rec.parent_table,
-                v_parent_pk_expr,
                 rec.parent_schema, rec.parent_table,
                 v_join_predicate
             );
@@ -1201,38 +1230,51 @@ DROP FUNCTION IF EXISTS public.compute_migration_object_signature(TEXT, TEXT, TE
 DROP TABLE public._phase1_created_objects RESTRICT;
 
 -- ==============================================================================
--- SECTION 6: PROTECTED OBJECTS INTEGRITY ASSERTION GATE
--- Verifies that baseline CMS tables, admin permissions, and storage schemas
--- remain 100% intact after complete rollback teardown.
+-- SECTION 6: EXPANDED PROTECTED OBJECTS INTEGRITY ASSERTION GATE
+-- Verifies that baseline CMS tables, RLS states, functions, triggers, policies,
+-- admin permissions, and storage configuration remain 100% intact after complete teardown.
 -- ==============================================================================
 
 DO $$
 DECLARE
     v_missing_tables TEXT[];
+    v_disabled_rls TEXT[];
+    v_missing_funcs TEXT[];
+    v_missing_trigs TEXT[];
+    v_missing_pols TEXT[];
     v_admin_select BOOLEAN;
     v_admin_update BOOLEAN;
+    v_missing_buckets TEXT[];
 BEGIN
-    -- 1. Assert all 16 baseline CMS tables exist and are untouched
+    -- 1. Assert all 24 baseline CMS tables exist
     SELECT array_agg(t.tbl)
     INTO v_missing_tables
     FROM (
         SELECT unnest(ARRAY[
             'admin_users',
-            'admin_activity_logs',
             'website_settings',
-            'section_visibility',
+            'hero_banners',
+            'projects_portfolio',
             'timeline_years',
             'timeline_events',
+            'media_videos',
             'gallery_categories',
             'gallery_items',
+            'talent_models',
+            'talent_influencers',
             'testimonials',
-            'partners_clients',
             'press_articles',
+            'partners_clients',
+            'tic_content',
+            'tic_events',
             'about_riyas',
+            'team_members',
             'riyas_gallery_items',
+            'contact_inquiries',
             'social_links',
-            'hero_banners',
-            'contact_inquiries'
+            'section_visibility',
+            'seo_metadata',
+            'admin_activity_logs'
         ]::text[]) AS tbl
     ) t
     WHERE NOT EXISTS (
@@ -1247,7 +1289,103 @@ BEGIN
             USING ERRCODE = '55000';
     END IF;
 
-    -- 2. Assert admin_users permissions are intact
+    -- 2. Assert Row Level Security is enabled on all 24 baseline tables
+    SELECT array_agg(c.relname::text)
+    INTO v_disabled_rls
+    FROM pg_class c
+    JOIN pg_namespace n ON c.relnamespace = n.oid
+    WHERE n.nspname = 'public' 
+      AND c.relname = ANY(ARRAY[
+            'admin_users', 'website_settings', 'hero_banners', 'projects_portfolio',
+            'timeline_years', 'timeline_events', 'media_videos', 'gallery_categories',
+            'gallery_items', 'talent_models', 'talent_influencers', 'testimonials',
+            'press_articles', 'partners_clients', 'tic_content', 'tic_events',
+            'about_riyas', 'team_members', 'riyas_gallery_items', 'contact_inquiries',
+            'social_links', 'section_visibility', 'seo_metadata', 'admin_activity_logs'
+      ])
+      AND NOT c.relrowsecurity;
+
+    IF v_disabled_rls IS NOT NULL AND array_length(v_disabled_rls, 1) > 0 THEN
+        RAISE EXCEPTION 'PROTECTED_OBJECTS_VIOLATION (FAIL-CLOSED): Row Level Security disabled on baseline table(s): [%]',
+            array_to_string(v_disabled_rls, ', ')
+            USING ERRCODE = '55000';
+    END IF;
+
+    -- 3. Assert baseline security functions exist
+    SELECT array_agg(f.func)
+    INTO v_missing_funcs
+    FROM (
+        SELECT unnest(ARRAY[
+            'set_updated_at',
+            'prevent_log_tampering',
+            'protect_last_super_admin',
+            'is_admin',
+            'is_super_admin'
+        ]::text[]) AS func
+    ) f
+    WHERE NOT EXISTS (
+        SELECT 1 FROM pg_proc p
+        JOIN pg_namespace n ON p.pronamespace = n.oid
+        WHERE n.nspname = 'public' AND p.proname = f.func
+    );
+
+    IF v_missing_funcs IS NOT NULL AND array_length(v_missing_funcs, 1) > 0 THEN
+        RAISE EXCEPTION 'PROTECTED_OBJECTS_VIOLATION (FAIL-CLOSED): Baseline function(s) missing after rollback: [%]',
+            array_to_string(v_missing_funcs, ', ')
+            USING ERRCODE = '55000';
+    END IF;
+
+    -- 4. Assert critical baseline triggers exist
+    SELECT array_agg(tr.tg)
+    INTO v_missing_trigs
+    FROM (
+        SELECT unnest(ARRAY[
+            'trg_protect_last_super_admin',
+            'trg_admin_users_updated_at',
+            'trg_website_settings_updated_at',
+            'trg_timeline_years_updated_at'
+        ]::text[]) AS tg
+    ) tr
+    WHERE NOT EXISTS (
+        SELECT 1 FROM pg_trigger t
+        JOIN pg_class c ON t.tgrelid = c.oid
+        JOIN pg_namespace n ON c.relnamespace = n.oid
+        WHERE n.nspname = 'public' AND t.tgname = tr.tg
+    );
+
+    IF v_missing_trigs IS NOT NULL AND array_length(v_missing_trigs, 1) > 0 THEN
+        RAISE EXCEPTION 'PROTECTED_OBJECTS_VIOLATION (FAIL-CLOSED): Baseline trigger(s) missing after rollback: [%]',
+            array_to_string(v_missing_trigs, ', ')
+            USING ERRCODE = '55000';
+    END IF;
+
+    -- 5. Assert baseline security policies exist on contact_inquiries and admin_users
+    SELECT array_agg(p.pol)
+    INTO v_missing_pols
+    FROM (
+        SELECT unnest(ARRAY[
+            'Public can submit contact inquiries',
+            'Only super_admins can view and manage contact inquiries',
+            'Admins can view own record or super_admin view all',
+            'Only super_admins can insert admin_users',
+            'Only super_admins can update admin_users',
+            'Only super_admins can delete admin_users'
+        ]::text[]) AS pol
+    ) p
+    WHERE NOT EXISTS (
+        SELECT 1 FROM pg_policy pol
+        JOIN pg_class c ON pol.polrelid = c.oid
+        JOIN pg_namespace n ON c.relnamespace = n.oid
+        WHERE n.nspname = 'public' AND pol.polname = p.pol
+    );
+
+    IF v_missing_pols IS NOT NULL AND array_length(v_missing_pols, 1) > 0 THEN
+        RAISE EXCEPTION 'PROTECTED_OBJECTS_VIOLATION (FAIL-CLOSED): Baseline security policy missing after rollback: [%]',
+            array_to_string(v_missing_pols, ', ')
+            USING ERRCODE = '55000';
+    END IF;
+
+    -- 6. Assert admin_users permissions are intact
     v_admin_select := has_table_privilege('authenticated', 'public.admin_users', 'SELECT');
     v_admin_update := has_column_privilege('authenticated', 'public.admin_users', 'last_login_at', 'UPDATE');
 
@@ -1261,20 +1399,26 @@ BEGIN
             USING ERRCODE = '55000';
     END IF;
 
-    -- 3. Assert baseline contact policy exists and is intact
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_policy pol
-        JOIN pg_class c ON pol.polrelid = c.oid
-        JOIN pg_namespace n ON c.relnamespace = n.oid
-        WHERE n.nspname = 'public' 
-          AND c.relname = 'contact_inquiries' 
-          AND pol.polname = 'Public can submit contact inquiries'
-    ) THEN
-        RAISE EXCEPTION 'PROTECTED_OBJECTS_VIOLATION (FAIL-CLOSED): Baseline contact policy missing after rollback'
-            USING ERRCODE = '55000';
+    -- 7. Assert storage configuration is intact if storage schema is present
+    IF EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'storage') AND
+       EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON c.relnamespace = n.oid WHERE n.nspname = 'storage' AND c.relname = 'buckets') THEN
+        SELECT array_agg(b.b_name)
+        INTO v_missing_buckets
+        FROM (
+            SELECT unnest(ARRAY['rfr-media', 'rfr-documents']::text[]) AS b_name
+        ) b
+        WHERE NOT EXISTS (
+            SELECT 1 FROM storage.buckets WHERE id = b.b_name
+        );
+
+        IF v_missing_buckets IS NOT NULL AND array_length(v_missing_buckets, 1) > 0 THEN
+            RAISE EXCEPTION 'PROTECTED_OBJECTS_VIOLATION (FAIL-CLOSED): Baseline storage bucket(s) missing after rollback: [%]',
+                array_to_string(v_missing_buckets, ', ')
+                USING ERRCODE = '55000';
+        END IF;
     END IF;
 
-    RAISE NOTICE 'Protected Objects Integrity Gate Passed: All 16 baseline CMS tables, admin permissions, and baseline policies are 100%% intact.';
+    RAISE NOTICE 'Protected Objects Integrity Gate Passed: All 24 baseline CMS tables, RLS states, functions, triggers, policies, admin permissions, and storage settings are 100%% intact.';
 END $$;
 
 COMMIT;

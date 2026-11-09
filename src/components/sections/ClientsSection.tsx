@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Building2, ArrowUpRight, Sparkles } from 'lucide-react';
 import { clientCategories, clientsAndPartnersList } from '../../data/partnersClientsData';
+import { getPartnersClients } from '../../services/cmsService';
 
 export const ClientsSection: React.FC = () => {
   const featuredBrands = [
@@ -80,6 +81,24 @@ export const ClientsSection: React.FC = () => {
     },
   ];
 
+  const [brands, setBrands] = useState<any[]>(featuredBrands);
+
+  useEffect(() => {
+    getPartnersClients().then((res) => {
+      if (res && res.length > 0) {
+        const clientList = res.filter((x: any) => x.type === 'client' && x.logo);
+        if (clientList.length > 0) {
+          setBrands(clientList.map((c: any) => ({
+            name: c.name,
+            category: c.category || 'Luxury Fashion & Brand',
+            logo: c.logo,
+            badge: c.category ? c.category.toUpperCase().slice(0, 15) : 'CLIENT'
+          })));
+        }
+      }
+    });
+  }, []);
+
   return (
     <section
       id="chapter-09"
@@ -124,7 +143,7 @@ export const ClientsSection: React.FC = () => {
 
         {/* Featured Client Logos Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-5 mb-16">
-          {featuredBrands.map((b, idx) => (
+          {brands.map((b, idx) => (
             <motion.div
               key={b.name}
               initial={{ opacity: 0, y: 20 }}

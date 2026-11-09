@@ -1,5 +1,5 @@
 -- ==============================================================================
--- RFR BY RIYAS — PHASE 1 HARDENED DATABASE MIGRATION & MASTER CONTENT SEED (VERSION 17.10)
+-- RFR BY RIYAS — PHASE 1 HARDENED DATABASE MIGRATION & MASTER CONTENT SEED (VERSION 17.11)
 -- Target Schema: PostgreSQL 15+ / Supabase
 -- Operational Mode: ATOMIC TRANSACTION (BEGIN ... COMMIT)
 -- Object Identity Protection: Fail-Closed Ownership Ledger Verification

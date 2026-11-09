@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'wouter';
-
+import { getHeroBanners } from '../../services/cmsService';
 import { servicesData } from '../../data/servicesData';
 
 export const HeroSection: React.FC = () => {
@@ -67,21 +67,55 @@ export const HeroSection: React.FC = () => {
     }
   ];
 
+  const [slides, setSlides] = useState<any[]>(heroSlides);
+
+  useEffect(() => {
+    getHeroBanners().then((banners) => {
+      if (banners && banners.length > 0) {
+        const parsed = banners.map((b) => {
+          let type: 'video' | 'youtube' | 'image' = 'image';
+          let youtubeId = '';
+          if (b.video_url) {
+            if (b.video_url.includes('youtube.com') || b.video_url.includes('youtu.be')) {
+              type = 'youtube';
+              const match = b.video_url.match(/(?:embed\/|v=|youtu\.be\/|\/v\/)([^?&]+)/);
+              if (match) youtubeId = match[1];
+            } else {
+              type = 'video';
+            }
+          }
+          return {
+            id: b.id || b.title,
+            type,
+            src: b.video_url || b.image_url || '/images/hero-bg.jpg',
+            youtubeId,
+            subtitle: b.eyebrow || 'EST. 2020 • CREATIVE STUDIO',
+            title: b.title,
+            description: b.subtitle || '',
+            link: b.cta_primary_link || '/about',
+          };
+        });
+        setSlides(parsed);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 10000);
     return () => clearInterval(interval);
-  }, [currentSlide, activePodcastEp, heroSlides.length]);
+  }, [currentSlide, activePodcastEp, slides.length]);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  const activeSlide = slides[currentSlide] || slides[0] || heroSlides[0];
   const currentEpId = podcastEpisodes[activePodcastEp].id;
   const currentEpStart = podcastEpisodes[activePodcastEp].start;
 
@@ -94,18 +128,18 @@ export const HeroSection: React.FC = () => {
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <AnimatePresence initial={false}>
           <motion.div
-            key={`${currentSlide}-${heroSlides[currentSlide].youtubeId || heroSlides[currentSlide].src}`}
+            key={`${currentSlide}-${activeSlide.youtubeId || activeSlide.src}`}
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full overflow-hidden"
           >
-            {heroSlides[currentSlide].type === 'youtube' ? (
+            {activeSlide.type === 'youtube' ? (
               <div className="absolute inset-0 w-full h-full pointer-events-none">
                 {(() => {
-                  const yId = heroSlides[currentSlide].youtubeId || currentEpId;
-                  const startSec = heroSlides[currentSlide].start ?? (currentSlide === 3 ? currentEpStart : 0);
+                  const yId = activeSlide.youtubeId || currentEpId;
+                  const startSec = activeSlide.start ?? (currentSlide === 3 ? currentEpStart : 0);
                   return (
                     <iframe
                       key={`${yId}-${startSec}`}
@@ -117,9 +151,9 @@ export const HeroSection: React.FC = () => {
                   );
                 })()}
               </div>
-            ) : heroSlides[currentSlide].type === 'video' ? (
+            ) : activeSlide.type === 'video' ? (
               <video
-                src={heroSlides[currentSlide].src}
+                src={activeSlide.src}
                 autoPlay
                 muted
                 loop
@@ -128,8 +162,8 @@ export const HeroSection: React.FC = () => {
               />
             ) : (
               <img 
-                src={heroSlides[currentSlide].src}
-                alt={heroSlides[currentSlide].title}
+                src={activeSlide.src}
+                alt={activeSlide.title}
                 className="absolute w-full h-full object-cover object-top opacity-100"
               />
             )}
@@ -204,17 +238,17 @@ export const HeroSection: React.FC = () => {
                 
                 {/* Subtitle / Caption */}
                 <span className="text-xs sm:text-sm md:text-base font-mono tracking-[0.4em] text-[#C7A46A] uppercase font-bold mb-4 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
-                  {heroSlides[currentSlide].subtitle}
+                  {activeSlide.subtitle}
                 </span>
 
                 {/* Monumental Title */}
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[88px] xl:text-[96px] font-serif font-normal leading-[0.9] select-none text-[#F4F1EA] tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)] text-center mb-4 md:mb-6">
-                  {heroSlides[currentSlide].title}
+                  {activeSlide.title}
                 </h1>
                 
                 {/* Subheading / Caption */}
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-serif font-light text-[#E0DDD5] max-w-3xl mx-auto text-center leading-relaxed drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)]">
-                  {heroSlides[currentSlide].description}
+                  {activeSlide.description}
                 </p>
 
                 {/* Podcast Episode Selector (Only on podcast slide) */}
@@ -244,7 +278,7 @@ export const HeroSection: React.FC = () => {
                 
                 {/* Explore Button */}
                 <div className="mt-8 md:mt-10">
-                  <Link href={heroSlides[currentSlide].link} className="inline-flex items-center gap-3 px-8 md:px-10 py-3.5 md:py-4 rounded-full bg-[#C7A46A] hover:bg-[#D4B678] text-black transition-colors font-mono text-xs md:text-sm tracking-widest font-bold uppercase shadow-2xl hover:scale-105">
+                  <Link href={activeSlide.link || '/about'} className="inline-flex items-center gap-3 px-8 md:px-10 py-3.5 md:py-4 rounded-full bg-[#C7A46A] hover:bg-[#D4B678] text-black transition-colors font-mono text-xs md:text-sm tracking-widest font-bold uppercase shadow-2xl hover:scale-105">
                     EXPLORE SERVICE
                     <ArrowUpRight size={16} className="stroke-[3px]" />
                   </Link>
@@ -267,7 +301,7 @@ export const HeroSection: React.FC = () => {
         </button>
         
         <div className="flex gap-3 items-center">
-          {heroSlides.map((_, index) => (
+          {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}

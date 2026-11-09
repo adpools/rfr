@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { clientCategories, clientsAndPartnersList } from '../data/partnersClientsData';
+import { getPartnersClients } from '../services/cmsService';
 import { Building2, Sparkles, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 
 export const ClientsPage: React.FC = () => {
-  const clients = clientsAndPartnersList.filter((x) => x.type === 'client');
-  const partners = clientsAndPartnersList.filter((x) => x.type === 'partner');
+  const [list, setList] = useState<any[]>(clientsAndPartnersList);
+
+  useEffect(() => {
+    getPartnersClients().then((res) => {
+      if (res && res.length > 0) {
+        setList(res);
+      }
+    });
+  }, []);
+
+  const clients = list.filter((x) => x.type === 'client');
+  const partners = list.filter((x) => x.type === 'partner');
   const logoClients = clients.filter((c) => !!c.logo);
 
   return (

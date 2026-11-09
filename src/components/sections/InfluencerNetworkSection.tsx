@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Maximize2, X, ChevronLeft, ChevronRight, Users } from 'lucide-react';
+import { getTalentInfluencers } from '../../services/cmsService';
 
 interface InfluencerItem {
   id: string;
@@ -8,6 +9,8 @@ interface InfluencerItem {
   image: string;
   altImage?: string;
   driveFileId?: string;
+  handle?: string;
+  niche?: string;
 }
 
 export const influencerRoster: InfluencerItem[] = [
@@ -61,7 +64,24 @@ export const influencerRoster: InfluencerItem[] = [
 ];
 
 export const InfluencerNetworkSection: React.FC = () => {
+  const [roster, setRoster] = useState<InfluencerItem[]>(influencerRoster);
   const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    getTalentInfluencers().then((data) => {
+      if (data && data.length > 0) {
+        const mapped: InfluencerItem[] = data.map((d: any) => ({
+          id: d.id,
+          name: d.name,
+          image: d.profile_image || d.image || '/images/influencers/deepamol.jpg',
+          altImage: d.profile_image,
+          handle: d.handle,
+          niche: d.niche,
+        }));
+        setRoster(mapped);
+      }
+    });
+  }, []);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -70,19 +90,19 @@ export const InfluencerNetworkSection: React.FC = () => {
       if (e.key === 'Escape') {
         setActiveModalIndex(null);
       } else if (e.key === 'ArrowRight') {
-        setActiveModalIndex((prev) => (prev !== null ? (prev + 1) % influencerRoster.length : null));
+        setActiveModalIndex((prev) => (prev !== null ? (prev + 1) % roster.length : null));
       } else if (e.key === 'ArrowLeft') {
         setActiveModalIndex((prev) =>
-          prev !== null ? (prev - 1 + influencerRoster.length) % influencerRoster.length : null
+          prev !== null ? (prev - 1 + roster.length) % roster.length : null
         );
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeModalIndex]);
+  }, [activeModalIndex, roster]);
 
-  const activeInfluencer = activeModalIndex !== null ? influencerRoster[activeModalIndex] : null;
+  const activeInfluencer = activeModalIndex !== null ? roster[activeModalIndex] : null;
 
   return (
     <section
@@ -112,14 +132,14 @@ export const InfluencerNetworkSection: React.FC = () => {
 
             <div className="flex items-center gap-2 text-xs font-mono text-[#C7A46A] px-3.5 py-1.5 rounded-full bg-[#111111] border border-neutral-800 shrink-0">
               <Sparkles size={13} />
-              <span>{influencerRoster.length} Verified Creators</span>
+              <span>{roster.length} Verified Creators</span>
             </div>
           </div>
         </div>
 
         {/* Influencer Grid: Multiple balanced columns */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-          {influencerRoster.map((person, idx) => (
+          {roster.map((person, idx) => (
             <motion.div
               key={person.id}
               initial={{ opacity: 0, y: 20 }}
@@ -176,7 +196,7 @@ export const InfluencerNetworkSection: React.FC = () => {
             >
               <div className="flex items-center gap-3">
                 <span className="px-3 py-1 rounded-full bg-[#181818] border border-neutral-700 text-[#C7A46A] font-mono text-xs font-bold tracking-widest">
-                  {String(activeModalIndex + 1).padStart(2, '0')} / {String(influencerRoster.length).padStart(2, '0')}
+                  {String(activeModalIndex + 1).padStart(2, '0')} / {String(roster.length).padStart(2, '0')}
                 </span>
                 <span className="text-sm font-serif text-white uppercase tracking-wider">
                   {activeInfluencer.name}

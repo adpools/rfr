@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { HeroSection } from '../components/sections/HeroSection';
 import { TimelinePreviewSection } from '../components/sections/TimelinePreviewSection';
@@ -17,8 +17,30 @@ import { GalleryPreviewSection } from '../components/sections/GalleryPreviewSect
 import { PressPreviewSection } from '../components/sections/PressPreviewSection';
 import { ContactSection } from '../components/sections/ContactSection';
 import { SectionProgressRail } from '../components/common/SectionProgressRail';
+import { getSectionVisibility } from '../services/cmsService';
 
 export const HomePage: React.FC = () => {
+  const [visibility, setVisibility] = useState<Record<string, boolean>>({
+    hero: true,
+    statement: true,
+    what_is_rfr: true,
+    timeline: true,
+    services: true,
+    influencers: true,
+    campaigns: true,
+    talent: true,
+    testimonials: true,
+    press: true,
+    clients: true,
+    contact: true,
+  });
+
+  useEffect(() => {
+    getSectionVisibility().then((v) => {
+      if (v) setVisibility(v);
+    });
+  }, []);
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -42,52 +64,52 @@ export const HomePage: React.FC = () => {
       <SectionProgressRail />
 
       {/* 00 — HERO / BRAND MONOGRAM */}
-      <HeroSection />
+      {visibility.hero !== false && <HeroSection />}
 
       {/* 01 — TIMELINE (2020 TO 2026) */}
-      <TimelinePreviewSection />
+      {visibility.timeline !== false && <TimelinePreviewSection />}
 
       {/* 02 — ABOUT US (FOUNDER & ABOUT: ACHIEVEMENTS, GALLARY, WORKS) */}
-      <AboutSection />
+      {visibility.what_is_rfr !== false && <AboutSection />}
 
       {/* 03 — WHAT IS RFR? (HOW?, WHEN?, WHAT?) */}
-      <WhatIsRFRSection />
+      {visibility.what_is_rfr !== false && <WhatIsRFRSection />}
 
       {/* 04 — ACHIEVEMENTS */}
-      <AchievementsSection />
+      {visibility.statement !== false && <AchievementsSection />}
 
       {/* 05 — SERVICES (EVENTS, CAMPAIGNS, PODCAST) */}
-      <ServicesSection />
+      {visibility.services !== false && <ServicesSection />}
 
       {/* 06 — DO BUSINESS WITH US */}
-      <BusinessCTASection />
+      {visibility.services !== false && <BusinessCTASection />}
 
       {/* 07 — CHANNEL PARTNERS */}
-      <PartnersSection />
+      {visibility.clients !== false && <PartnersSection />}
 
       {/* 08 — MILESTONES */}
-      <MilestonesSection />
+      {visibility.clients !== false && <MilestonesSection />}
 
       {/* 09 — CLIENTS */}
-      <ClientsSection />
+      {visibility.clients !== false && <ClientsSection />}
 
       {/* TESTIMONIALS */}
-      <TestimonialsSection />
+      {visibility.testimonials !== false && <TestimonialsSection />}
 
       {/* 10 — ASSETS (CAREER, MODELS, INFLUENCERS, ARTIST) */}
-      <TalentPortalsSection />
+      {visibility.talent !== false && <TalentPortalsSection />}
 
       {/* INFLUENCER NETWORK */}
-      <InfluencerNetworkSection />
+      {visibility.influencers !== false && <InfluencerNetworkSection />}
 
       {/* 11 — GALLARY (EVENTS, SHOWS, SHOOTS) */}
-      <GalleryPreviewSection />
+      {visibility.campaigns !== false && <GalleryPreviewSection />}
 
       {/* 12 — PRESS & NEWS */}
-      <PressPreviewSection />
+      {visibility.press !== false && <PressPreviewSection />}
 
       {/* 13 — CONTACT */}
-      <ContactSection />
+      {visibility.contact !== false && <ContactSection />}
     </PageWrapper>
   );
 };

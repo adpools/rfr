@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import {
   Sparkles,
   Play,
@@ -94,10 +95,36 @@ const ticBrands = [
 ];
 
 export const TICPage: React.FC = () => {
+  const [events, setEvents] = useState<TICEvent[]>(ticEvents);
   const [isPlayingLaunchVideo, setIsPlayingLaunchVideo] = useState(false);
   const [activeModalEvent, setActiveModalEvent] = useState<TICEvent | null>(null);
 
-  const launchEvent = ticEvents[0];
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    supabase
+      .from('tic_events')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true })
+      .then(({ data, error }) => {
+        if (!error && data && data.length > 0) {
+          const mapped: TICEvent[] = data.map((d: any) => ({
+            id: d.id,
+            title: d.name,
+            year: d.event_date ? new Date(d.event_date).getFullYear() : 2026,
+            badge: d.venue ? `${d.venue.toUpperCase()} • EVENT` : 'FLAGSHIP INFLUENCER IP',
+            host: d.venue || 'Trivandrum Influencer Circle (TIC)',
+            description: d.description || '',
+            hasVideo: Boolean(d.video_url),
+            videoEmbedUrl: d.video_url,
+            thumbnail: d.cover_image,
+          }));
+          setEvents(mapped);
+        }
+      });
+  }, []);
+
+  const launchEvent = events[0] || ticEvents[0];
 
   return (
     <PageWrapper
@@ -250,7 +277,7 @@ export const TICPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            {ticEvents.map((evt, idx) => (
+            {events.map((evt, idx) => (
               <motion.div
                 key={evt.id}
                 initial={{ opacity: 0, y: 25 }}

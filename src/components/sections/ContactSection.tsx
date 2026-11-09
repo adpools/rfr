@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle2, ArrowUpRight, Phone } from 'lucide-react';
+import { Send, CheckCircle2, ArrowUpRight, Phone, AlertCircle } from 'lucide-react';
 import { WhatsAppIcon } from '../common/SocialIcons';
+import { submitContactInquiry } from '../../services/cmsService';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,10 +12,12 @@ export const ContactSection: React.FC = () => {
     phone: '',
     interest: 'Brand Collaboration',
     message: '',
+    bot_honey_field: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const interests = [
     'Brand Collaboration',
@@ -29,14 +32,28 @@ export const ContactSection: React.FC = () => {
     'Executive Inquiry',
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage(null);
 
-    setTimeout(() => {
-      setLoading(false);
+    const res = await submitContactInquiry({
+      full_name: formData.name,
+      company_name: formData.company,
+      email: formData.email,
+      phone: formData.phone,
+      service_interest: formData.interest,
+      message: formData.message,
+      bot_honey_field: formData.bot_honey_field,
+    });
+
+    setLoading(false);
+
+    if (res.success) {
       setSubmitted(true);
-    }, 800);
+    } else {
+      setErrorMessage(res.error || 'Failed to submit inquiry. Please try again or reach out via WhatsApp.');
+    }
   };
 
   return (
@@ -200,24 +217,46 @@ export const ContactSection: React.FC = () => {
                         />
                       </div>
                       <div className="relative group">
-                        <select
-                          value={formData.interest}
-                          onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                          className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors cursor-pointer appearance-none rounded-none"
-                        >
-                          <option value="" disabled className="text-neutral-600 bg-[#050505]">Nature of Inquiry *</option>
-                          {interests.map((opt) => (
-                            <option key={opt} value={opt} className="bg-[#0a0a0a] text-[#F4F1EA]">
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-600 group-hover:text-[#C7A46A] transition-colors">
-                          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        </div>
+                        <input
+                          type="tel"
+                          placeholder="Phone / WhatsApp (Optional)"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 rounded-none"
+                        />
                       </div>
+                    </div>
+
+                    <div className="relative group">
+                      <select
+                        value={formData.interest}
+                        onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                        className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors cursor-pointer appearance-none rounded-none"
+                      >
+                        <option value="" disabled className="text-neutral-600 bg-[#050505]">Nature of Inquiry *</option>
+                        {interests.map((opt) => (
+                          <option key={opt} value={opt} className="bg-[#0a0a0a] text-[#F4F1EA]">
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-600 group-hover:text-[#C7A46A] transition-colors">
+                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Honeypot field (hidden from legitimate users) */}
+                    <div style={{ display: 'none' }} aria-hidden="true">
+                      <input
+                        type="text"
+                        name="bot_honey_field"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={formData.bot_honey_field}
+                        onChange={(e) => setFormData({ ...formData, bot_honey_field: e.target.value })}
+                      />
                     </div>
 
                     <div className="relative group">
@@ -230,6 +269,13 @@ export const ContactSection: React.FC = () => {
                         className="w-full bg-transparent border-b border-neutral-800 text-[#F4F1EA] text-sm py-3 focus:outline-none focus:border-[#C7A46A] transition-colors placeholder-neutral-600 resize-none rounded-none"
                       />
                     </div>
+
+                    {errorMessage && (
+                      <div className="p-4 rounded-xl bg-red-950/40 border border-red-800/60 flex items-center gap-3 text-xs text-red-200">
+                        <AlertCircle size={16} className="text-red-400 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
 
                     <div className="pt-6 flex justify-end">
                       <button

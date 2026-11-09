@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { timelineData } from '../../data/timelineData';
+import { getTimelineYears } from '../../services/cmsService';
 import { ArrowUpRight, Sparkles, ChevronRight } from 'lucide-react';
 import { Link } from 'wouter';
 
 export const TimelinePreviewSection: React.FC = () => {
+  const [data, setData] = useState<any[]>(timelineData);
   const [selectedYear, setSelectedYear] = useState<number>(timelineData[0].year);
   const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
 
-  const activeData = timelineData.find((d) => d.year === selectedYear) || timelineData[0];
-  const activeEvent = activeData.eventsList[activeEventIndex] || activeData.eventsList[0];
+  useEffect(() => {
+    getTimelineYears().then((res) => {
+      if (res && res.length > 0) {
+        setData(res);
+      }
+    });
+  }, []);
+
+  const activeData = data.find((d) => d.year === selectedYear) || data[0] || timelineData[0];
+  const activeEvent = activeData?.eventsList?.[activeEventIndex] || activeData?.eventsList?.[0];
 
   // Reset event index and re-enable autoplay when changing years
   useEffect(() => {
@@ -72,7 +82,7 @@ export const TimelinePreviewSection: React.FC = () => {
 
         {/* Year Pills Navigation (2020 to 2026) */}
         <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 mb-8 scrollbar-none">
-          {timelineData.map((item) => {
+          {data.map((item) => {
             const isSelected = item.year === selectedYear;
             return (
               <button
@@ -134,7 +144,7 @@ export const TimelinePreviewSection: React.FC = () => {
                   LANDMARK EVENTS ({activeData.eventsList.length})
                 </span>
                 <div className="flex flex-wrap gap-2.5">
-                  {activeData.eventsList.map((ev, idx) => (
+                  {activeData.eventsList.map((ev: any, idx: number) => (
                     <button
                       key={ev.id}
                       onClick={() => {

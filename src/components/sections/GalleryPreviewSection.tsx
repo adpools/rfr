@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import { galleryData } from '../../data/galleryData';
+import { getGalleryItems } from '../../services/cmsService';
 import { LightboxModal } from '../common/LightboxModal';
 import { GalleryItem } from '../../types';
 import { ArrowUpRight } from 'lucide-react';
 
 export const GalleryPreviewSection: React.FC = () => {
+  const [items, setItems] = useState<GalleryItem[]>(galleryData);
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'events' | 'shows' | 'shoots'>('all');
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
 
+  useEffect(() => {
+    getGalleryItems().then((res) => {
+      if (res && res.length > 0) {
+        setItems(res);
+      }
+    });
+  }, []);
+
   const filteredItems = selectedCategory === 'all'
-    ? galleryData
-    : galleryData.filter((i) => i.category === selectedCategory);
+    ? items
+    : items.filter((i) => i.category === selectedCategory);
 
   return (
     <section

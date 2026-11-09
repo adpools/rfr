@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { founderData } from '../data/founderData';
+import { getAboutRiyas } from '../services/cmsService';
 import { motion } from 'framer-motion';
 import { Quote, ArrowUpRight, Diamond } from 'lucide-react';
 import { Link } from 'wouter';
 
 export const FounderPage: React.FC = () => {
+  const [founder, setFounder] = useState({
+    portraitImage: founderData.portraitImage,
+    quote: founderData.quote.text,
+    bioParagraphs: founderData.bioParagraphs,
+  });
+
+  useEffect(() => {
+    getAboutRiyas().then((res) => {
+      if (res) {
+        setFounder({
+          portraitImage: res.portrait_image || founderData.portraitImage,
+          quote: res.quote || founderData.quote.text,
+          bioParagraphs: res.biography_paragraphs && res.biography_paragraphs.length > 0
+            ? res.biography_paragraphs
+            : founderData.bioParagraphs,
+        });
+      }
+    });
+  }, []);
   const schema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -29,7 +49,7 @@ export const FounderPage: React.FC = () => {
       <section className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0 w-full h-full">
           <img
-            src={founderData.portraitImage}
+            src={founder.portraitImage}
             alt="Riyas — Founder of RFR"
             className="w-full h-full object-cover object-top opacity-60 filter grayscale brightness-75 contrast-125"
           />
@@ -102,7 +122,7 @@ export const FounderPage: React.FC = () => {
               </motion.div>
 
               <div className="space-y-6 text-neutral-400 font-light leading-loose text-base md:text-lg">
-                {founderData.bioParagraphs.map((paragraph, idx) => (
+                {founder.bioParagraphs.map((paragraph, idx) => (
                   <motion.p
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}
@@ -126,7 +146,7 @@ export const FounderPage: React.FC = () => {
                 className="absolute inset-0 rounded-t-full rounded-b-3xl overflow-hidden border border-[#C7A46A]/20"
               >
                 <img
-                  src={founderData.portraitImage}
+                  src={founder.portraitImage}
                   alt="Riyas Creative Session"
                   className="w-full h-full object-cover object-center filter grayscale opacity-80"
                 />
@@ -144,7 +164,7 @@ export const FounderPage: React.FC = () => {
               >
                 <Quote size={24} className="text-[#C7A46A] mb-4" />
                 <p className="font-serif text-white italic text-lg leading-snug">
-                  "{founderData.quote.text}"
+                  "{founder.quote}"
                 </p>
               </motion.div>
             </div>

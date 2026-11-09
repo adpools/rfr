@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useRoute } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { galleryData } from '../data/galleryData';
+import { getGalleryItems } from '../services/cmsService';
 import { GalleryItem } from '../types';
 import { LightboxModal } from '../components/common/LightboxModal';
 import { Maximize2, Tag, ArrowUpRight } from 'lucide-react';
@@ -16,14 +17,23 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ initialCategory }) => 
   const [, params] = useRoute('/gallery/:category');
   const routeCategory = (params?.category as 'events' | 'shows' | 'shoots') || initialCategory;
 
+  const [items, setItems] = useState<GalleryItem[]>(galleryData);
   const [activeCategory, setActiveCategory] = useState<'all' | 'events' | 'shows' | 'shoots'>(
     routeCategory || 'all'
   );
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
 
+  useEffect(() => {
+    getGalleryItems().then((res) => {
+      if (res && res.length > 0) {
+        setItems(res);
+      }
+    });
+  }, []);
+
   const filteredItems = activeCategory === 'all'
-    ? galleryData
-    : galleryData.filter((item) => item.category === activeCategory);
+    ? items
+    : items.filter((item) => item.category === activeCategory);
 
   return (
     <PageWrapper

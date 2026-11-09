@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { InstagramIcon, YoutubeIcon, LinkedinIcon, WhatsAppIcon } from '../common/SocialIcons';
 import { ArrowUpRight } from 'lucide-react';
+import { getWebsiteSettings } from '../../services/cmsService';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [footerLogo, setFooterLogo] = useState('/images/final bro.png');
+  const [siteTitle, setSiteTitle] = useState('RFR BY RIYAS');
+  const [contactPhone, setContactPhone] = useState('+91 77365 33346');
+  const [copyright, setCopyright] = useState(`© ${currentYear} RFR BY RIYAS. ALL RIGHTS RESERVED.`);
+
+  useEffect(() => {
+    getWebsiteSettings().then((s) => {
+      if (s) {
+        if (s.footer_logo_url || s.official_logo_url) {
+          setFooterLogo(s.footer_logo_url || s.official_logo_url || '/images/final bro.png');
+        }
+        if (s.site_title) setSiteTitle(s.site_title);
+        if (s.contact_phone) setContactPhone(s.contact_phone);
+        if (s.copyright_text) setCopyright(s.copyright_text.toUpperCase());
+      }
+    });
+  }, [currentYear]);
 
   const footerGroups = [
     {
@@ -63,8 +81,8 @@ export const Footer: React.FC = () => {
           <div className="absolute w-[380px] sm:w-[500px] md:w-[650px] lg:w-[750px] h-[380px] sm:h-[500px] md:h-[650px] lg:h-[750px] rounded-full bg-[#C7A46A]/10 blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
 
           <img
-            src="/images/final bro.png"
-            alt="RFR by Riyas — Official Luxury Logo"
+            src={footerLogo}
+            alt={`${siteTitle} — Official Luxury Logo`}
             className="w-64 sm:w-80 md:w-[480px] lg:w-[580px] xl:w-[640px] max-w-[92vw] h-auto object-contain relative z-10 select-none drop-shadow-[0_0_40px_rgba(199,164,106,0.25)]"
             draggable={false}
           />
@@ -75,7 +93,7 @@ export const Footer: React.FC = () => {
           <div className="max-w-md">
             <Link href="/" className="inline-block mb-4">
               <span className="font-sculptural text-2xl sm:text-3xl font-bold tracking-widest text-white hover:text-[#C7A46A] transition-colors">
-                RFR BY RIYAS
+                {siteTitle}
               </span>
             </Link>
             <p className="text-sm font-light text-neutral-400 leading-relaxed">
@@ -188,7 +206,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Sub-Footer */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] md:text-xs font-mono text-neutral-500 tracking-widest">
           <div>
-            <span>© {currentYear} RFR BY RIYAS. ALL RIGHTS RESERVED.</span>
+            <span>{copyright}</span>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
             <Link href="/privacy" className="hover:text-white transition-colors duration-300">
@@ -200,8 +218,8 @@ export const Footer: React.FC = () => {
             <Link href="/contact" className="text-[#C7A46A] hover:text-white transition-colors duration-300">
               VIP INQUIRIES
             </Link>
-            <a href="tel:+917736533346" className="hover:text-[#C7A46A] transition-colors duration-300">
-              +91 77365 33346
+            <a href={`tel:${contactPhone.replace(/\s+/g, '')}`} className="hover:text-[#C7A46A] transition-colors duration-300">
+              {contactPhone}
             </a>
             <a href="https://wa.me/917736533346" target="_blank" rel="noopener noreferrer" className="hover:text-[#25D366] transition-colors duration-300 flex items-center gap-1.5">
               <WhatsAppIcon size={13} className="text-[#25D366]" />

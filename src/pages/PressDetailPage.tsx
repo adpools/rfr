@@ -1,15 +1,76 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRoute, Link } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
-import { SectionHeading } from '../components/common/SectionHeading';
 import { pressData } from '../data/pressData';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { ArrowLeft, Calendar, Clock, Share2, Quote, Tag } from 'lucide-react';
+
+interface ArticleView {
+  title: string;
+  category: string;
+  date: string;
+  author: string;
+  readTime: string;
+  coverImage: string;
+  excerpt: string;
+  content: string[];
+  quote?: { text: string; author: string };
+  tags: string[];
+}
 
 export const PressDetailPage: React.FC = () => {
   const [, params] = useRoute('/press/:slug');
   const slug = params?.slug;
 
-  const article = pressData.find((p) => p.slug === slug) || pressData[0];
+  const defaultLocal = pressData.find((p) => p.slug === slug) || pressData[0];
+
+  const [article, setArticle] = useState<ArticleView>({
+    title: defaultLocal.title,
+    category: defaultLocal.category,
+    date: defaultLocal.date,
+    author: defaultLocal.author,
+    readTime: defaultLocal.readTime,
+    coverImage: defaultLocal.coverImage,
+    excerpt: defaultLocal.excerpt,
+    content: defaultLocal.content,
+    quote: defaultLocal.quote,
+    tags: defaultLocal.tags,
+  });
+
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchLiveArticle = async () => {
+      if (!isSupabaseConfigured) return;
+      try {
+        const { data, error } = await supabase
+          .from('press_articles')
+          .select('*')
+          .eq('slug', slug)
+          .eq('is_published', true)
+          .single();
+
+        if (!error && data) {
+          setArticle({
+            title: data.title,
+            category: data.category,
+            date: data.date_label || new Date(data.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+            author: data.author || 'Editorial Desk',
+            readTime: data.read_time || '4 min read',
+            coverImage: data.cover_image,
+            excerpt: data.excerpt,
+            content: Array.isArray(data.content) && data.content.length > 0 ? data.content : [data.excerpt],
+            quote: data.quote_text ? { text: data.quote_text, author: data.quote_author || 'RFR Editorial' } : undefined,
+            tags: data.tags || ['Fashion'],
+          });
+        }
+      } catch {
+        // Fallback to static
+      }
+    };
+
+    fetchLiveArticle();
+  }, [slug]);
 
   const schema = {
     "@context": "https://schema.org",
@@ -109,7 +170,7 @@ export const PressDetailPage: React.FC = () => {
             <div className="my-10 p-8 rounded-2xl bg-[#121212] border-l-2 border-[#C7A46A]">
               <Quote size={24} className="text-[#C7A46A] mb-3 opacity-60" />
               <p className="text-xl font-serif italic text-white leading-relaxed mb-3">
-                "{article.quote.text}"
+                &ldquo;{article.quote.text}&rdquo;
               </p>
               <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-widest block">
                 — {article.quote.author}

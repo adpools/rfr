@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRoute, Link } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { talentData } from '../data/talentData';
-import { CheckCircle2, ArrowLeft, Send, Sparkles } from 'lucide-react';
+import { submitContactInquiry, getTalentModels } from '../services/cmsService';
+import { CheckCircle2, ArrowLeft, Send, Sparkles, ExternalLink, User } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface TalentDetailPageProps {
@@ -28,25 +29,50 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modelsRoster, setModelsRoster] = useState<any[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (id === 'models') {
+      getTalentModels().then((data) => {
+        if (data && data.length > 0) {
+          setModelsRoster(data);
+        }
+      });
+    }
+  }, [id]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-      try {
-        confetti({
-          particleCount: 70,
-          spread: 60,
-          origin: { y: 0.7 },
-          colors: ['#C7A46A', '#FAF9F6'],
-        });
-      } catch {
-        // safe confetti fallback
-      }
-    }, 700);
+    const messageContent = [
+      `Application Category: ${portal.title}`,
+      `Social Handle: ${formData.socialHandle || 'N/A'}`,
+      `Experience Level: ${formData.experienceYears}`,
+      `Portfolio / Lookbook URL: ${formData.portfolioUrl || 'N/A'}`,
+      formData.coverNote ? `Cover Note:\n${formData.coverNote}` : '',
+    ].filter(Boolean).join('\n\n');
+
+    await submitContactInquiry({
+      full_name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      service_interest: `Talent Guild Application: ${portal.title}`,
+      message: messageContent,
+    });
+
+    setLoading(false);
+    setSubmitted(true);
+    try {
+      confetti({
+        particleCount: 70,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ['#C7A46A', '#FAF9F6'],
+      });
+    } catch {
+      // safe confetti fallback
+    }
   };
 
   return (
@@ -278,6 +304,87 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
             </div>
           </div>
         </div>
+
+        {/* Verified Roster Showcase (when viewing models) */}
+        {id === 'models' && modelsRoster.length > 0 && (
+          <div className="mt-20 pt-16 border-t border-neutral-900">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+              <div>
+                <span className="text-[10px] font-mono tracking-[0.3em] text-[#C7A46A] uppercase block mb-2">
+                  RUNWAY & EDITORIAL GUILD
+                </span>
+                <h3 className="text-3xl font-serif text-white uppercase">
+                  Featured Model Roster
+                </h3>
+              </div>
+              <span className="text-xs font-mono text-neutral-400">
+                {modelsRoster.length} Active Profiles
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {modelsRoster.map((model) => (
+                <div
+                  key={model.id}
+                  className="group rounded-2xl bg-[#111111] border border-neutral-800 overflow-hidden hover:border-[#C7A46A]/60 transition-all flex flex-col"
+                >
+                  <div className="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
+                    {model.headshot_image ? (
+                      <img
+                        src={model.headshot_image}
+                        alt={model.name}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-neutral-600 gap-2">
+                        <User size={36} />
+                        <span className="text-[10px] font-mono tracking-widest uppercase">Model</span>
+                      </div>
+                    )}
+                    {model.category && (
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono uppercase text-[#C7A46A] border border-[#C7A46A]/30">
+                        {model.category}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-serif text-lg text-white group-hover:text-[#C7A46A] transition-colors">
+                        {model.name}
+                      </h4>
+                      {model.tagline && (
+                        <p className="text-xs text-neutral-400 font-light mt-1">
+                          {model.tagline}
+                        </p>
+                      )}
+                      {(model.height || model.measurements) && (
+                        <div className="mt-3 pt-3 border-t border-neutral-850 flex items-center gap-3 text-[11px] font-mono text-neutral-400">
+                          {model.height && <span>Ht: {model.height}</span>}
+                          {model.measurements && <span>Stats: {model.measurements}</span>}
+                        </div>
+                      )}
+                    </div>
+
+                    {model.instagram_url && (
+                      <div className="mt-4 pt-3 border-t border-neutral-850 flex justify-end">
+                        <a
+                          href={model.instagram_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-[10px] font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider"
+                        >
+                          <span>Instagram</span>
+                          <ExternalLink size={11} />
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </PageWrapper>
   );
