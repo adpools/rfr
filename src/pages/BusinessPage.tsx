@@ -1,33 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { ContactSection } from '../components/sections/ContactSection';
 import { ArrowUpRight, Sparkles, Building2, Megaphone, Flame, Award } from 'lucide-react';
 import { Link } from 'wouter';
+import { getPageContent } from '../services/cmsService';
 
 export const BusinessPage: React.FC = () => {
-  const models = [
-    {
-      icon: Award,
-      title: 'Title & Headline Sponsorships',
-      desc: 'Marquee naming rights, VIP hospitality suites, runway stage branding, and red-carpet dominance across flagship RFR Galas and Fashion Weeks.',
-    },
-    {
-      icon: Megaphone,
-      title: '360° Omnichannel Campaigns',
-      desc: 'Bespoke integration uniting high-production commercial films, influencer creator tiers, OOH urban billboards, and digital ad funnels.',
-    },
-    {
-      icon: Flame,
-      title: 'Experiential Activations & Flea Pop-ups',
-      desc: 'Custom branded retail pavilions, sensory sampling zones, and VIP lounge takeovers across high-footfall lifestyle festivals.',
-    },
-    {
-      icon: Building2,
-      title: 'Strategic Production & Co-Branded IP',
-      desc: 'Long-term joint venture IP development, co-branded collection drops, and dedicated podcast series seasons.',
-    },
-  ];
+  const iconList = [Award, Megaphone, Flame, Building2];
+  const [pageInfo, setPageInfo] = useState({
+    title: 'DO BUSINESS WITH US',
+    subtitle: 'Partner with RFR to engineer unforgettable brand moments, high-credibility influencer narratives, and multi-format cultural visibility.',
+    models: [
+      {
+        title: 'Title & Headline Sponsorships',
+        desc: 'Marquee naming rights, VIP hospitality suites, runway stage branding, and red-carpet dominance across flagship RFR Galas and Fashion Weeks.',
+      },
+      {
+        title: '360° Omnichannel Campaigns',
+        desc: 'Bespoke integration uniting high-production commercial films, influencer creator tiers, OOH urban billboards, and digital ad funnels.',
+      },
+      {
+        title: 'Experiential Activations & Flea Pop-ups',
+        desc: 'Custom branded retail pavilions, sensory sampling zones, and VIP lounge takeovers across high-footfall lifestyle festivals.',
+      },
+      {
+        title: 'Strategic Production & Co-Branded IP',
+        desc: 'Long-term joint venture IP development, co-branded collection drops, and dedicated podcast series seasons.',
+      },
+    ]
+  });
+
+  useEffect(() => {
+    getPageContent('business', {
+      title: 'DO BUSINESS WITH US',
+      subtitle: 'Partner with RFR to engineer unforgettable brand moments, high-credibility influencer narratives, and multi-format cultural visibility.',
+      content: {
+        items: pageInfo.models
+      }
+    }).then((res) => {
+      setPageInfo({
+        title: res.title || 'DO BUSINESS WITH US',
+        subtitle: res.subtitle || 'Partner with RFR to engineer unforgettable brand moments, high-credibility influencer narratives, and multi-format cultural visibility.',
+        models: (res.content.items && res.content.items.length > 0) ? res.content.items : pageInfo.models
+      });
+    });
+  }, []);
 
   return (
     <PageWrapper
@@ -38,14 +56,14 @@ export const BusinessPage: React.FC = () => {
         <SectionHeading
           number="PARTNERSHIP"
           category="COMMERCIAL COLLABORATION"
-          title="DO BUSINESS WITH US"
-          subtitle="Partner with RFR to engineer unforgettable brand moments, high-credibility influencer narratives, and multi-format cultural visibility."
+          title={pageInfo.title}
+          subtitle={pageInfo.subtitle}
         />
 
         {/* 4 Partnership Engagement Frameworks */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-16">
-          {models.map((m, idx) => {
-            const Icon = m.icon;
+          {pageInfo.models.map((m, idx) => {
+            const Icon = iconList[idx % iconList.length] || Award;
             return (
               <div
                 key={m.title}

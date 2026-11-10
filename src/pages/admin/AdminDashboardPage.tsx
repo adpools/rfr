@@ -25,6 +25,7 @@ import { SectionVisibilityModule } from '../../components/admin/modules/SectionV
 import { SeoModule } from '../../components/admin/modules/SeoModule';
 import { AuditLogsModule } from '../../components/admin/modules/AuditLogsModule';
 import { AdminRbacModule } from '../../components/admin/modules/AdminRbacModule';
+import { PagesContentModule } from '../../components/admin/modules/PagesContentModule';
 
 export const AdminDashboardPage: React.FC = () => {
   const { isSuperAdmin, isConfigured } = useAdminAuth();
@@ -59,9 +60,13 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       )}
 
-      {/* 20 Admin Modules Switcher */}
+      {/* Admin Modules Switcher */}
       {activeTab === 'overview' && (
         <OverviewModule onNavigate={setActiveTab} isConfigured={isConfigured} isSuperAdmin={isSuperAdmin} />
+      )}
+
+      {activeTab === 'pages_content' && (
+        <PagesContentModule showToast={showToast} isConfigured={isConfigured} />
       )}
 
       {activeTab === 'banners' && (

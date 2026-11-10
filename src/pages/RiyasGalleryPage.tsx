@@ -121,7 +121,7 @@ export const RiyasGalleryPage: React.FC = () => {
             alt: item.caption || item.title || 'Riyas gallery portrait',
             orientation: (item.orientation === 'landscape' ? 'landscape' : 'portrait') as 'landscape' | 'portrait',
           }));
-          setImages([...cmsImages, ...riyasImages]);
+          setImages(cmsImages);
         }
       } catch {
         // Fallback to local images

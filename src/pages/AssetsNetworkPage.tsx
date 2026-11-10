@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { talentData } from '../data/talentData';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'wouter';
+import { getPageContent } from '../services/cmsService';
 
 export const AssetsNetworkPage: React.FC = () => {
+  const [header, setHeader] = useState({
+    title: 'THE RFR NETWORK',
+    subtitle: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
+  });
+
+  useEffect(() => {
+    getPageContent('assets', {
+      title: 'THE RFR NETWORK',
+      subtitle: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
+      content: {}
+    }).then((res) => {
+      setHeader((prev) => ({
+        title: res.title || prev.title,
+        subtitle: res.subtitle || prev.subtitle,
+      }));
+    });
+  }, []);
+
   return (
     <PageWrapper
       title="The RFR Network & Talent Ecosystem"
@@ -15,8 +34,8 @@ export const AssetsNetworkPage: React.FC = () => {
         <SectionHeading
           number="NETWORK"
           category="TALENT & ASSETS"
-          title="THE RFR NETWORK"
-          subtitle="A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists."
+          title={header.title}
+          subtitle={header.subtitle}
         />
 
         {/* 4 Portals Grid */}

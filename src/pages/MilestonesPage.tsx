@@ -1,10 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { timelineData } from '../data/timelineData';
+import { getTimelineYears, getPageContent } from '../services/cmsService';
 import { CheckCircle2, Award, Sparkles } from 'lucide-react';
 
 export const MilestonesPage: React.FC = () => {
+  const [data, setData] = useState(timelineData);
+  const [header, setHeader] = useState({
+    title: 'EVERY CHAPTER BECOMES PART OF THE JOURNEY.',
+    subtitle: 'Every event, campaign, collaboration and partnership adds another chapter to the RFR journey.'
+  });
+
+  useEffect(() => {
+    getPageContent('milestones', {
+      title: 'EVERY CHAPTER BECOMES PART OF THE JOURNEY.',
+      subtitle: 'Every event, campaign, collaboration and partnership adds another chapter to the RFR journey.',
+      content: {}
+    }).then((res) => {
+      if (res.title) setHeader({ title: res.title, subtitle: res.subtitle });
+    });
+
+    getTimelineYears().then((res) => {
+      if (res && res.length > 0) {
+        setData(res);
+      }
+    });
+  }, []);
+
   return (
     <PageWrapper
       title="Milestones & Historical Chapters"
@@ -14,12 +37,12 @@ export const MilestonesPage: React.FC = () => {
         <SectionHeading
           number="MILESTONES"
           category="THE EVOLUTION"
-          title="EVERY CHAPTER BECOMES PART OF THE JOURNEY."
-          subtitle="Every event, campaign, collaboration and partnership adds another chapter to the RFR journey."
+          title={header.title}
+          subtitle={header.subtitle}
         />
 
         <div className="my-16 space-y-12">
-          {timelineData.map((item, idx) => (
+          {data.map((item, idx) => (
             <div
               key={item.year}
               className="p-8 md:p-10 rounded-2xl bg-[#111111] border border-neutral-800 grid grid-cols-1 md:grid-cols-12 gap-8 items-center"

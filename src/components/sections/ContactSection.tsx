@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, ArrowUpRight, Phone, AlertCircle } from 'lucide-react';
 import { WhatsAppIcon } from '../common/SocialIcons';
-import { submitContactInquiry } from '../../services/cmsService';
+import { submitContactInquiry, getWebsiteSettings } from '../../services/cmsService';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +15,49 @@ export const ContactSection: React.FC = () => {
     bot_honey_field: '',
   });
 
+  const [contactInfo, setContactInfo] = useState({
+    phone: '+91 77365 33346',
+    phoneHref: 'tel:+917736533346',
+    whatsappUrl: 'https://wa.me/917736533346',
+    email: 'advriyas@gmail.com',
+    emailHref: 'mailto:advriyas@gmail.com',
+    address: 'South India & Worldwide'
+  });
+
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    getWebsiteSettings().then((settings) => {
+      if (!settings) return;
+      setContactInfo((prev) => {
+        const phone = settings.contact_phone?.trim() || prev.phone;
+        const phoneClean = phone.replace(/[^0-9+]/g, '');
+        const phoneHref = `tel:${phoneClean}`;
+
+        let whatsappUrl = prev.whatsappUrl;
+        if (settings.whatsapp_number?.trim()) {
+          const waDigits = settings.whatsapp_number.replace(/\D/g, '');
+          if (waDigits) whatsappUrl = `https://wa.me/${waDigits}`;
+        }
+
+        const email = settings.contact_email?.trim() || prev.email;
+        const emailHref = `mailto:${email}`;
+        const address = settings.office_address?.trim() || prev.address;
+
+        return {
+          ...prev,
+          phone,
+          phoneHref,
+          whatsappUrl,
+          email,
+          emailHref,
+          address,
+        };
+      });
+    });
+  }, []);
 
   const interests = [
     'Brand Collaboration',
@@ -98,10 +138,10 @@ export const ContactSection: React.FC = () => {
                     <span>Direct Call / Mobile</span>
                   </span>
                   <a
-                    href="tel:+917736533346"
+                    href={contactInfo.phoneHref}
                     className="text-xl sm:text-2xl font-serif text-[#F4F1EA] hover:text-[#C7A46A] transition-colors tracking-wide font-medium inline-block"
                   >
-                    +91 77365 33346
+                    {contactInfo.phone}
                   </a>
                 </div>
 
@@ -112,7 +152,7 @@ export const ContactSection: React.FC = () => {
                     <span>Instant Messaging</span>
                   </span>
                   <a
-                    href="https://wa.me/917736533346"
+                    href={contactInfo.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Chat on WhatsApp"
@@ -128,10 +168,10 @@ export const ContactSection: React.FC = () => {
                 <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
                   <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Direct Desk</span>
                   <a
-                    href="mailto:advriyas@gmail.com"
+                    href={contactInfo.emailHref}
                     className="text-base sm:text-lg font-sans lowercase text-[#F4F1EA] hover:text-[#C7A46A] transition-colors tracking-normal block"
                   >
-                    advriyas@gmail.com
+                    {contactInfo.email}
                   </a>
                 </div>
 
@@ -139,7 +179,7 @@ export const ContactSection: React.FC = () => {
                 <div className="group border-l border-neutral-800 pl-6 hover:border-[#C7A46A] transition-colors duration-500">
                   <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-[0.2em] block mb-2 group-hover:text-[#C7A46A] transition-colors">Global Headquarters</span>
                   <span className="text-lg font-serif text-[#A09D96] group-hover:text-[#F4F1EA] transition-colors">
-                    South India & Worldwide
+                    {contactInfo.address}
                   </span>
                 </div>
               </div>

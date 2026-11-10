@@ -52,7 +52,7 @@ export const TestimonialsModule: React.FC<TestimonialsModuleProps> = ({ showToas
           name: 'Anu',
           designation: 'Celebrity Fashion Designer & Style Consultant',
           company: 'ToU|By Aanu — Aanu Designs Pvt. Ltd.',
-          image: '/images/Anu/AANU.jpg',
+          image: '/images/influencers/aanu.jpeg',
           quote: 'It has always been a pleasure associating with Riyaz, from my early collaborations at his events to being invited as a celebrity guest and serving on various judging panels. His ability to curate, organise, and execute fashion showcases with finesse is commendable.',
           rating: 5,
           event_or_brand: 'Runway Jury & Celebrity Guest',

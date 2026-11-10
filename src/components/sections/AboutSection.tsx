@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { ArrowUpRight, User, Users } from 'lucide-react';
 import { founderData } from '../../data/founderData';
+import { getAboutRiyas } from '../../services/cmsService';
 
 export const AboutSection: React.FC = () => {
+  const [founder, setFounder] = useState({
+    name: founderData.name,
+    title: founderData.title,
+    portraitImage: founderData.portraitImage,
+    bioParagraphs: founderData.bioParagraphs,
+  });
+
+  useEffect(() => {
+    getAboutRiyas().then((res) => {
+      if (res) {
+        setFounder({
+          name: res.founder_name || founderData.name,
+          title: res.official_title || founderData.title,
+          portraitImage: res.portrait_image || founderData.portraitImage,
+          bioParagraphs: res.biography_paragraphs && res.biography_paragraphs.length > 0
+            ? res.biography_paragraphs
+            : founderData.bioParagraphs,
+        });
+      }
+    });
+  }, []);
   return (
     <section
       id="chapter-02"
@@ -57,16 +79,16 @@ export const AboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0d0d0d] border border-neutral-800 rounded-3xl p-6 sm:p-10">
           <div className="lg:col-span-5 h-80 sm:h-96 rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative">
             <img
-              src={founderData.portraitImage}
-              alt={founderData.name}
+              src={founder.portraitImage}
+              alt={founder.name}
               className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-4 left-4 right-4">
               <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
-                FOUNDER & CREATIVE DIRECTOR
+                {founder.title || 'FOUNDER & CREATIVE DIRECTOR'}
               </span>
-              <span className="text-xl font-serif text-white uppercase">{founderData.name}</span>
+              <span className="text-xl font-serif text-white uppercase">{founder.name}</span>
             </div>
           </div>
 
@@ -79,10 +101,10 @@ export const AboutSection: React.FC = () => {
                 THE VISIONARY BEHIND RFR
               </h3>
               <p className="text-sm text-neutral-300 font-light leading-relaxed mb-4">
-                {founderData.bioParagraphs[0]}
+                {founder.bioParagraphs[0]}
               </p>
               <p className="text-sm text-neutral-400 font-light leading-relaxed">
-                {founderData.bioParagraphs[1]}
+                {founder.bioParagraphs[1]}
               </p>
             </div>
 

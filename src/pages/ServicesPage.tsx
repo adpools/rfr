@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { servicesData } from '../data/servicesData';
+import { getServicesCatalog, getPageContent } from '../services/cmsService';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'wouter';
 
 export const ServicesPage: React.FC = () => {
+  const [services, setServices] = useState(servicesData);
   const [activeTab, setActiveTab] = useState<'all' | 'events' | 'campaigns' | 'podcast'>('all');
+  const [header, setHeader] = useState({
+    title: 'SERVICES & CREATIVE IP',
+    subtitle: 'Explore the complete spectrum of experiential event productions, commercial campaigns, influencer amplification, and podcast media.'
+  });
+
+  useEffect(() => {
+    getPageContent('services', {
+      title: 'SERVICES & CREATIVE IP',
+      subtitle: 'Explore the complete spectrum of experiential event productions, commercial campaigns, influencer amplification, and podcast media.',
+      content: {}
+    }).then((res) => {
+      if (res.title) setHeader({ title: res.title, subtitle: res.subtitle });
+    });
+
+    getServicesCatalog().then((res) => {
+      if (res && res.length > 0) {
+        setServices(res);
+      }
+    });
+  }, []);
 
   const filtered = activeTab === 'all'
-    ? servicesData
-    : servicesData.filter((s) => s.category === activeTab);
+    ? services
+    : services.filter((s) => s.category === activeTab);
 
   return (
     <PageWrapper
@@ -22,8 +44,8 @@ export const ServicesPage: React.FC = () => {
         <SectionHeading
           number="SERVICES"
           category="PORTFOLIO SPECTRUM"
-          title="SERVICES & CREATIVE IP"
-          subtitle="Explore the complete spectrum of experiential event productions, commercial campaigns, influencer amplification, and podcast media."
+          title={header.title}
+          subtitle={header.subtitle}
         />
 
         {/* Filter Tabs */}

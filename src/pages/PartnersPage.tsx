@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { partnerSectors, clientsAndPartnersList } from '../data/partnersClientsData';
+import { getPartnersClients, getPageContent } from '../services/cmsService';
 import { ShieldCheck, ArrowUpRight, Handshake } from 'lucide-react';
 import { Link } from 'wouter';
 
 export const PartnersPage: React.FC = () => {
-  const partners = clientsAndPartnersList.filter((x) => x.type === 'partner');
+  const [partnerList, setPartnerList] = useState<any[]>(clientsAndPartnersList);
+  const [header, setHeader] = useState({
+    title: 'CHANNEL PARTNERS',
+    subtitle: 'Collaborating with visionary media houses, luxury venue operators, technical cinematographers, and talent representation guilds.'
+  });
+
+  useEffect(() => {
+    getPageContent('partners', {
+      title: 'CHANNEL PARTNERS',
+      subtitle: 'Collaborating with visionary media houses, luxury venue operators, technical cinematographers, and talent representation guilds.',
+      content: {}
+    }).then((res) => {
+      if (res.title) setHeader({ title: res.title, subtitle: res.subtitle });
+    });
+
+    getPartnersClients().then((res: any[]) => {
+      if (res && res.length > 0) {
+        setPartnerList(res);
+      }
+    });
+  }, []);
+
+  const partners = partnerList.filter((x) => x.type === 'partner');
 
   return (
     <PageWrapper
@@ -17,8 +40,8 @@ export const PartnersPage: React.FC = () => {
         <SectionHeading
           number="ALLIANCES"
           category="CHANNEL PARTNERS"
-          title="CHANNEL PARTNERS"
-          subtitle="Collaborating with visionary media houses, luxury venue operators, technical cinematographers, and talent representation guilds."
+          title={header.title}
+          subtitle={header.subtitle}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-16">

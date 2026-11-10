@@ -184,6 +184,7 @@ export const TimelinePreviewSection: React.FC = () => {
                   key={activeEvent.videoUrl}
                   src={activeEvent.videoUrl}
                   controls
+                  playsInline
                   className="w-full h-full object-cover transition-all duration-700"
                 />
               ) : currentVideoUrl ? (

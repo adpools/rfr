@@ -9,7 +9,7 @@ export const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [modalVideo, setModalVideo] = useState<{
-    type: 'video' | 'youtube';
+    type: 'video' | 'youtube' | 'drive';
     src: string;
     title: string;
   } | null>(null);
@@ -28,7 +28,7 @@ export const HeroSection: React.FC = () => {
     {
       id: 'generic-rfr',
       type: 'video',
-      src: '/videos/Dandya%20Deeshna%20Event/Dandya%20Highlights.mp4',
+      src: '/videos/Dandya%20Deeshna%20Event/hero-bg-optimized.mp4',
       subtitle: 'EST. 2020 • CREATIVE STUDIO',
       title: 'RFR BY RIYAS',
       description: 'A Creative Studio specializing in immersive experiences, fashion productions, and culturally resonant campaigns.',
@@ -75,11 +75,14 @@ export const HeroSection: React.FC = () => {
         const parsed = banners.map((b) => {
           let type: 'video' | 'youtube' | 'image' = 'image';
           let youtubeId = '';
+          let start: number | undefined = undefined;
           if (b.video_url) {
             if (b.video_url.includes('youtube.com') || b.video_url.includes('youtu.be')) {
               type = 'youtube';
               const match = b.video_url.match(/(?:embed\/|v=|youtu\.be\/|\/v\/)([^?&]+)/);
               if (match) youtubeId = match[1];
+              const startMatch = b.video_url.match(/[?&]start=(\d+)/);
+              if (startMatch) start = parseInt(startMatch[1], 10);
             } else {
               type = 'video';
             }
@@ -87,8 +90,9 @@ export const HeroSection: React.FC = () => {
           return {
             id: b.id || b.title,
             type,
-            src: b.video_url || b.image_url || '/images/hero-bg.jpg',
+            src: b.video_url || b.image_url || '/videos/Dandya%20Deeshna%20Event/hero-bg-optimized.mp4',
             youtubeId,
+            start,
             subtitle: b.eyebrow || 'EST. 2020 • CREATIVE STUDIO',
             title: b.title,
             description: b.subtitle || '',
@@ -194,8 +198,8 @@ export const HeroSection: React.FC = () => {
                   <button 
                     onClick={() => {
                       setModalVideo({
-                        type: 'video',
-                        src: '/videos/Dandya%20Deeshna%20Event/Dandya%20Highlights.mp4',
+                        type: 'drive',
+                        src: 'https://drive.google.com/file/d/1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw/preview',
                         title: 'RFR 2020-2026 VIDEO ARCHIVE REEL'
                       });
                       setIsVideoModalOpen(true);
@@ -348,7 +352,7 @@ export const HeroSection: React.FC = () => {
                 <X size={20} className="stroke-[3px]" />
               </button>
               <div className="w-full h-full bg-black rounded-lg overflow-hidden relative">
-                {modalVideo?.type === 'youtube' ? (
+                {modalVideo?.type === 'youtube' || modalVideo?.type === 'drive' || modalVideo?.src?.includes('drive.google.com') ? (
                   <iframe
                     src={modalVideo.src}
                     title={modalVideo.title}
@@ -360,8 +364,9 @@ export const HeroSection: React.FC = () => {
                   <video
                     autoPlay
                     controls
+                    playsInline
                     className="w-full h-full object-contain"
-                    src={modalVideo?.src || "/videos/Dandya%20Deeshna%20Event/Dandya%20Highlights.mp4"}
+                    src={modalVideo?.src || "/videos/Dandya%20Deeshna%20Event/hero-bg-optimized.mp4"}
                   />
                 )}
               </div>

@@ -38,6 +38,8 @@ import { TICPage } from './pages/TICPage';
 import { ContactPage } from './pages/ContactPage';
 import { OurTeamPage } from './pages/OurTeamPage';
 import { RiyasGalleryPage } from './pages/RiyasGalleryPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsPage } from './pages/TermsPage';
 
 const PublicSiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [, setLoaded] = useState(false);
@@ -186,6 +188,10 @@ const AppContent: React.FC = () => {
         <Route path="/tic" component={TICPage} />
         <Route path="/trivandrum-influencer-circle" component={TICPage} />
         <Route path="/contact" component={ContactPage} />
+
+        {/* Legal Policies */}
+        <Route path="/privacy" component={PrivacyPolicyPage} />
+        <Route path="/terms" component={TermsPage} />
 
         {/* Fallback */}
         <Route>

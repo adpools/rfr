@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { timelineData } from '../data/timelineData';
-import { getTimelineYears } from '../services/cmsService';
+import { getTimelineYears, getTimelineEvents } from '../services/cmsService';
 import { TimelineEventItem, TimelineYear } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -28,11 +28,19 @@ export const TimelinePage: React.FC = () => {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(0);
 
   useEffect(() => {
-    getTimelineYears().then((res) => {
-      if (res && res.length > 0) {
-        setData(res);
-      }
-    });
+    let isMounted = true;
+    getTimelineYears()
+      .then((res) => {
+        if (isMounted && res && res.length > 0) {
+          setData(res);
+        }
+      })
+      .catch((err) => {
+        console.warn('Unable to load live timeline, retaining offline archive:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleOpenVideo = (event: TimelineEventItem) => {
@@ -430,6 +438,7 @@ export const TimelinePage: React.FC = () => {
                         src={activeVideoUrl}
                         controls
                         autoPlay
+                        playsInline
                         className="w-full h-full object-cover"
                       />
                     ) : activeVideoEmbedUrl ? (

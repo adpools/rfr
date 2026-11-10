@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowUpRight, Maximize2, X, ChevronLeft, ChevronRight, Newspaper, ExternalLink } from 'lucide-react';
+import { getPressClippings } from '../../services/cmsService';
 
 interface HomepagePressFeature {
   id: string;
@@ -80,7 +81,27 @@ const majorPressFeatures: HomepagePressFeature[] = [
 ];
 
 export const PressPreviewSection: React.FC = () => {
+  const [features, setFeatures] = useState<HomepagePressFeature[]>(majorPressFeatures);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    getPressClippings().then((records) => {
+      const valid = records.filter(r => r.cover_image && !r.cover_image.includes('final bro.png'));
+      if (valid.length > 0) {
+        const featured = valid.filter(r => r.is_featured_home);
+        const listToUse = featured.length > 0 ? featured : valid.slice(0, 9);
+        const mapped: HomepagePressFeature[] = listToUse.map((r) => ({
+          id: r.id || r.slug,
+          publication: r.author && r.author !== 'Editorial Desk' ? r.author : r.title,
+          category: r.category === 'Press' ? 'Print Daily' : r.category === 'News' ? 'Television Broadcast' : r.category,
+          details: r.excerpt || r.title,
+          image: r.cover_image,
+          articleUrl: r.external_url || undefined,
+        }));
+        setFeatures(mapped);
+      }
+    });
+  }, []);
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -101,17 +122,17 @@ export const PressPreviewSection: React.FC = () => {
       if (e.key === 'Escape') {
         setSelectedIdx(null);
       } else if (e.key === 'ArrowRight') {
-        setSelectedIdx((prev) => (prev !== null ? (prev + 1) % majorPressFeatures.length : null));
+        setSelectedIdx((prev) => (prev !== null ? (prev + 1) % features.length : null));
       } else if (e.key === 'ArrowLeft') {
-        setSelectedIdx((prev) => (prev !== null ? (prev - 1 + majorPressFeatures.length) % majorPressFeatures.length : null));
+        setSelectedIdx((prev) => (prev !== null ? (prev - 1 + features.length) % features.length : null));
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedIdx]);
+  }, [selectedIdx, features.length]);
 
-  const activeItem = selectedIdx !== null ? majorPressFeatures[selectedIdx] : null;
+  const activeItem = selectedIdx !== null ? features[selectedIdx] : null;
 
   return (
     <section
@@ -144,7 +165,7 @@ export const PressPreviewSection: React.FC = () => {
 
         {/* Premium Press Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {majorPressFeatures.map((item, idx) => {
+          {features.map((item, idx) => {
             const hasExternalUrl = !!item.articleUrl;
             return (
               <motion.div
@@ -327,7 +348,7 @@ export const PressPreviewSection: React.FC = () => {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedIdx((prev) => (prev !== null ? (prev - 1 + majorPressFeatures.length) % majorPressFeatures.length : 0));
+                    setSelectedIdx((prev) => (prev !== null ? (prev - 1 + features.length) % features.length : 0));
                   }}
                   className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/70 border border-neutral-700 hover:border-[#C7A46A] text-white hover:text-[#C7A46A] transition-colors"
                   aria-label="Previous press feature"
@@ -340,7 +361,7 @@ export const PressPreviewSection: React.FC = () => {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedIdx((prev) => (prev !== null ? (prev + 1) % majorPressFeatures.length : 0));
+                    setSelectedIdx((prev) => (prev !== null ? (prev + 1) % features.length : 0));
                   }}
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/70 border border-neutral-700 hover:border-[#C7A46A] text-white hover:text-[#C7A46A] transition-colors"
                   aria-label="Next press feature"
@@ -352,7 +373,7 @@ export const PressPreviewSection: React.FC = () => {
               {/* Modal Footer */}
               <div className="px-6 py-3.5 border-t border-neutral-800 bg-[#141414] flex items-center justify-between text-xs font-mono text-neutral-400">
                 <span>
-                  Clipping {selectedIdx + 1} of {majorPressFeatures.length}
+                  Clipping {selectedIdx + 1} of {features.length}
                 </span>
                 <div className="flex items-center gap-4">
                   {activeItem.articleUrl && (

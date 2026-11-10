@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { ecosystemNodes } from '../../data/ecosystemData';
 import { EcosystemNode } from '../../types';
+import { getEcosystemNodes } from '../../services/cmsService';
 
 interface NodeMeshProps {
   node: EcosystemNode;
@@ -80,13 +81,14 @@ function NodeMesh({ node, isSelected, onSelect }: NodeMeshProps) {
   );
 }
 
-function ConnectionLines({ selectedNode }: { selectedNode: EcosystemNode | null }) {
+function ConnectionLines({ selectedNode, nodes }: { selectedNode: EcosystemNode | null; nodes: EcosystemNode[] }) {
   const lineGeometry = React.useMemo(() => {
     const points: THREE.Vector3[] = [];
-    const core = ecosystemNodes.find((n) => n.id === 'rfr-core')!;
+    const core = nodes.find((n) => n.id === 'rfr-core') || nodes[0];
+    if (!core) return new THREE.BufferGeometry();
 
-    ecosystemNodes.forEach((node) => {
-      if (node.id !== 'rfr-core') {
+    nodes.forEach((node) => {
+      if (node.id !== core.id) {
         points.push(new THREE.Vector3(core.x, core.y, core.z));
         points.push(new THREE.Vector3(node.x, node.y, node.z));
       }
@@ -94,7 +96,7 @@ function ConnectionLines({ selectedNode }: { selectedNode: EcosystemNode | null 
 
     const geom = new THREE.BufferGeometry().setFromPoints(points);
     return geom;
-  }, []);
+  }, [nodes]);
 
   return (
     <lineSegments geometry={lineGeometry}>
@@ -110,9 +112,11 @@ function ConnectionLines({ selectedNode }: { selectedNode: EcosystemNode | null 
 
 function GraphScene({
   selectedNode,
+  nodes,
   onSelectNode,
 }: {
   selectedNode: EcosystemNode | null;
+  nodes: EcosystemNode[];
   onSelectNode: (node: EcosystemNode) => void;
 }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -125,8 +129,8 @@ function GraphScene({
 
   return (
     <group ref={groupRef}>
-      <ConnectionLines selectedNode={selectedNode} />
-      {ecosystemNodes.map((node) => (
+      <ConnectionLines selectedNode={selectedNode} nodes={nodes} />
+      {nodes.map((node) => (
         <NodeMesh
           key={node.id}
           node={node}
@@ -143,7 +147,17 @@ interface NetworkGraph3DProps {
 }
 
 export const NetworkGraph3D: React.FC<NetworkGraph3DProps> = ({ onNodeSelect }) => {
+  const [nodes, setNodes] = useState<EcosystemNode[]>(ecosystemNodes);
   const [selectedNode, setSelectedNode] = useState<EcosystemNode | null>(ecosystemNodes[0]);
+
+  useEffect(() => {
+    getEcosystemNodes().then((res) => {
+      if (res && res.length > 0) {
+        setNodes(res);
+        setSelectedNode(res[0]);
+      }
+    });
+  }, []);
 
   const handleSelect = (node: EcosystemNode) => {
     setSelectedNode(node);
@@ -156,7 +170,7 @@ export const NetworkGraph3D: React.FC<NetworkGraph3DProps> = ({ onNodeSelect }) 
         <ambientLight intensity={0.8} />
         <pointLight position={[10, 10, 10]} intensity={1.5} color="#FAF9F6" />
         <pointLight position={[-10, -10, -10]} intensity={1.2} color="#C7A46A" />
-        <GraphScene selectedNode={selectedNode} onSelectNode={handleSelect} />
+        <GraphScene selectedNode={selectedNode} nodes={nodes} onSelectNode={handleSelect} />
       </Canvas>
 
       {/* Interactive Detail Overlay Card */}

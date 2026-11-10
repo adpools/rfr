@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
+import { getWebsiteSettings } from '../../services/cmsService';
 
 export const StatementSection: React.FC = () => {
+  const [statement, setStatement] = useState(
+    'It is a creative ecosystem connecting fashion, lifestyle, brands, creators & audiences in a unified cinematic experience.'
+  );
+
+  useEffect(() => {
+    getWebsiteSettings().then((s) => {
+      if (s?.hero_statement) {
+        setStatement(s.hero_statement);
+      } else if (s?.tagline) {
+        setStatement(s.tagline);
+      }
+    });
+  }, []);
+
   const lineVariants: Variants = {
     hidden: { opacity: 0, y: 35 },
     visible: (i: number) => ({
@@ -44,7 +59,7 @@ export const StatementSection: React.FC = () => {
               variants={lineVariants}
               className="text-body-editorial font-sans font-light tracking-wide text-[#8C8A85] uppercase mb-8"
             >
-              It is a creative ecosystem connecting fashion, lifestyle, brands, creators & audiences in a unified cinematic experience.
+              {statement}
             </motion.p>
             
             <motion.div

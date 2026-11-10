@@ -1,19 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { motion } from 'framer-motion';
 import { Trophy, Award, Crown, Sparkles, Star, TrendingUp, Users, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'wouter';
+import { getAboutRiyas, getPageContent } from '../services/cmsService';
 
 export const AchievementsPage: React.FC = () => {
-  const metricCards = [
+  const [pageHeader, setPageHeader] = useState({
+    title: 'HONORS & TRACK RECORD',
+    subtitle: 'From South India’s luxury runways to enterprise automotive campaigns, RFR has set benchmark production standards across fashion, retail, and lifestyle.'
+  });
+
+  const [metricCards, setMetricCards] = useState([
     { title: '100+ Flagship Productions', desc: 'Curated high-fashion runway shows, beauty pageants, countdown galas, and festival spectacles across India.' },
     { title: '500+ Talents Mentored', desc: 'Discovered, coached, groomed, and provided runway and commercial campaign exposure to hundreds of models, artists, and creators.' },
     { title: '50+ Global & National Brands', desc: 'Trusted by industry titans such as Manyavar, Puma, Max Fashion, Mahindra, Lulu Mall, and UDS Hotels.' },
     { title: '100,000+ Flea Market Attendees', desc: 'Built the Koottam Flea Market into a premier youth lifestyle and entrepreneurial cultural phenomenon.' },
     { title: '20+ Commercial Ad Campaigns', desc: 'Directed high-concept cinematic ad films and multi-quarter influencer marketing rollouts.' },
     { title: 'Multi-Edition Media Presence', desc: 'Featured across television news networks, lifestyle publications, regional press, and premier digital portals.' },
-  ];
+  ]);
+
+  useEffect(() => {
+    getPageContent('achievements', {
+      title: 'HONORS & TRACK RECORD',
+      subtitle: 'From South India’s luxury runways to enterprise automotive campaigns, RFR has set benchmark production standards across fashion, retail, and lifestyle.',
+      content: {
+        items: metricCards
+      }
+    }).then((res) => {
+      if (res.title) setPageHeader({ title: res.title, subtitle: res.subtitle });
+      if (Array.isArray(res.content.items) && res.content.items.length > 0) {
+        setMetricCards(res.content.items);
+      }
+    });
+
+    getAboutRiyas().then((res: any) => {
+      if (res?.stats) {
+        setMetricCards((prev) => [
+          { title: `${res.stats.shows || '100+'} Flagship Productions`, desc: prev[0].desc },
+          { title: `${res.stats.artists || '500+'} Talents Mentored`, desc: prev[1].desc },
+          { title: `${res.stats.campaigns || '50+'} Global & National Brands`, desc: prev[2].desc },
+          { title: `${res.stats.reach || '100,000+'} Audience Footfall & Reach`, desc: prev[3].desc },
+          prev[4],
+          prev[5],
+        ]);
+      }
+    });
+  }, []);
 
   const milestonesList = [
     {
@@ -62,8 +96,8 @@ export const AchievementsPage: React.FC = () => {
         <SectionHeading
           number="04"
           category="EXCELLENCE & RECOGNITION"
-          title="ACHIEVEMENTS"
-          subtitle="A proven record of excellence in luxury fashion runways, experiential festivals, brand campaigns, and creative talent incubation."
+          title={pageHeader.title}
+          subtitle={pageHeader.subtitle}
         />
 
         {/* Metrics Grid */}

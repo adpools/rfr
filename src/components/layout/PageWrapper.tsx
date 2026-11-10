@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { getSeoMetadata } from '../../services/cmsService';
 
 interface PageWrapperProps {
   title: string;
@@ -23,6 +24,35 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
   const [location] = useLocation();
   const isHome = location === '/';
 
+  const [seoData, setSeoData] = useState<{
+    metaTitle?: string;
+    metaDescription?: string;
+    canonicalUrl?: string;
+    ogImageUrl?: string;
+    keywords?: string[];
+  }>({});
+
+  useEffect(() => {
+    let isMounted = true;
+    getSeoMetadata(location).then((meta) => {
+      if (!isMounted) return;
+      if (meta) {
+        setSeoData({
+          metaTitle: meta.meta_title?.trim() || undefined,
+          metaDescription: meta.meta_description?.trim() || undefined,
+          canonicalUrl: meta.canonical_url?.trim() || undefined,
+          ogImageUrl: meta.og_image_url?.trim() || undefined,
+          keywords: meta.keywords && meta.keywords.length > 0 ? meta.keywords : undefined,
+        });
+      } else {
+        setSeoData({});
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [location]);
+
   useEffect(() => {
     if (window.location.hash) {
       const hashId = window.location.hash.replace(/^#/, '');
@@ -37,19 +67,26 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [location]);
 
-  const fullTitle = `${title} | RFR BY RIYAS — Riyas Fashion Runway`;
+  const activeTitle = seoData.metaTitle || (title ? `${title} | RFR BY RIYAS — Riyas Fashion Runway` : 'RFR BY RIYAS — Riyas Fashion Runway');
+  const activeDescription = seoData.metaDescription || description;
+  const activeCanonical = seoData.canonicalUrl || canonical;
+  const activeKeywords = seoData.keywords?.join(', ');
 
   return (
     <>
       <Helmet>
-        <title>{fullTitle}</title>
-        <meta name="description" content={description} />
-        <link rel="canonical" href={canonical} />
-        <meta property="og:title" content={fullTitle} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonical} />
-        <meta name="twitter:title" content={fullTitle} />
-        <meta name="twitter:description" content={description} />
+        <title>{activeTitle}</title>
+        <meta name="description" content={activeDescription} />
+        {activeKeywords && <meta name="keywords" content={activeKeywords} />}
+        <link rel="canonical" href={activeCanonical} />
+        <meta property="og:title" content={activeTitle} />
+        <meta property="og:description" content={activeDescription} />
+        <meta property="og:url" content={activeCanonical} />
+        {seoData.ogImageUrl && <meta property="og:image" content={seoData.ogImageUrl} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={activeTitle} />
+        <meta name="twitter:description" content={activeDescription} />
+        {seoData.ogImageUrl && <meta name="twitter:image" content={seoData.ogImageUrl} />}
         {schema && (
           <script type="application/ld+json">
             {JSON.stringify(schema)}

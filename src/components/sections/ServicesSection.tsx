@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
 import { servicesData } from '../../data/servicesData';
+import { getServicesCatalog } from '../../services/cmsService';
+import { ServiceItem } from '../../types';
 import { ArrowUpRight, Calendar, Megaphone, Mic, Sparkles, Play, X, Film } from 'lucide-react';
 
 export const ServicesSection: React.FC = () => {
+  const [services, setServices] = useState<ServiceItem[]>(servicesData);
   const [activeCategory, setActiveCategory] = useState<'events' | 'campaigns' | 'podcast'>('events');
   const [selectedVideo, setSelectedVideo] = useState<{
     title: string;
@@ -14,9 +17,25 @@ export const ServicesSection: React.FC = () => {
     driveFolderUrl?: string;
   } | null>(null);
 
-  const eventItems = servicesData.filter((s) => s.category === 'events');
-  const campaignItems = servicesData.filter((s) => s.category === 'campaigns');
-  const podcastItem = servicesData.find((s) => s.category === 'podcast') || servicesData[0];
+  useEffect(() => {
+    let isMounted = true;
+    getServicesCatalog()
+      .then((data) => {
+        if (isMounted && data && data.length > 0) {
+          setServices(data);
+        }
+      })
+      .catch((err) => {
+        console.warn('Unable to load live services catalog, retaining fallback:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const eventItems = services.filter((s) => s.category === 'events');
+  const campaignItems = services.filter((s) => s.category === 'campaigns');
+  const podcastItem = services.find((s) => s.category === 'podcast') || services[0] || servicesData[0];
 
   return (
     <section
@@ -471,6 +490,7 @@ export const ServicesSection: React.FC = () => {
                       src={selectedVideo.videoUrl}
                       controls
                       autoPlay
+                      playsInline
                       className="w-full h-full object-contain"
                     />
                   ) : selectedVideo.videoEmbedUrl ? (

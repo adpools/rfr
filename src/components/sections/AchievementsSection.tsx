@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Trophy, Star, Award, Crown, TrendingUp, Users, Sparkles, ArrowUpRight } from 'lucide-react';
+import { getAboutRiyas } from '../../services/cmsService';
 
 export const AchievementsSection: React.FC = () => {
-  const stats = [
-    { number: '100+', label: 'Marquee Runway Shows & Productions', icon: Crown },
-    { number: '500+', label: 'Models & Artists Launched', icon: Users },
-    { number: '50+', label: 'Commercial & Retail Brand Campaigns', icon: TrendingUp },
-    { number: '5M+', label: 'Audience Footfall & Digital Reach', icon: Sparkles },
-  ];
+  const [stats, setStats] = useState([
+    { key: 'shows', number: '100+', label: 'Marquee Runway Shows & Productions', icon: Crown },
+    { key: 'artists', number: '500+', label: 'Models & Artists Launched', icon: Users },
+    { key: 'campaigns', number: '50+', label: 'Commercial & Retail Brand Campaigns', icon: TrendingUp },
+    { key: 'reach', number: '5M+', label: 'Audience Footfall & Digital Reach', icon: Sparkles },
+  ]);
+
+  useEffect(() => {
+    getAboutRiyas().then((res: any) => {
+      if (res?.stats) {
+        setStats([
+          { key: 'shows', number: res.stats.shows || '100+', label: 'Marquee Runway Shows & Productions', icon: Crown },
+          { key: 'artists', number: res.stats.artists || '500+', label: 'Models & Artists Launched', icon: Users },
+          { key: 'campaigns', number: res.stats.campaigns || '50+', label: 'Commercial & Retail Brand Campaigns', icon: TrendingUp },
+          { key: 'reach', number: res.stats.reach || '5M+', label: 'Audience Footfall & Digital Reach', icon: Sparkles },
+        ]);
+      }
+    });
+  }, []);
 
   const highlights = [
     {

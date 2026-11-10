@@ -33,6 +33,10 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
   const [founderName, setFounderName] = useState('Adv. Riyas');
   const [officialTitle, setOfficialTitle] = useState('Founder & Creative Director, RFR');
   const [visionQuote, setVisionQuote] = useState('Fashion is not merely what we wear; it is an architectural symphony of identity, passion and purpose.');
+  const [showsStat, setShowsStat] = useState('');
+  const [artistsStat, setArtistsStat] = useState('');
+  const [campaignsStat, setCampaignsStat] = useState('');
+  const [reachStat, setReachStat] = useState('');
   const [savingBio, setSavingBio] = useState(false);
 
   const [formData, setFormData] = useState<TeamMember>({
@@ -64,22 +68,40 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
           is_published: true,
         },
       ]);
+      setShowsStat('');
+      setArtistsStat('');
+      setCampaignsStat('');
+      setReachStat('');
       setLoading(false);
       return;
     }
 
     try {
-      // Fetch Founder Bio from about_riyas
-      const { data: aboutData } = await supabase
+      // Fetch Founder Bio from about_riyas with explicit error handling
+      const { data: aboutData, error: aboutError } = await supabase
         .from('about_riyas')
         .select('*')
         .limit(1)
         .maybeSingle();
 
-      if (aboutData) {
+      if (aboutError) {
+        console.error('Error fetching about_riyas:', aboutError);
+        showToast(aboutError.message || 'Failed to load founder narrative', 'error');
+      } else if (aboutData) {
         if (aboutData.founder_name) setFounderName(aboutData.founder_name);
         if (aboutData.official_title) setOfficialTitle(aboutData.official_title);
         if (aboutData.quote) setVisionQuote(aboutData.quote);
+        if (aboutData.stats && typeof aboutData.stats === 'object') {
+          setShowsStat(aboutData.stats.shows || '');
+          setArtistsStat(aboutData.stats.artists || '');
+          setCampaignsStat(aboutData.stats.campaigns || '');
+          setReachStat(aboutData.stats.reach || '');
+        } else {
+          setShowsStat('');
+          setArtistsStat('');
+          setCampaignsStat('');
+          setReachStat('');
+        }
       }
 
       // Fetch Team Members from team_members
@@ -102,6 +124,10 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
   }, []);
 
   const handleSaveBio = async () => {
+    if (uploading) {
+      showToast('Please wait for image upload to complete', 'info');
+      return;
+    }
     setSavingBio(true);
     if (!isSupabaseConfigured) {
       setTimeout(() => {
@@ -112,16 +138,25 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
     }
 
     try {
-      const { data: existing } = await supabase
+      const { data: existing, error: fetchErr } = await supabase
         .from('about_riyas')
         .select('id')
         .limit(1)
         .maybeSingle();
 
+      if (fetchErr) throw fetchErr;
+
+      const statsPayload: Record<string, string> = {};
+      if (showsStat.trim()) statsPayload.shows = showsStat.trim();
+      if (artistsStat.trim()) statsPayload.artists = artistsStat.trim();
+      if (campaignsStat.trim()) statsPayload.campaigns = campaignsStat.trim();
+      if (reachStat.trim()) statsPayload.reach = reachStat.trim();
+
       const payload = {
-        founder_name: founderName.trim(),
-        official_title: officialTitle.trim(),
-        quote: visionQuote.trim(),
+        founder_name: founderName.trim() || 'Adv. Riyas',
+        official_title: officialTitle.trim() || 'Founder & Creative Director, RFR',
+        quote: visionQuote.trim() || null,
+        stats: statsPayload,
         updated_at: new Date().toISOString(),
       };
 
@@ -171,18 +206,30 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const res = await uploadMediaFile(file, 'team');
-    setUploading(false);
-    if (res.success && res.url) {
-      setFormData((prev) => ({ ...prev, image: res.url || '' }));
-      showToast('Team portrait uploaded');
-    } else {
-      showToast(res.error || 'Upload failed', 'error');
+    try {
+      const res = await uploadMediaFile(file, 'team');
+      if (res.success && res.url) {
+        setFormData((prev) => ({ ...prev, image: res.url || '' }));
+        showToast('Team portrait uploaded');
+      } else {
+        showToast(res.error || 'Upload failed', 'error');
+      }
+    } catch (err: any) {
+      showToast(err?.message || 'File upload failed', 'error');
+    } finally {
+      setUploading(false);
+      if (e.target) {
+        e.target.value = '';
+      }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (uploading) {
+      showToast('Please wait for the image upload to complete before saving', 'info');
+      return;
+    }
     if (!formData.name.trim()) {
       showToast('Member name is required', 'error');
       return;
@@ -291,11 +338,11 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
           </h2>
           <button
             onClick={handleSaveBio}
-            disabled={savingBio}
-            className="px-4 py-1.5 rounded-xl bg-[#C7A46A] hover:bg-[#D4B678] text-black font-mono font-bold text-xs uppercase flex items-center gap-1.5 disabled:opacity-50"
+            disabled={savingBio || uploading}
+            className="px-4 py-1.5 rounded-xl bg-[#C7A46A] hover:bg-[#D4B678] text-black font-mono font-bold text-xs uppercase flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save size={13} />
-            <span>{savingBio ? 'Saving...' : 'Update Narrative'}</span>
+            <span>{savingBio ? 'Saving...' : uploading ? 'Uploading...' : 'Update Narrative'}</span>
           </button>
         </div>
 
@@ -335,6 +382,55 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
             onChange={(e) => setVisionQuote(e.target.value)}
             className="w-full px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
           />
+        </div>
+
+        {/* Homepage & Platform Achievement Counters */}
+        <div className="pt-2 border-t border-neutral-850">
+          <label className="block text-[11px] font-mono text-[#C7A46A] uppercase tracking-wider mb-2">
+            Homepage & Public Achievements Counters (about_riyas.stats)
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <span className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Runways / Shows</span>
+              <input
+                type="text"
+                value={showsStat}
+                onChange={(e) => setShowsStat(e.target.value)}
+                placeholder="e.g. 100+"
+                className="w-full px-3 py-1.5 rounded-lg bg-[#141414] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+              />
+            </div>
+            <div>
+              <span className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Talent / Models</span>
+              <input
+                type="text"
+                value={artistsStat}
+                onChange={(e) => setArtistsStat(e.target.value)}
+                placeholder="e.g. 500+"
+                className="w-full px-3 py-1.5 rounded-lg bg-[#141414] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+              />
+            </div>
+            <div>
+              <span className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Brand Campaigns</span>
+              <input
+                type="text"
+                value={campaignsStat}
+                onChange={(e) => setCampaignsStat(e.target.value)}
+                placeholder="e.g. 50+"
+                className="w-full px-3 py-1.5 rounded-lg bg-[#141414] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+              />
+            </div>
+            <div>
+              <span className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Audience Reach</span>
+              <input
+                type="text"
+                value={reachStat}
+                onChange={(e) => setReachStat(e.target.value)}
+                placeholder="e.g. 5M+"
+                className="w-full px-3 py-1.5 rounded-lg bg-[#141414] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -423,8 +519,10 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
                 {editingMember ? 'Edit Team Member' : 'Add Team Member'}
               </h2>
               <button
+                type="button"
+                disabled={uploading}
                 onClick={() => setIsModalOpen(false)}
-                className="p-1 rounded-lg hover:bg-[#222] text-neutral-400 hover:text-white"
+                className="p-1 rounded-lg hover:bg-[#222] text-neutral-400 hover:text-white disabled:opacity-50"
               >
                 <X size={18} />
               </button>
@@ -516,8 +614,9 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
                   <input
                     type="file"
                     accept="image/*"
+                    disabled={uploading}
                     onChange={handleFileUpload}
-                    className="text-xs text-neutral-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-mono file:bg-[#222] file:text-white hover:file:bg-[#333]"
+                    className="text-xs text-neutral-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-mono file:bg-[#222] file:text-white hover:file:bg-[#333] disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   {uploading && <span className="text-xs text-[#C7A46A] font-mono animate-pulse">Uploading...</span>}
                 </div>
@@ -544,17 +643,19 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
               <div className="pt-4 flex items-center justify-end gap-3 border-t border-neutral-800">
                 <button
                   type="button"
+                  disabled={uploading}
                   onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2.5 rounded-xl border border-neutral-800 hover:bg-[#181818] text-neutral-300 font-mono text-xs uppercase"
+                  className="px-5 py-2.5 rounded-xl border border-neutral-800 hover:bg-[#181818] text-neutral-300 font-mono text-xs uppercase disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-[#C7A46A] hover:bg-[#D4B678] text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                  disabled={uploading}
+                  className="px-6 py-2.5 rounded-xl bg-[#C7A46A] hover:bg-[#D4B678] text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save size={15} />
-                  <span>{editingMember ? 'Save Member' : 'Add Member'}</span>
+                  <span>{uploading ? 'Uploading...' : editingMember ? 'Save Member' : 'Add Member'}</span>
                 </button>
               </div>
             </form>

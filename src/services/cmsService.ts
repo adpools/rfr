@@ -6,6 +6,8 @@ import { pressData } from '../data/pressData';
 import { galleryData } from '../data/galleryData';
 import { servicesData } from '../data/servicesData';
 import { talentData } from '../data/talentData';
+import { ecosystemNodes } from '../data/ecosystemData';
+import { ServiceItem, EcosystemNode } from '../types';
 
 // ==============================================================================
 // RFR BY RIYAS — UNIFIED CMS & SUPABASE SERVICE LAYER
@@ -217,11 +219,9 @@ export interface ContactInquiry {
 export const submitContactInquiry = async (
   inquiry: ContactInquiry
 ): Promise<{ success: boolean; error?: string }> => {
-  // Client-side spam honeypot check
-  if (inquiry.bot_honey_field && inquiry.bot_honey_field.trim() !== '') {
-    // Silently drop bots or return fake success
-    return { success: true };
-  }
+  const honey = inquiry.bot_honey_field !== undefined && inquiry.bot_honey_field !== null && inquiry.bot_honey_field.trim() !== ''
+    ? inquiry.bot_honey_field.trim()
+    : null;
 
   if (!inquiry.full_name || !inquiry.email || !inquiry.message) {
     return { success: false, error: 'Name, email, and message are required.' };
@@ -242,7 +242,7 @@ export const submitContactInquiry = async (
         budget_range: inquiry.budget_range || null,
         message: inquiry.message.trim(),
         status: 'new', // Matches CHECK (status IN ('new', 'read', 'in_progress', 'completed', 'archived'))
-        bot_honey_field: null, // explicitly null per RLS policy
+        bot_honey_field: honey, // Pass actual submitted honeypot field; DB RLS policy enforces (bot_honey_field IS NULL)
       },
     ]);
 
@@ -334,7 +334,7 @@ export const getTimelineYears = async (): Promise<any[]> => {
       videoEmbedUrl: y.video_embed_url,
       driveFolderUrl: y.drive_folder_url,
       eventsList: events
-        .filter((e) => e.year_id === y.id)
+        .filter((e) => e.year_id === y.id || (e.year_number && e.year_number === y.year))
         .map((e) => ({
           id: e.id,
           name: e.name,
@@ -352,6 +352,81 @@ export const getTimelineYears = async (): Promise<any[]> => {
     }));
   } catch {
     return timelineData;
+  }
+};
+
+export const getTimelineEvents = async (yearId?: string): Promise<any[]> => {
+  if (!isSupabaseConfigured) return [];
+  try {
+    let query = supabase
+      .from('timeline_events')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true });
+
+    if (yearId) {
+      query = query.eq('year_id', yearId);
+    }
+
+    const { data, error } = await query;
+    if (error || !data) return [];
+    return data;
+  } catch {
+    return [];
+  }
+};
+
+export const getTimelineYearRecord = async (year: number): Promise<any | null> => {
+  if (!isSupabaseConfigured) return null;
+  try {
+    const { data, error } = await supabase
+      .from('timeline_years')
+      .select('*')
+      .eq('year', year)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data;
+  } catch {
+    return null;
+  }
+};
+
+export const ensureTimelineYearExists = async (
+  year: number,
+  title?: string
+): Promise<{ data: any | null; error?: string }> => {
+  if (!isSupabaseConfigured) return { data: null, error: 'Database not connected' };
+  try {
+    // 1. Check if year already exists
+    const existing = await getTimelineYearRecord(year);
+    if (existing?.id) {
+      return { data: existing };
+    }
+
+    // 2. Insert new year record with complete schema compliance
+    const payload = {
+      year,
+      title: title || `CHRONICLE OF ${year}`,
+      theme: 'MILESTONES & PRODUCTIONS',
+      subtitle: `Official chronicle and productions of ${year}`,
+      description: `Historical records, brand campaigns, and headline productions curated during ${year}.`,
+      image: '/images/final bro.png',
+      accent: '#C7A46A',
+      sort_order: year,
+      is_published: true,
+    };
+
+    const { data, error } = await supabase
+      .from('timeline_years')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) return { data: null, error: error.message };
+    return { data };
+  } catch (err: any) {
+    return { data: null, error: err.message || 'Failed to initialize timeline year' };
   }
 };
 
@@ -446,6 +521,38 @@ export const getPressArticles = async (): Promise<any[]> => {
     }));
   } catch {
     return pressData;
+  }
+};
+
+export interface RawPressArticle {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  date_label: string;
+  author?: string;
+  read_time?: string;
+  cover_image: string;
+  excerpt: string;
+  external_url?: string;
+  is_featured_home: boolean;
+  sort_order: number;
+  is_published: boolean;
+}
+
+export const getPressClippings = async (): Promise<RawPressArticle[]> => {
+  if (!isSupabaseConfigured) return [];
+  try {
+    const { data, error } = await supabase
+      .from('press_articles')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true });
+
+    if (error || !data) return [];
+    return data as RawPressArticle[];
+  } catch {
+    return [];
   }
 };
 
@@ -584,6 +691,8 @@ export interface AboutRiyasData {
   quote?: string;
   portrait_image?: string;
   biography_paragraphs?: string[];
+  career_milestones?: any[];
+  stats?: Record<string, string>;
 }
 
 export const getAboutRiyas = async (): Promise<AboutRiyasData | null> => {
@@ -668,5 +777,243 @@ export const getAdminMetrics = async (): Promise<AdminMetrics> => {
     };
   } catch {
     return fallbackMetrics;
+  }
+};
+
+// ==============================================================================
+// 14. SERVICES CATALOG & ECOSYSTEM & MEDIA VIDEOS
+// ==============================================================================
+export const getServicesCatalog = async (categoryFilter?: string): Promise<ServiceItem[]> => {
+  if (!isSupabaseConfigured) {
+    if (!categoryFilter || categoryFilter === 'all') return servicesData;
+    return servicesData.filter((s) => s.category === categoryFilter);
+  }
+
+  try {
+    // 1. Fetch main services spectrum from page_content where page_slug = 'services'
+    const { data: mainData, error: mainError } = await supabase
+      .from('page_content')
+      .select('content')
+      .eq('page_slug', 'services')
+      .eq('is_published', true)
+      .maybeSingle();
+
+    let items: ServiceItem[] = servicesData;
+    if (!mainError && mainData?.content && Array.isArray(mainData.content.services) && mainData.content.services.length > 0) {
+      items = mainData.content.services;
+    }
+
+    // 2. Overlay individual service customizations from page_content (page_slug like 'service_%')
+    const { data: individualRows, error: indError } = await supabase
+      .from('page_content')
+      .select('page_slug, title, subtitle, content')
+      .like('page_slug', 'service_%')
+      .eq('is_published', true);
+
+    if (!indError && individualRows && individualRows.length > 0) {
+      items = items.map((item) => {
+        const match = individualRows.find((r) => r.page_slug === `service_${item.slug}`);
+        if (!match) return item;
+        const c = match.content || {};
+        return {
+          ...item,
+          title: match.title || item.title,
+          subheading: match.subtitle || item.subheading,
+          description: c.description || c.leadNarrative || item.description,
+          detailedOverview: c.detailedOverview || c.secondaryNarrative || item.detailedOverview,
+          deliverables: (Array.isArray(c.deliverables) && c.deliverables.length > 0)
+            ? c.deliverables
+            : item.deliverables,
+          keyHighlights: (Array.isArray(c.keyHighlights) && c.keyHighlights.length > 0)
+            ? c.keyHighlights
+            : item.keyHighlights,
+          badge: c.badge || item.badge,
+          image: c.image || item.image,
+        };
+      });
+    }
+
+    if (!categoryFilter || categoryFilter === 'all') return items;
+    return items.filter((s) => s.category === categoryFilter);
+  } catch (err) {
+    console.warn('getServicesCatalog fallback:', err);
+    if (!categoryFilter || categoryFilter === 'all') return servicesData;
+    return servicesData.filter((s) => s.category === categoryFilter);
+  }
+};
+
+export const getEcosystemNodes = async (): Promise<EcosystemNode[]> => {
+  if (!isSupabaseConfigured) return ecosystemNodes;
+  try {
+    const { data, error } = await supabase
+      .from('ecosystem_nodes')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true });
+
+    if (error || !data || data.length === 0) return ecosystemNodes;
+
+    return data.map((d: any) => ({
+      id: d.node_id,
+      label: d.label,
+      category: d.category,
+      description: d.description,
+      x: Number(d.x),
+      y: Number(d.y),
+      z: Number(d.z),
+      connections: d.connections || [],
+      color: d.color || '#C7A46A',
+    }));
+  } catch {
+    return ecosystemNodes;
+  }
+};
+
+export const getMediaVideos = async (categoryFilter?: string): Promise<any[]> => {
+  if (!isSupabaseConfigured) return [];
+  try {
+    let query = supabase
+      .from('media_videos')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true });
+
+    if (categoryFilter) {
+      query = query.eq('category', categoryFilter);
+    }
+
+    const { data, error } = await query;
+    if (error || !data) return [];
+    return data;
+  } catch {
+    return [];
+  }
+};
+
+export const getTicContent = async (): Promise<any | null> => {
+  if (!isSupabaseConfigured) return null;
+  try {
+    const { data, error } = await supabase
+      .from('tic_content')
+      .select('*')
+      .eq('is_published', true)
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data;
+  } catch {
+    return null;
+  }
+};
+
+export const getProjectsPortfolio = async (): Promise<any[]> => {
+  if (!isSupabaseConfigured) return [];
+  try {
+    const { data, error } = await supabase
+      .from('projects_portfolio')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true });
+
+    if (error || !data) return [];
+    return data;
+  } catch {
+    return [];
+  }
+};
+
+// ==============================================================================
+// 15. UNIFIED PAGE CONTENT (FOR THE 6 STATIC PAGE GROUPS)
+// ==============================================================================
+export interface PageContentRecord<T = any> {
+  page_slug: string;
+  title: string;
+  subtitle?: string;
+  content: T;
+  is_published: boolean;
+  updated_at?: string;
+}
+
+export const getPageContent = async <T = any>(
+  slug: string,
+  fallback: { title?: string; subtitle?: string; content: T }
+): Promise<{ title: string; subtitle: string; content: T }> => {
+  if (!isSupabaseConfigured) {
+    return {
+      title: fallback.title || '',
+      subtitle: fallback.subtitle || '',
+      content: fallback.content,
+    };
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('page_content')
+      .select('*')
+      .eq('page_slug', slug)
+      .eq('is_published', true)
+      .maybeSingle();
+
+    if (error || !data) {
+      return {
+        title: fallback.title || '',
+        subtitle: fallback.subtitle || '',
+        content: fallback.content,
+      };
+    }
+
+    return {
+      title: data.title || fallback.title || '',
+      subtitle: data.subtitle ?? fallback.subtitle ?? '',
+      content: (data.content && typeof data.content === 'object' && Object.keys(data.content).length > 0)
+        ? { ...fallback.content, ...data.content }
+        : fallback.content,
+    };
+  } catch {
+    return {
+      title: fallback.title || '',
+      subtitle: fallback.subtitle || '',
+      content: fallback.content,
+    };
+  }
+};
+
+// ==============================================================================
+// SEO METADATA LOOKUP (DYNAMIC ROUTE INGESTION)
+// ==============================================================================
+export interface SeoMetadataItem {
+  id?: string;
+  page_path: string;
+  meta_title?: string;
+  meta_description?: string;
+  keywords?: string[];
+  og_image_url?: string;
+  canonical_url?: string;
+}
+
+export const getSeoMetadata = async (path: string): Promise<SeoMetadataItem | null> => {
+  if (!isSupabaseConfigured) return null;
+  try {
+    const cleanPath = path === '/' ? '/' : path.replace(/\/+$/, '');
+    const { data, error } = await supabase
+      .from('seo_metadata')
+      .select('*')
+      .or(`page_path.eq.${cleanPath},page_path.eq.${cleanPath}/`)
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return {
+      id: data.id,
+      page_path: data.page_path || data.route_path,
+      meta_title: data.meta_title,
+      meta_description: data.meta_description,
+      keywords: Array.isArray(data.keywords) ? data.keywords : [],
+      og_image_url: data.og_image_url,
+      canonical_url: data.canonical_url,
+    };
+  } catch {
+    return null;
   }
 };

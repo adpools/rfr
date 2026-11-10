@@ -96,11 +96,35 @@ const ticBrands = [
 
 export const TICPage: React.FC = () => {
   const [events, setEvents] = useState<TICEvent[]>(ticEvents);
+  const [content, setContent] = useState({
+    title: 'TRIVANDRUM INFLUENCER CIRCLE',
+    tagline: 'TIC • CO-FOUNDED BY RIYAS',
+    narrative: 'Trivandrum Influencer Circle (TIC) is Kerala’s premier regional creator alliance. Co-Founded by Riyas, TIC was established to bridge authentic regional cultural resonance with high-conversion enterprise brand campaigns spanning fashion, automotive, hospitality, and digital storytelling.',
+  });
   const [isPlayingLaunchVideo, setIsPlayingLaunchVideo] = useState(false);
   const [activeModalEvent, setActiveModalEvent] = useState<TICEvent | null>(null);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
+
+    // Fetch TIC Manifesto
+    supabase
+      .from('tic_content')
+      .select('*')
+      .eq('is_published', true)
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setContent({
+            title: data.title || 'TRIVANDRUM INFLUENCER CIRCLE',
+            tagline: data.tagline || 'TIC • CO-FOUNDED BY RIYAS',
+            narrative: data.narrative || 'Trivandrum Influencer Circle (TIC) is Kerala’s premier regional creator alliance.',
+          });
+        }
+      });
+
+    // Fetch TIC Events
     supabase
       .from('tic_events')
       .select('*')
@@ -143,11 +167,17 @@ export const TICPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-6">
             <div>
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-light text-white uppercase tracking-tight leading-[0.98]">
-                TRIVANDRUM <br />
-                <span className="italic text-[#C7A46A] font-normal">INFLUENCER CIRCLE.</span>
+                {content.title.includes('INFLUENCER') ? (
+                  <>
+                    {content.title.split('INFLUENCER')[0]} <br />
+                    <span className="italic text-[#C7A46A] font-normal">INFLUENCER{content.title.split('INFLUENCER')[1] || '.'}</span>
+                  </>
+                ) : (
+                  content.title
+                )}
               </h1>
               <p className="text-neutral-400 text-xs sm:text-sm font-mono uppercase tracking-[0.25em] mt-3">
-                TIC • CO-FOUNDED BY RIYAS
+                {content.tagline}
               </p>
             </div>
 
@@ -175,7 +205,7 @@ export const TICPage: React.FC = () => {
           </div>
 
           <p className="text-neutral-300 text-sm md:text-base font-light leading-relaxed max-w-3xl">
-            Trivandrum Influencer Circle (<strong>TIC</strong>) is Kerala’s premier regional creator alliance. Co-Founded by Riyas, TIC was established to bridge authentic regional cultural resonance with high-conversion enterprise brand campaigns spanning fashion, automotive, hospitality, and digital storytelling.
+            {content.narrative}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-mono text-neutral-400">

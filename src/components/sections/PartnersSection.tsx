@@ -1,35 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Handshake, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { getPageContent } from '../../services/cmsService';
+
+const defaultEnhancedSectors = [
+  {
+    title: 'Media Houses & Press Portals',
+    desc: 'Amplifying the RFR narrative through premier editorial partnerships, digital syndication, and expansive broadcast coverage across global channels.',
+  },
+  {
+    title: 'Digital Streaming Platforms',
+    desc: 'Ensuring high-fidelity global reach by simulcasting RFR runway shows, podcasts, and digital campaigns across leading OTT networks.',
+  },
+  {
+    title: 'Premium Luxury Venues',
+    desc: 'Co-creating immersive spatial experiences by transforming high-end architectural landmarks, luxury resorts, and prime real estate into runway destinations.',
+  },
+  {
+    title: 'Creative Agencies',
+    desc: 'Collaborating with avant-garde design, PR, and advertising agencies to execute monumental brand activations and multi-channel campaigns.',
+  },
+  {
+    title: 'Production & Cinematography',
+    desc: 'Powering the visual engine of RFR with industry-leading lighting architects, 6K camera crews, and master acoustic engineering syndicates.',
+  },
+  {
+    title: 'Talent & Artist Guilds',
+    desc: 'Fostering the next generation of creative icons by partnering with elite modeling agencies, artist management firms, and casting directors.',
+  }
+];
 
 export const PartnersSection: React.FC = () => {
-  const enhancedSectors = [
-    {
-      title: 'Media Houses & Press Portals',
-      desc: 'Amplifying the RFR narrative through premier editorial partnerships, digital syndication, and expansive broadcast coverage across global channels.',
-    },
-    {
-      title: 'Digital Streaming Platforms',
-      desc: 'Ensuring high-fidelity global reach by simulcasting RFR runway shows, podcasts, and digital campaigns across leading OTT networks.',
-    },
-    {
-      title: 'Premium Luxury Venues',
-      desc: 'Co-creating immersive spatial experiences by transforming high-end architectural landmarks, luxury resorts, and prime real estate into runway destinations.',
-    },
-    {
-      title: 'Creative Agencies',
-      desc: 'Collaborating with avant-garde design, PR, and advertising agencies to execute monumental brand activations and multi-channel campaigns.',
-    },
-    {
-      title: 'Production & Cinematography',
-      desc: 'Powering the visual engine of RFR with industry-leading lighting architects, 6K camera crews, and master acoustic engineering syndicates.',
-    },
-    {
-      title: 'Talent & Artist Guilds',
-      desc: 'Fostering the next generation of creative icons by partnering with elite modeling agencies, artist management firms, and casting directors.',
-    }
-  ];
+  const [data, setData] = useState({
+    title: 'CHANNEL PARTNERS',
+    subtitle: 'Collaborating with luxury venue operators, premier media syndicates, production houses, and talent consultancies.',
+    sectors: defaultEnhancedSectors,
+  });
+
+  useEffect(() => {
+    getPageContent('partners', {
+      title: 'CHANNEL PARTNERS',
+      subtitle: 'Collaborating with luxury venue operators, premier media syndicates, production houses, and talent consultancies.',
+      content: {
+        leadNarrative: 'Collaborating with luxury venue operators, premier media syndicates, production houses, and talent consultancies.',
+        items: defaultEnhancedSectors,
+      }
+    }).then((res) => {
+      setData((prev) => {
+        let sectors = prev.sectors;
+        if (Array.isArray(res.content?.items) && res.content.items.length > 0) {
+          sectors = res.content.items.map((it: any, idx: number) => ({
+            title: it.title || prev.sectors[idx]?.title || `Partner Sector 0${idx + 1}`,
+            desc: it.desc || it.description || prev.sectors[idx]?.desc || '',
+          }));
+        }
+        return {
+          title: res.title || prev.title,
+          subtitle: res.subtitle || res.content?.leadNarrative || prev.subtitle,
+          sectors,
+        };
+      });
+    });
+  }, []);
 
   return (
     <section
@@ -54,10 +87,10 @@ export const PartnersSection: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-900 pb-8 gap-8">
             <div className="max-w-3xl">
               <h2 className="text-6xl sm:text-7xl lg:text-[110px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.85] mb-6 drop-shadow-2xl">
-                CHANNEL PARTNERS
+                {data.title}
               </h2>
               <p className="text-sm sm:text-[15px] font-serif font-light text-[#A09D96] leading-relaxed max-w-lg tracking-wide">
-                Collaborating with luxury venue operators, premier media syndicates, production houses, and talent consultancies.
+                {data.subtitle}
               </p>
             </div>
             <Link
@@ -76,7 +109,7 @@ export const PartnersSection: React.FC = () => {
 
         {/* Sectors Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {enhancedSectors.map((sector, idx) => (
+          {data.sectors.map((sector, idx) => (
             <motion.div
               key={sector.title}
               initial={{ opacity: 0, y: 20 }}

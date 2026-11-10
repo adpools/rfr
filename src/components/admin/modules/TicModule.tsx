@@ -28,6 +28,15 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
   const [editingEvent, setEditingEvent] = useState<TicEvent | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  // TIC Manifesto state (tic_content)
+  const [manifestoTitle, setManifestoTitle] = useState('TRIVANDRUM INFLUENCER CIRCLE');
+  const [manifestoTagline, setManifestoTagline] = useState('TIC • CO-FOUNDED BY RIYAS');
+  const [manifestoNarrative, setManifestoNarrative] = useState(
+    'Trivandrum Influencer Circle (TIC) is Kerala’s premier regional creator alliance. Co-Founded by Riyas, TIC was established to bridge authentic regional cultural resonance with high-conversion enterprise brand campaigns spanning fashion, automotive, hospitality, and digital storytelling.'
+  );
+  const [manifestoVideoUrl, setManifestoVideoUrl] = useState('https://drive.google.com/file/d/13KL_xZOjSNeBFJDSfbLic-0wMlBT9lDf/preview');
+  const [savingManifesto, setSavingManifesto] = useState(false);
+
   const [formData, setFormData] = useState<TicEvent>({
     name: '',
     event_date: new Date().toISOString().split('T')[0],
@@ -49,7 +58,7 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
           event_date: '2026-03-15',
           venue: 'O by Tamara, Trivandrum',
           description: 'South India’s premier digital creator conclave and annual award night.',
-          cover_image: '/images/events/tic-conclave.jpg',
+          cover_image: '/images/clients/tic.png',
           attendees_count: '500+ Creators & Executives',
           sort_order: 1,
           is_published: true,
@@ -60,6 +69,21 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
     }
 
     try {
+      // Fetch TIC Manifesto
+      const { data: contentData } = await supabase
+        .from('tic_content')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+
+      if (contentData) {
+        if (contentData.title) setManifestoTitle(contentData.title);
+        if (contentData.tagline) setManifestoTagline(contentData.tagline);
+        if (contentData.narrative) setManifestoNarrative(contentData.narrative);
+        if (contentData.video_reel_url) setManifestoVideoUrl(contentData.video_reel_url);
+      }
+
+      // Fetch TIC Events
       const { data, error } = await supabase
         .from('tic_events')
         .select('*')
@@ -71,6 +95,51 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
       showToast(err.message || 'Failed to load TIC events', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSaveManifesto = async () => {
+    setSavingManifesto(true);
+    if (!isSupabaseConfigured) {
+      setTimeout(() => {
+        setSavingManifesto(false);
+        showToast('TIC Manifesto saved (preview)');
+      }, 500);
+      return;
+    }
+
+    try {
+      const { data: existing } = await supabase
+        .from('tic_content')
+        .select('id')
+        .limit(1)
+        .maybeSingle();
+
+      const payload = {
+        title: manifestoTitle.trim(),
+        tagline: manifestoTagline.trim(),
+        narrative: manifestoNarrative.trim(),
+        video_reel_url: manifestoVideoUrl.trim() || null,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (existing?.id) {
+        const { error } = await supabase
+          .from('tic_content')
+          .update(payload)
+          .eq('id', existing.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('tic_content')
+          .insert([payload]);
+        if (error) throw error;
+      }
+      showToast('TIC Manifesto & Headline updated');
+    } catch (err: any) {
+      showToast(err.message || 'Failed to save TIC manifesto', 'error');
+    } finally {
+      setSavingManifesto(false);
     }
   };
 
@@ -125,7 +194,7 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
       event_date: formData.event_date || null,
       venue: formData.venue ? formData.venue.trim() : null,
       description: formData.description ? formData.description.trim() : null,
-      cover_image: formData.cover_image.trim() || '/images/events/tic-conclave.jpg',
+      cover_image: formData.cover_image.trim() || '/images/clients/tic.png',
       attendees_count: formData.attendees_count ? formData.attendees_count.trim() : null,
       sort_order: Number(formData.sort_order) || 0,
       is_published: formData.is_published,
@@ -218,6 +287,74 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
           <Plus size={16} />
           <span>Announce TIC Event</span>
         </button>
+      </div>
+
+      {/* TIC Manifesto & Narrative Card (tic_content) */}
+      <div className="p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-800 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-[#C7A46A]">
+            TIC Guild Manifesto & Narrative (tic_content)
+          </h2>
+          <button
+            onClick={handleSaveManifesto}
+            disabled={savingManifesto}
+            className="px-4 py-1.5 rounded-xl bg-[#C7A46A] hover:bg-[#D4B678] text-black font-mono font-bold text-xs uppercase flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <Save size={13} />
+            <span>{savingManifesto ? 'Saving...' : 'Update Manifesto'}</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">
+              Headline Title
+            </label>
+            <input
+              type="text"
+              value={manifestoTitle}
+              onChange={(e) => setManifestoTitle(e.target.value)}
+              className="w-full px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">
+              Tagline / Subheading
+            </label>
+            <input
+              type="text"
+              value={manifestoTagline}
+              onChange={(e) => setManifestoTagline(e.target.value)}
+              className="w-full px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">
+            Manifesto / Platform Narrative
+          </label>
+          <textarea
+            rows={3}
+            value={manifestoNarrative}
+            onChange={(e) => setManifestoNarrative(e.target.value)}
+            className="w-full px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
+          />
+        </div>
+
+        <div>
+          <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">
+            Launch Video Embed URL
+          </label>
+          <input
+            type="text"
+            value={manifestoVideoUrl}
+            onChange={(e) => setManifestoVideoUrl(e.target.value)}
+            placeholder="https://drive.google.com/file/d/.../preview"
+            className="w-full px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
+          />
+        </div>
       </div>
 
       {/* Search */}

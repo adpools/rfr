@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Sparkles, ArrowUpRight } from 'lucide-react';
 import { timelineData } from '../../data/timelineData';
+import { getTimelineYears } from '../../services/cmsService';
+import { TimelineYear } from '../../types';
 
 export const MilestonesSection: React.FC = () => {
+  const [data, setData] = useState<TimelineYear[]>(timelineData);
+
+  useEffect(() => {
+    let isMounted = true;
+    getTimelineYears()
+      .then((years) => {
+        if (isMounted && years && years.length > 0) {
+          setData(years);
+        }
+      })
+      .catch((err) => {
+        console.warn('Unable to load live timeline milestones, retaining fallback:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   return (
     <section
       id="chapter-08"
@@ -50,7 +69,7 @@ export const MilestonesSection: React.FC = () => {
 
         {/* Milestones Scroll Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {timelineData.slice(0, 6).map((item, idx) => (
+          {data.slice(0, 6).map((item, idx) => (
             <motion.div
               key={item.year}
               initial={{ opacity: 0, y: 30 }}
@@ -78,7 +97,7 @@ export const MilestonesSection: React.FC = () => {
                 </p>
 
                 <div className="space-y-2.5 pt-2">
-                  {item.milestones.slice(0, 2).map((m, mIdx) => (
+                  {(item.milestones || []).slice(0, 2).map((m, mIdx) => (
                     <div key={mIdx} className="flex items-start gap-3 text-[11px] sm:text-xs text-[#E0DDD5] font-light leading-relaxed">
                       <Sparkles size={14} className="text-[#C7A46A] flex-shrink-0 mt-0.5 opacity-80" />
                       <span>{m}</span>

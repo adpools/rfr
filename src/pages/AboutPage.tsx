@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, Users, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'wouter';
 import { founderData } from '../data/founderData';
-import { getAboutRiyas } from '../services/cmsService';
+import { getAboutRiyas, getProjectsPortfolio } from '../services/cmsService';
 import { selectedWork, driveThumb, driveView } from '../data/selectedWorkData';
 
 export const AboutPage: React.FC = () => {
@@ -15,6 +15,7 @@ export const AboutPage: React.FC = () => {
     portraitImage: founderData.portraitImage,
     quote: 'Fashion is not merely what we wear; it is an architectural symphony of identity, passion and purpose.',
   });
+  const [works, setWorks] = useState<any[]>(selectedWork);
 
   useEffect(() => {
     getAboutRiyas().then((res) => {
@@ -25,6 +26,21 @@ export const AboutPage: React.FC = () => {
           portraitImage: res.portrait_image || founderData.portraitImage,
           quote: res.quote || 'Fashion is not merely what we wear; it is an architectural symphony of identity, passion and purpose.',
         });
+      }
+    });
+
+    getProjectsPortfolio().then((res) => {
+      if (res && res.length > 0) {
+        const mapped = res.map((p) => ({
+          id: p.slug || p.id,
+          year: p.year || 2026,
+          title: p.title,
+          category: p.category,
+          driveFileId: '',
+          customImage: p.cover_image,
+          linkUrl: p.video_url || undefined,
+        }));
+        setWorks(mapped);
       }
     });
   }, []);
@@ -155,18 +171,18 @@ export const AboutPage: React.FC = () => {
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {selectedWork.map((w) => (
+                {works.map((w: any) => (
                   <a
                     key={w.id}
                     id={`selected-work-${w.id}`}
-                    href={driveView(w.driveFileId)}
+                    href={w.linkUrl || (w.driveFileId ? driveView(w.driveFileId) : '#')}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group block rounded-2xl overflow-hidden bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/60 transition-colors"
                   >
                     <div className="relative aspect-[4/3] bg-[#161616] overflow-hidden">
                       <img
-                        src={driveThumb(w.driveFileId)}
+                        src={w.customImage || (w.driveFileId ? driveThumb(w.driveFileId) : '/images/final bro.png')}
                         alt={`${w.title} (${w.year}) — original project media`}
                         loading="lazy"
                         decoding="async"

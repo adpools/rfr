@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { StudioMicScene } from '../components/3d/StudioMicScene';
 import { ArrowUpRight, Play, Headphones, Radio, Mic, Sparkles, Video, ExternalLink } from 'lucide-react';
 import { Link } from 'wouter';
+import { getMediaVideos } from '../services/cmsService';
 
 export const PodcastPage: React.FC = () => {
   const episodes = [
@@ -65,8 +66,32 @@ export const PodcastPage: React.FC = () => {
     },
   ];
 
+  const [epList, setEpList] = useState(episodes);
   const [activeEpisodeIndex, setActiveEpisodeIndex] = useState<number>(0);
-  const currentEp = episodes[activeEpisodeIndex];
+
+  useEffect(() => {
+    getMediaVideos('Podcast').then((videos) => {
+      if (videos && videos.length > 0) {
+        const mapped = videos.map((v, idx) => ({
+          ep: `EP 0${idx + 1}`,
+          title: v.title,
+          guest: v.description?.split('•')[0] || 'RFR Guest',
+          duration: v.duration || '45 MINS',
+          date: new Date(v.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase(),
+          description: v.description || '',
+          tags: v.tags || ['Podcast', 'Studio', 'RFR'],
+          youtubeId: v.video_url?.includes('v=') ? v.video_url.split('v=')[1]?.split('&')[0] : '',
+          image: v.thumbnail_url || 'https://img.youtube.com/vi/-X_1HETQbho/maxresdefault.jpg',
+          videoEmbedUrl: v.video_embed_url || v.video_url,
+          youtubeUrl: v.video_url,
+          driveFolderUrl: v.video_url,
+        }));
+        setEpList(mapped);
+      }
+    });
+  }, []);
+
+  const currentEp = epList[activeEpisodeIndex] || epList[0];
 
   return (
     <PageWrapper
@@ -159,9 +184,9 @@ export const PodcastPage: React.FC = () => {
           {/* Quick Episode Switcher Chips */}
           <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-4 border-b border-neutral-850">
             <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest mr-2 shrink-0">SELECT EPISODE:</span>
-            {episodes.map((ep, idx) => (
+            {epList.map((ep, idx) => (
               <button
-                key={ep.ep}
+                key={ep.ep || idx}
                 onClick={() => setActiveEpisodeIndex(idx)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-mono uppercase tracking-wider transition-all shrink-0 flex items-center gap-2 ${
                   activeEpisodeIndex === idx
@@ -178,7 +203,7 @@ export const PodcastPage: React.FC = () => {
           {/* 16:9 Responsive Player */}
           <div className="w-full aspect-video rounded-2xl overflow-hidden border border-neutral-800 bg-black shadow-inner">
             <iframe
-              key={currentEp.youtubeId}
+              key={currentEp.videoEmbedUrl || currentEp.youtubeId || activeEpisodeIndex}
               src={`${currentEp.videoEmbedUrl}${currentEp.videoEmbedUrl.includes('?') ? '&' : '?'}autoplay=1&rel=0`}
               title={currentEp.title}
               className="w-full h-full border-0"
@@ -200,12 +225,12 @@ export const PodcastPage: React.FC = () => {
               </h3>
             </div>
             <span className="text-xs font-mono text-neutral-500">
-              {episodes.length} EPISODES BROADCASTED
+              {epList.length} EPISODES BROADCASTED
             </span>
           </div>
 
           <div className="space-y-6">
-            {episodes.map((ep, index) => {
+            {epList.map((ep, index) => {
               const isActive = activeEpisodeIndex === index;
               return (
                 <div

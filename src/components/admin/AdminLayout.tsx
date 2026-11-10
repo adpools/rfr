@@ -1,35 +1,37 @@
 import React, { useState } from 'react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
-import { 
-  LayoutDashboard, 
-  Sparkles, 
-  Calendar, 
-  FolderKanban, 
-  Image as ImageIcon, 
-  Users, 
-  Quote, 
-  Newspaper, 
-  Briefcase, 
-  Radio, 
-  UserCheck, 
-  Camera, 
-  Mail, 
-  Sliders, 
-  Globe, 
-  History, 
-  Shield, 
-  LogOut, 
-  Menu, 
-  X, 
+import {
+  LayoutDashboard,
+  Sparkles,
+  Calendar,
+  FolderKanban,
+  Image as ImageIcon,
+  Users,
+  Quote,
+  Newspaper,
+  Briefcase,
+  Radio,
+  UserCheck,
+  Camera,
+  Mail,
+  Sliders,
+  Globe,
+  History,
+  Shield,
+  LogOut,
+  Menu,
+  X,
   ExternalLink,
   ChevronRight,
   Database,
-  BookOpen
+  BookOpen,
+  FileText
 } from 'lucide-react';
 
-export type AdminModuleTab = 
+export type AdminModuleTab =
   | 'overview'
   | 'banners'
+  | 'pages_content'
   | 'timeline'
   | 'projects'
   | 'media'
@@ -78,6 +80,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     {
       group: 'Editorial & Publishing',
       items: [
+        { id: 'pages_content' as AdminModuleTab, label: 'Pages & Narratives', icon: FileText },
         { id: 'blog' as AdminModuleTab, label: 'Blog & Articles', icon: BookOpen },
         { id: 'press' as AdminModuleTab, label: 'Press & Clippings', icon: Newspaper },
       ],
@@ -102,11 +105,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     {
       group: 'Business & Communications',
       items: [
-        { 
-          id: 'inquiries' as AdminModuleTab, 
-          label: 'Client Inquiries', 
+        {
+          id: 'inquiries' as AdminModuleTab,
+          label: 'Client Inquiries',
           icon: Mail,
-          superAdminOnly: true 
+          superAdminOnly: true
         },
       ],
     },
@@ -118,11 +121,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         { id: 'sections' as AdminModuleTab, label: 'Section Visibility', icon: Sliders },
         { id: 'seo' as AdminModuleTab, label: 'SEO & Metadata', icon: Globe },
         { id: 'logs' as AdminModuleTab, label: 'Activity Audit Log', icon: History },
-        { 
-          id: 'admins' as AdminModuleTab, 
-          label: 'Admin RBAC', 
+        {
+          id: 'admins' as AdminModuleTab,
+          label: 'Admin RBAC',
           icon: Shield,
-          superAdminOnly: true 
+          superAdminOnly: true
         },
       ],
     },
@@ -135,7 +138,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-[#080808] text-[#FAF9F6] flex flex-col selection:bg-[#C7A46A] selection:text-black font-sans">
-      
+
       {/* Top Mobile Bar */}
       <header className="lg:hidden bg-[#0D0D0D] border-b border-neutral-800 p-4 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-3">
@@ -158,12 +161,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
       </header>
 
       <div className="flex flex-1 relative">
-        
+
         {/* Sidebar Navigation */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-72 bg-[#0A0A0A] border-r border-neutral-800/90 flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-          } lg:static lg:w-72 shrink-0`}
+          className={`fixed inset-y-0 left-0 z-40 w-72 bg-[#0A0A0A] border-r border-neutral-800/90 flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+            } lg:static lg:w-72 shrink-0`}
         >
           {/* Sidebar Top: Brand & Identity */}
           <div className="p-6 border-b border-neutral-800/80">
@@ -226,11 +228,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
                         <button
                           key={item.id}
                           onClick={() => handleTabClick(item.id)}
-                          className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-mono tracking-wider transition-all duration-200 text-left ${
-                            isActive
+                          className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-mono tracking-wider transition-all duration-200 text-left ${isActive
                               ? 'bg-[#C7A46A] text-black font-bold shadow-lg shadow-[#C7A46A]/10'
                               : 'text-neutral-400 hover:text-white hover:bg-[#141414]'
-                          }`}
+                            }`}
                         >
                           <div className="flex items-center gap-2.5 truncate">
                             <Icon size={15} className={isActive ? 'text-black' : 'text-neutral-500'} />

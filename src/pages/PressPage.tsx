@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Maximize2, X, ChevronLeft, ChevronRight, Newspaper, Building2 } from 'lucide-react';
+import { getPressClippings } from '../services/cmsService';
 
 export interface PressItem {
   id: string;
@@ -151,12 +152,45 @@ const pressItems: PressItem[] = [
     typeLabel: 'Thara Production Showcase Feature',
     filename: 'WhatsApp Image 2026-11-04 at 9.46.07 PM.jpeg',
     src: '/news%20and%20press/WhatsApp%20Image%202026-11-04%20at%209.46.07%20PM.jpeg'
+  },
+  {
+    id: 'press-success-kerala',
+    brand: 'Success Kerala',
+    category: 'Print Press',
+    typeLabel: "പാഷനുണ്ടോ? വിജയം താനേ വരും! ഇത് 'സർട്ടിഫൈഡ്' ഉറപ്പ്...! • Do You Have Passion? Success Will Come",
+    filename: 'WhatsApp Image 2026-11-06 at 10.53.08 AM (1).jpeg',
+    src: '/news%20and%20press/WhatsApp%20Image%202026-11-06%20at%2010.53.08%20AM%20(1).jpeg'
   }
 ];
 
 export const PressPage: React.FC = () => {
+  const [items, setItems] = useState<PressItem[]>(pressItems);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    getPressClippings().then((records) => {
+      const valid = records.filter(r => r.cover_image && !r.cover_image.includes('final bro.png'));
+      if (valid.length > 0) {
+        const categoryMap = (cat: string): PressItem['category'] => {
+          if (cat === 'Press' || cat === 'Print Press') return 'Print Press';
+          if (cat === 'News' || cat === 'Television Broadcast') return 'Television Broadcast';
+          if (cat === 'Collaborations' || cat === 'Music & Entertainment') return 'Music & Entertainment';
+          return 'Festivals & Events';
+        };
+
+        const mapped: PressItem[] = valid.map((r) => ({
+          id: r.id || r.slug,
+          brand: r.author && r.author !== 'Editorial Desk' ? r.author : r.title,
+          category: categoryMap(r.category),
+          typeLabel: r.excerpt || r.title,
+          filename: r.cover_image.split('/').pop() || '',
+          src: r.cover_image,
+        }));
+        setItems(mapped);
+      }
+    });
+  }, []);
 
   const categories = [
     { label: 'All Clippings', value: 'all' },
@@ -167,8 +201,8 @@ export const PressPage: React.FC = () => {
   ];
 
   const filteredItems = selectedCategory === 'all'
-    ? pressItems
-    : pressItems.filter((item) => item.category === selectedCategory);
+    ? items
+    : items.filter((item) => item.category === selectedCategory);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -214,7 +248,7 @@ export const PressPage: React.FC = () => {
 
           <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-mono text-neutral-400">
             <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-[#C7A46A]">
-              ✦ {pressItems.length} Unique Verified Publications
+              ✦ {items.length} Unique Verified Publications
             </span>
             <span className="px-3.5 py-1.5 rounded-full bg-[#141414] border border-neutral-800 text-neutral-300">
               ✦ Brand-Only Titles

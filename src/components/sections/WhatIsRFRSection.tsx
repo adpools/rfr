@@ -1,59 +1,101 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { Link } from 'wouter';
 import { Layers, Calendar, Compass, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { getPageContent } from '../../services/cmsService';
+
+const defaultPillars = [
+  {
+    id: 'how',
+    num: '01',
+    bgText: 'HOW',
+    title: 'HOW DOES RFR OPERATE?',
+    badge: 'OPERATIONAL MECHANICS',
+    icon: Layers,
+    description: 'RFR operates as a full-spectrum creative engine. We combine high-concept runway curation, talent scouting, influencer marketing campaigns, commercial advertising production, and experiential festival management into an integrated workflow.',
+    points: [
+      'End-to-end production: staging, sound, lighting, styling, casting, and choreography.',
+      'Collaborative partnerships with premier luxury resort chains and regional hubs.',
+      'Data-guided commercial storytelling tailored for multi-platform digital amplification.'
+    ],
+    linkText: 'EXPLORE OUR SERVICES',
+    linkHref: '/services'
+  },
+  {
+    id: 'when',
+    num: '02',
+    bgText: 'WHEN',
+    title: 'WHEN DO ACTIVATIONS OCCUR?',
+    badge: 'SEASONAL RHYTHMS',
+    icon: Calendar,
+    description: 'RFR maintains year-round creative momentum through quarterly marquee events, continuous weekend flea market editions, festival countdowns, fashion weeks, and rapid-turnaround commercial shoots.',
+    points: [
+      'Seasonal fashion week showcases and designer holiday line releases.',
+      'Multi-city Koottam Flea editions and youth experiential festivals.',
+      'Year-round commercial ad film production and studio podcast recordings.'
+    ],
+    linkText: 'VIEW THE 2020-2026 TIMELINE',
+    linkHref: '/timeline'
+  },
+  {
+    id: 'what',
+    num: '03',
+    bgText: 'WHAT',
+    title: 'WHAT DOES RFR CREATE?',
+    badge: 'OUTPUT ECOSYSTEM',
+    icon: Compass,
+    description: 'RFR stands for Riyas Fashion Runway — creating bespoke fashion runways, community festivals, influencer campaigns, user-generated content, billboard advertising, audio/video podcasts, and dedicated talent opportunities.',
+    points: [
+      'High couture runways & designer showcases.',
+      'Commercial ad films & national influencer campaigns.',
+      'Creative talent network spanning models, artists, and creators.'
+    ],
+    linkText: 'READ COMPLETE OVERVIEW',
+    linkHref: '/what-is-rfr'
+  }
+];
 
 export const WhatIsRFRSection: React.FC = () => {
-  const pillars = [
-    {
-      id: 'how',
-      num: '01',
-      bgText: 'HOW',
-      title: 'HOW DOES RFR OPERATE?',
-      badge: 'OPERATIONAL MECHANICS',
-      icon: Layers,
-      description: 'RFR operates as a full-spectrum creative engine. We combine high-concept runway curation, talent scouting, influencer marketing campaigns, commercial advertising production, and experiential festival management into an integrated workflow.',
-      points: [
-        'End-to-end production: staging, sound, lighting, styling, casting, and choreography.',
-        'Collaborative partnerships with premier luxury resort chains and regional hubs.',
-        'Data-guided commercial storytelling tailored for multi-platform digital amplification.'
-      ],
-      linkText: 'EXPLORE OUR SERVICES',
-      linkHref: '/services'
-    },
-    {
-      id: 'when',
-      num: '02',
-      bgText: 'WHEN',
-      title: 'WHEN DO ACTIVATIONS OCCUR?',
-      badge: 'SEASONAL RHYTHMS',
-      icon: Calendar,
-      description: 'RFR maintains year-round creative momentum through quarterly marquee events, continuous weekend flea market editions, festival countdowns, fashion weeks, and rapid-turnaround commercial shoots.',
-      points: [
-        'Seasonal fashion week showcases and designer holiday line releases.',
-        'Multi-city Koottam Flea editions and youth experiential festivals.',
-        'Year-round commercial ad film production and studio podcast recordings.'
-      ],
-      linkText: 'VIEW THE 2020-2026 TIMELINE',
-      linkHref: '/timeline'
-    },
-    {
-      id: 'what',
-      num: '03',
-      bgText: 'WHAT',
-      title: 'WHAT DOES RFR CREATE?',
-      badge: 'OUTPUT ECOSYSTEM',
-      icon: Compass,
-      description: 'RFR stands for Riyas Fashion Runway — creating bespoke fashion runways, community festivals, influencer campaigns, user-generated content, billboard advertising, audio/video podcasts, and dedicated talent opportunities.',
-      points: [
-        'High couture runways & designer showcases.',
-        'Commercial ad films & national influencer campaigns.',
-        'Creative talent network spanning models, artists, and creators.'
-      ],
-      linkText: 'READ COMPLETE OVERVIEW',
-      linkHref: '/what-is-rfr'
-    }
-  ];
+  const [sectionData, setSectionData] = useState({
+    title: 'WHAT IS RFR?',
+    subtitle: 'Understanding the mechanics, operational cadence, and creative outputs of Riyas Fashion Runway. An ecosystem built for premium experiences.',
+    pillars: defaultPillars,
+  });
+
+  useEffect(() => {
+    getPageContent('what-is-rfr', {
+      title: 'WHAT IS RFR?',
+      subtitle: 'Understanding the mechanics, operational cadence, and creative outputs of Riyas Fashion Runway. An ecosystem built for premium experiences.',
+      content: {
+        leadNarrative: 'Understanding the mechanics, operational cadence, and creative outputs of Riyas Fashion Runway. An ecosystem built for premium experiences.',
+        items: [
+          { title: defaultPillars[0].title, desc: defaultPillars[0].description },
+          { title: defaultPillars[1].title, desc: defaultPillars[1].description },
+          { title: defaultPillars[2].title, desc: defaultPillars[2].description },
+        ]
+      }
+    }).then((res) => {
+      setSectionData((prev) => {
+        const updatedPillars = prev.pillars.map((pillar, idx) => {
+          if (Array.isArray(res.content?.items) && res.content.items[idx]) {
+            const item = res.content.items[idx];
+            return {
+              ...pillar,
+              title: item.title || pillar.title,
+              description: item.desc || (item as any).description || pillar.description,
+            };
+          }
+          return pillar;
+        });
+
+        return {
+          title: res.title || prev.title,
+          subtitle: res.subtitle || res.content?.leadNarrative || prev.subtitle,
+          pillars: updatedPillars,
+        };
+      });
+    });
+  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -89,10 +131,10 @@ export const WhatIsRFRSection: React.FC = () => {
           </div>
 
           <h2 className="text-6xl sm:text-7xl lg:text-[100px] font-serif text-[#F4F1EA] uppercase tracking-tighter leading-[0.85] mb-8 drop-shadow-2xl">
-            WHAT IS RFR?
+            {sectionData.title}
           </h2>
           <p className="text-sm sm:text-base font-serif font-light text-[#A09D96] leading-relaxed max-w-2xl mx-auto tracking-wide">
-            Understanding the mechanics, operational cadence, and creative outputs of Riyas Fashion Runway. An ecosystem built for premium experiences.
+            {sectionData.subtitle}
           </p>
         </div>
 
@@ -104,7 +146,7 @@ export const WhatIsRFRSection: React.FC = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
         >
-          {pillars.map((pillar) => {
+          {sectionData.pillars.map((pillar) => {
             const IconComponent = pillar.icon;
             return (
               <motion.div

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRoute, Link } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { servicesData } from '../data/servicesData';
+import { getServicesCatalog, getPageContent } from '../services/cmsService';
 import { CheckCircle2, ArrowLeft, ArrowUpRight, Sparkles, Video, ExternalLink } from 'lucide-react';
 
 interface ServiceDetailPageProps {
@@ -13,7 +14,41 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
   const [, params] = useRoute('/services/:category/:slug');
   const slug = customSlug || params?.slug;
 
-  const service = servicesData.find((s) => s.slug === slug) || servicesData[0];
+  const [service, setService] = useState(() => servicesData.find((s) => s.slug === slug) || servicesData[0]);
+
+  useEffect(() => {
+    getServicesCatalog().then((res) => {
+      if (res && res.length > 0) {
+        const found = res.find((s) => s.slug === slug);
+        if (found) setService(found);
+      }
+    });
+
+    if (slug) {
+      getPageContent(`service_${slug}`, {
+        title: service.title,
+        subtitle: service.subheading,
+        content: {
+          description: service.description,
+          detailedOverview: service.detailedOverview,
+          deliverables: service.deliverables,
+        }
+      }).then((res) => {
+        if (res.title && res.title !== service.title) {
+          setService((prev) => ({
+            ...prev,
+            title: res.title,
+            subheading: res.subtitle || prev.subheading,
+            description: res.content.description || prev.description,
+            detailedOverview: res.content.detailedOverview || prev.detailedOverview,
+            deliverables: (Array.isArray(res.content.deliverables) && res.content.deliverables.length > 0)
+              ? res.content.deliverables
+              : prev.deliverables,
+          }));
+        }
+      });
+    }
+  }, [slug]);
 
   const schema = {
     "@context": "https://schema.org",
@@ -129,6 +164,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ customSlug
                 <video
                   src={service.videoUrl}
                   controls
+                  playsInline
                   className="w-full h-full object-contain"
                 />
               ) : service.videoEmbedUrl ? (

@@ -3,7 +3,7 @@ import { useRoute, Link } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { talentData } from '../data/talentData';
-import { submitContactInquiry, getTalentModels } from '../services/cmsService';
+import { submitContactInquiry, getTalentModels, getTalentInfluencers, getPageContent } from '../services/cmsService';
 import { CheckCircle2, ArrowLeft, Send, Sparkles, ExternalLink, User } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -15,7 +15,8 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
   const [, params] = useRoute('/assets/:id');
   const id = customId || (params?.id as 'careers' | 'models' | 'influencers' | 'artists') || 'models';
 
-  const portal = talentData.find((t) => t.id === id) || talentData[1];
+  const defaultPortal = talentData.find((t) => t.id === id) || talentData[1];
+  const [portal, setPortal] = useState(defaultPortal);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -30,12 +31,40 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modelsRoster, setModelsRoster] = useState<any[]>([]);
+  const [influencersRoster, setInfluencersRoster] = useState<any[]>([]);
 
   useEffect(() => {
+    const base = talentData.find((t) => t.id === id) || talentData[1];
+    setPortal(base);
+
+    if (id === 'careers' || id === 'artists') {
+      const slugKey = id === 'careers' ? 'talent_careers' : 'talent_artists';
+      getPageContent(slugKey, {
+        title: base.title,
+        subtitle: base.tagline,
+        content: { leadNarrative: base.description }
+      }).then((res) => {
+        if (res.title || res.content?.leadNarrative) {
+          setPortal((prev) => ({
+            ...prev,
+            title: res.title || prev.title,
+            tagline: res.subtitle || prev.tagline,
+            description: res.content?.leadNarrative || prev.description,
+          }));
+        }
+      });
+    }
+
     if (id === 'models') {
       getTalentModels().then((data) => {
         if (data && data.length > 0) {
           setModelsRoster(data);
+        }
+      });
+    } else if (id === 'influencers') {
+      getTalentInfluencers().then((data) => {
+        if (data && data.length > 0) {
+          setInfluencersRoster(data);
         }
       });
     }
@@ -370,6 +399,92 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
                       <div className="mt-4 pt-3 border-t border-neutral-850 flex justify-end">
                         <a
                           href={model.instagram_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-[10px] font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider"
+                        >
+                          <span>Instagram</span>
+                          <ExternalLink size={11} />
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Verified Roster Showcase (when viewing influencers) */}
+        {id === 'influencers' && influencersRoster.length > 0 && (
+          <div className="mt-20 pt-16 border-t border-neutral-900">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+              <div>
+                <span className="text-[10px] font-mono tracking-[0.3em] text-[#C7A46A] uppercase block mb-2">
+                  DIGITAL CREATORS & TIC ALLIANCE
+                </span>
+                <h3 className="text-3xl font-serif text-white uppercase">
+                  Featured Influencer Network
+                </h3>
+              </div>
+              <span className="text-xs font-mono text-neutral-400">
+                {influencersRoster.length} Active Creators
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {influencersRoster.map((inf) => (
+                <div
+                  key={inf.id}
+                  className="group rounded-2xl bg-[#111111] border border-neutral-800 overflow-hidden hover:border-[#C7A46A]/60 transition-all flex flex-col"
+                >
+                  <div className="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
+                    {inf.profile_image ? (
+                      <img
+                        src={inf.profile_image}
+                        alt={inf.name}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-neutral-600 gap-2">
+                        <User size={36} />
+                        <span className="text-[10px] font-mono tracking-widest uppercase">Creator</span>
+                      </div>
+                    )}
+                    {inf.tier && (
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono uppercase text-[#C7A46A] border border-[#C7A46A]/30">
+                        {inf.tier} Tier
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-serif text-lg text-white group-hover:text-[#C7A46A] transition-colors">
+                        {inf.name}
+                      </h4>
+                      {inf.handle && (
+                        <p className="text-xs text-[#C7A46A] font-mono mt-1">
+                          {inf.handle}
+                        </p>
+                      )}
+                      {inf.niche && (
+                        <p className="text-xs text-neutral-400 font-light mt-1">
+                          {inf.niche}
+                        </p>
+                      )}
+                      {(inf.followers_count || inf.engagement_rate) && (
+                        <div className="mt-3 pt-3 border-t border-neutral-850 flex items-center justify-between text-[11px] font-mono text-neutral-400">
+                          {inf.followers_count && <span>Reach: {inf.followers_count}</span>}
+                          {inf.engagement_rate && <span className="text-[#C7A46A]">{inf.engagement_rate} Eng.</span>}
+                        </div>
+                      )}
+                    </div>
+
+                    {inf.instagram_url && (
+                      <div className="mt-4 pt-3 border-t border-neutral-850 flex justify-end">
+                        <a
+                          href={inf.instagram_url}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-[10px] font-mono text-[#C7A46A] hover:text-white uppercase tracking-wider"
