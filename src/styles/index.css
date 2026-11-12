@@ -153,14 +153,84 @@ h1, h2, h3, h4, h5, h6 {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Interactive Cursor styles */
+/* Interactive Cursor styles - restricted to public luxury experience */
 @media (hover: hover) and (pointer: fine) {
-  body {
+  body:not(.admin-mode) {
     cursor: none;
   }
-  a, button, input, textarea, select {
+  body:not(.admin-mode) a,
+  body:not(.admin-mode) button,
+  body:not(.admin-mode) input,
+  body:not(.admin-mode) textarea,
+  body:not(.admin-mode) select {
     cursor: none;
   }
+}
+
+/* Restore visible standard mouse pointer throughout admin interface */
+.admin-mode,
+.admin-cms-root,
+.admin-layout,
+.admin-cms-root *,
+.admin-layout * {
+  cursor: auto;
+}
+
+body.admin-mode,
+.admin-cms-root,
+.admin-layout {
+  cursor: default !important;
+}
+
+body.admin-mode a,
+body.admin-mode button,
+body.admin-mode [role="button"],
+body.admin-mode select,
+body.admin-mode [type="button"],
+body.admin-mode [type="submit"],
+body.admin-mode [type="reset"],
+body.admin-mode [type="checkbox"],
+body.admin-mode [type="radio"],
+.admin-cms-root a,
+.admin-cms-root button,
+.admin-cms-root [role="button"],
+.admin-cms-root select,
+.admin-cms-root [type="button"],
+.admin-cms-root [type="submit"],
+.admin-cms-root [type="reset"],
+.admin-cms-root [type="checkbox"],
+.admin-cms-root [type="radio"],
+.admin-layout a,
+.admin-layout button,
+.admin-layout [role="button"],
+.admin-layout select,
+.admin-layout [type="button"],
+.admin-layout [type="submit"],
+.admin-layout [type="reset"],
+.admin-layout [type="checkbox"],
+.admin-layout [type="radio"] {
+  cursor: pointer !important;
+}
+
+body.admin-mode input,
+body.admin-mode textarea,
+.admin-cms-root input,
+.admin-cms-root textarea,
+.admin-layout input,
+.admin-layout textarea {
+  cursor: text !important;
+}
+
+body.admin-mode [disabled],
+body.admin-mode button:disabled,
+body.admin-mode input:disabled,
+.admin-cms-root [disabled],
+.admin-cms-root button:disabled,
+.admin-cms-root input:disabled,
+.admin-layout [disabled],
+.admin-layout button:disabled,
+.admin-layout input:disabled {
+  cursor: not-allowed !important;
 }
 
 /* Smooth Focus Rings for Accessibility */

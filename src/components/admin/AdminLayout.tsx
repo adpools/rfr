@@ -137,7 +137,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#080808] text-[#FAF9F6] flex flex-col selection:bg-[#C7A46A] selection:text-black font-sans">
+    <div className="admin-layout min-h-screen bg-[#080808] text-[#FAF9F6] flex flex-col selection:bg-[#C7A46A] selection:text-black font-sans">
 
       {/* Top Mobile Bar */}
       <header className="lg:hidden bg-[#0D0D0D] border-b border-neutral-800 p-4 flex items-center justify-between sticky top-0 z-30">
@@ -189,17 +189,17 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
             <div className="p-2.5 rounded-xl bg-[#121212] border border-neutral-800/90 flex items-center justify-between text-[11px] font-mono">
               <span className="text-neutral-400 flex items-center gap-1.5">
                 <Database size={12} className="text-[#C7A46A]" />
-                <span>Backend:</span>
+                <span>Backend Status</span>
               </span>
               {isConfigured ? (
-                <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold">
+                <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold" title="Backend Connected">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Live Connected
+                  Connected
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-amber-400 font-semibold" title="Fill .env.local">
+                <span className="inline-flex items-center gap-1.5 text-amber-400 font-semibold" title="Backend Disconnected">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                  Awaiting .env.local
+                  Disconnected
                 </span>
               )}
             </div>

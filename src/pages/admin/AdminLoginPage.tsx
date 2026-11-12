@@ -63,7 +63,7 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#060606] text-[#FAF9F6] flex flex-col justify-center items-center p-4 sm:p-6 relative selection:bg-[#C7A46A] selection:text-black">
+    <div className="admin-cms-root min-h-screen bg-[#060606] text-[#FAF9F6] flex flex-col justify-center items-center p-4 sm:p-6 relative selection:bg-[#C7A46A] selection:text-black">
       {/* Background ambient gold aura */}
       <div className="absolute w-[500px] h-[500px] rounded-full bg-[#C7A46A]/5 blur-[140px] pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
 
@@ -83,22 +83,22 @@ export const AdminLoginPage: React.FC = () => {
             <span>EXECUTIVE CMS PORTAL</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-serif text-white uppercase tracking-wider">
-            Admin Authentication
+            Sign In
           </h1>
         </div>
 
         {/* Backend Connectivity Status Pill */}
         <div className="mb-6 p-3 rounded-xl bg-[#141414] border border-neutral-800 flex items-center justify-between text-xs font-mono">
-          <span className="text-neutral-400">Backend Status:</span>
+          <span className="text-neutral-400">Backend Status</span>
           {isConfigured ? (
-            <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+            <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold" title="Backend Connected">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Supabase Connected
+              Connected
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 text-amber-400 font-semibold" title="Add keys to .env.local">
+            <span className="inline-flex items-center gap-1.5 text-amber-400 font-semibold" title="Backend Disconnected">
               <span className="w-2 h-2 rounded-full bg-amber-500" />
-              Awaiting .env.local
+              Disconnected
             </span>
           )}
         </div>
@@ -123,7 +123,7 @@ export const AdminLoginPage: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="advriyas@gmail.com"
+                placeholder="Enter username"
                 required
                 className="w-full bg-[#141414] border border-neutral-800 focus:border-[#C7A46A] rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-neutral-600 focus:outline-none transition-all font-sans"
               />
@@ -172,7 +172,7 @@ export const AdminLoginPage: React.FC = () => {
             disabled={isSubmitting}
             className="w-full mt-2 py-3.5 px-6 rounded-xl bg-[#C7A46A] hover:bg-[#D4B678] text-black font-mono font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#C7A46A]/10 disabled:opacity-50"
           >
-            <span>{isSubmitting ? 'VERIFYING CREDENTIALS...' : 'SIGN IN TO CMS'}</span>
+            <span>{isSubmitting ? 'VERIFYING CREDENTIALS...' : 'Sign In'}</span>
             <ArrowRight size={14} />
           </button>
         </form>
@@ -231,7 +231,7 @@ export const AdminLoginPage: React.FC = () => {
                     value={forgotEmail}
                     onChange={(e) => setForgotEmail(e.target.value)}
                     required
-                    placeholder="advriyas@gmail.com"
+                    placeholder="Enter email address"
                     className="w-full bg-[#181818] border border-neutral-700 focus:border-[#C7A46A] rounded-xl px-4 py-2.5 text-sm text-white placeholder-neutral-600 focus:outline-none font-sans"
                   />
                 </div>

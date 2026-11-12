@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'wouter';
 import { HelmetProvider } from 'react-helmet-async';
 import { Navbar } from './components/layout/Navbar';
@@ -75,9 +75,20 @@ const AppContent: React.FC = () => {
   const [location] = useLocation();
   const isAdminRoute = location.startsWith('/admin');
 
+  useEffect(() => {
+    if (isAdminRoute) {
+      document.body.classList.add('admin-mode');
+    } else {
+      document.body.classList.remove('admin-mode');
+    }
+    return () => {
+      document.body.classList.remove('admin-mode');
+    };
+  }, [isAdminRoute]);
+
   if (isAdminRoute) {
     return (
-      <div className="min-h-screen bg-[#070707] text-[#FAF9F6]">
+      <div className="admin-cms-root min-h-screen bg-[#070707] text-[#FAF9F6]">
         <Switch>
           <Route path="/admin/login" component={AdminLoginPage} />
           <Route path="/admin">
