@@ -17,6 +17,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { Link } from 'wouter';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 interface TICEvent {
   id: string;
@@ -119,6 +120,7 @@ export const TICPage: React.FC = () => {
   });
   const [isPlayingLaunchVideo, setIsPlayingLaunchVideo] = useState(false);
   const [activeModalEvent, setActiveModalEvent] = useState<TICEvent | null>(null);
+  const { openVideo, openImage } = useMediaViewer();
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -305,7 +307,14 @@ export const TICPage: React.FC = () => {
                     </div>
 
                     <button
-                      onClick={() => setIsPlayingLaunchVideo(true)}
+                      onClick={() => openVideo({
+                        src: launchEvent.videoEmbedUrl,
+                        embedUrl: launchEvent.videoEmbedUrl,
+                        title: launchEvent.title,
+                        badge: 'TIC FLAGSHIP EVENT',
+                        description: launchEvent.description,
+                        driveFolderUrl: `https://drive.google.com/file/d/${launchEvent.driveFileId}/view`,
+                      })}
                       className="inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-[#C7A46A] hover:bg-[#d8b57b] text-black font-mono font-bold text-xs tracking-widest uppercase transition-all shadow-xl hover:shadow-2xl hover:scale-105 shrink-0"
                     >
                       <Play size={16} fill="currentColor" />
@@ -367,11 +376,14 @@ export const TICPage: React.FC = () => {
                 <div className="pt-4 border-t border-neutral-800/80 flex items-center justify-between">
                   {evt.hasVideo ? (
                     <button
-                      onClick={() => {
-                        window.scrollTo({ top: 350, behavior: 'smooth' });
-                        setIsPlayingLaunchVideo(true);
-                      }}
-                      className="text-xs font-mono text-[#C7A46A] hover:underline flex items-center gap-1.5"
+                      onClick={() => openVideo({
+                        src: evt.videoEmbedUrl || launchEvent.videoEmbedUrl,
+                        embedUrl: evt.videoEmbedUrl || launchEvent.videoEmbedUrl,
+                        title: evt.title,
+                        badge: evt.badge,
+                        description: evt.description,
+                      })}
+                      className="text-xs font-mono text-[#C7A46A] hover:underline flex items-center gap-1.5 cursor-pointer"
                     >
                       <Play size={13} fill="currentColor" />
                       <span>WATCH EVENT VIDEO</span>

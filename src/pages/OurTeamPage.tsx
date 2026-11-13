@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { Link } from 'wouter';
-import { User, Users, ShieldCheck, Mail, Sparkles } from 'lucide-react';
+import { User, Users, ShieldCheck, Mail, Sparkles, Maximize2 } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { InstagramIcon, LinkedinIcon } from '../components/common/SocialIcons';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 interface TeamMember {
   id: string;
@@ -19,6 +20,7 @@ interface TeamMember {
 }
 
 export const OurTeamPage: React.FC = () => {
+  const { openImage } = useMediaViewer();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -124,13 +126,31 @@ export const OurTeamPage: React.FC = () => {
                   className="group p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-850 hover:border-[#C7A46A]/50 transition-all duration-300 flex flex-col justify-between space-y-6"
                 >
                   <div className="space-y-4">
-                    <div className="aspect-[4/5] rounded-2xl bg-[#161616] overflow-hidden border border-neutral-800 relative">
+                    <div 
+                      onClick={member.image ? () => openImage({
+                        src: member.image!,
+                        title: member.name,
+                        subtitle: `${member.designation}${member.department ? ` • ${member.department}` : ''}`,
+                        category: 'RFR TEAM',
+                      }) : undefined}
+                      className={`aspect-[4/5] rounded-2xl bg-[#161616] overflow-hidden border border-neutral-800 relative ${
+                        member.image ? 'cursor-pointer group/portrait' : ''
+                      }`}
+                      title={member.image ? 'Click to inspect portrait in high-resolution' : undefined}
+                    >
                       {member.image ? (
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
+                        <>
+                          <img
+                            src={member.image}
+                            alt={member.name}
+                            className="w-full h-full object-cover group-hover/portrait:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/portrait:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                            <div className="p-2.5 rounded-full bg-black/80 backdrop-blur-md text-[#C7A46A] border border-[#C7A46A]/40 shadow-xl">
+                              <Maximize2 size={16} />
+                            </div>
+                          </div>
+                        </>
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center text-neutral-600 gap-2">
                           <Users size={32} />
@@ -138,7 +158,7 @@ export const OurTeamPage: React.FC = () => {
                         </div>
                       )}
                       {member.department && (
-                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-neutral-800 text-[10px] font-mono text-[#C7A46A] uppercase tracking-wider">
+                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-neutral-800 text-[10px] font-mono text-[#C7A46A] uppercase tracking-wider z-10 pointer-events-none">
                           {member.department}
                         </div>
                       )}

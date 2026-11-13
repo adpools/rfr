@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { motion } from 'framer-motion';
-import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, Users, ArrowRight, ExternalLink } from 'lucide-react';
+import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, Users, ArrowRight, ExternalLink, Maximize2, Play } from 'lucide-react';
+import { useMediaViewer } from '../context/MediaViewerContext';
 import { Link } from 'wouter';
 import { founderData } from '../data/founderData';
 import { getAboutRiyas, getProjectsPortfolio, getPageContent } from '../services/cmsService';
@@ -32,6 +33,7 @@ const defaultPillars = [
 ];
 
 export const AboutPage: React.FC = () => {
+  const { openImage, openVideo } = useMediaViewer();
   const [header, setHeader] = useState({
     title: 'ABOUT US',
     subtitle: 'RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media.',
@@ -135,14 +137,29 @@ export const AboutPage: React.FC = () => {
             className="space-y-12"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-[#0d0d0d] border border-neutral-800 rounded-3xl p-8 lg:p-12">
-              <div className="lg:col-span-5 h-96 lg:h-[480px] rounded-2xl overflow-hidden editorial-image-frame border border-[#C7A46A]/30 relative">
+              <div 
+                onClick={() => openImage({
+                  src: founder.portraitImage,
+                  title: `${founder.name} — Co-Founder`,
+                  subtitle: 'Trivandrum Influencer Circle & Founder, RFR by Riyas',
+                  category: 'LEADERSHIP',
+                })}
+                className="lg:col-span-5 h-96 lg:h-[480px] rounded-2xl overflow-hidden editorial-image-frame border border-[#C7A46A]/30 relative cursor-pointer group/portrait"
+                title="Click to view founder portrait in high-resolution"
+              >
                 <img
                   src={founder.portraitImage}
                   alt="Riyas — Co-Founder, Trivandrum Influencer Circle"
-                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover object-top group-hover/portrait:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white">
+                
+                {/* Expand Indicator */}
+                <div className="absolute top-4 right-4 p-2.5 rounded-full bg-black/60 backdrop-blur-md text-[#C7A46A] opacity-0 group-hover/portrait:opacity-100 transition-opacity">
+                  <Maximize2 size={16} />
+                </div>
+
+                <div className="absolute bottom-6 left-6 right-6 text-white pointer-events-none">
                   <span className="text-[10px] font-mono tracking-widest text-[#C7A46A] uppercase block mb-1">
                     CO-FOUNDER
                   </span>
@@ -201,37 +218,84 @@ export const AboutPage: React.FC = () => {
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {works.map((w: any) => (
-                  <a
-                    key={w.id}
-                    id={`selected-work-${w.id}`}
-                    href={w.linkUrl || (w.driveFileId ? driveView(w.driveFileId) : '#')}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block rounded-2xl overflow-hidden bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/60 transition-colors"
-                  >
-                    <div className="relative aspect-[4/3] bg-[#161616] overflow-hidden">
-                      <img
-                        src={w.customImage || (w.driveFileId ? driveThumb(w.driveFileId) : '/images/final bro.png')}
-                        alt={`${w.title} (${w.year}) — original project media`}
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden'; }}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/70 text-[10px] font-mono text-[#C7A46A]">{w.year}</span>
-                      
+                {works.map((w: any) => {
+                  const mediaSrc = w.customImage || (w.driveFileId ? driveThumb(w.driveFileId) : '/images/final bro.png');
+                  const hasVideo = Boolean(w.linkUrl && (w.linkUrl.includes('drive.google.com') || w.linkUrl.includes('youtube') || w.linkUrl.endsWith('.mp4')));
+
+                  return (
+                    <div
+                      key={w.id}
+                      id={`selected-work-${w.id}`}
+                      onClick={() => {
+                        if (hasVideo) {
+                          openVideo({
+                            src: w.linkUrl,
+                            title: w.title,
+                            subtitle: `${w.category} • ${w.year}`,
+                            badge: 'SELECTED WORK',
+                          });
+                        } else {
+                          openImage({
+                            src: mediaSrc,
+                            title: w.title,
+                            subtitle: `${w.category} • ${w.year}`,
+                            category: w.category,
+                            year: String(w.year),
+                          });
+                        }
+                      }}
+                      className="group block rounded-2xl overflow-hidden bg-[#0d0d0d] border border-neutral-800 hover:border-[#C7A46A]/60 transition-colors cursor-pointer"
+                    >
+                      <div className="relative aspect-[4/3] bg-[#161616] overflow-hidden">
+                        <img
+                          src={mediaSrc}
+                          alt={`${w.title} (${w.year}) — original project media`}
+                          loading="lazy"
+                          decoding="async"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden'; }}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/70 text-[10px] font-mono text-[#C7A46A] z-10">{w.year}</span>
+                        
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+                          <div className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover:scale-100 transition-transform">
+                            {hasVideo ? (
+                              <>
+                                <Play size={10} className="fill-[#C7A46A]" />
+                                <span>Play Reel</span>
+                              </>
+                            ) : (
+                              <>
+                                <Maximize2 size={11} />
+                                <span>Expand</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{w.category}</span>
+                        <h4 className="text-sm text-white font-medium mt-1 flex items-start justify-between gap-2">
+                          <span>{w.title}</span>
+                          {w.linkUrl && (
+                            <a
+                              href={w.linkUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="shrink-0 mt-0.5 text-neutral-500 hover:text-[#C7A46A] transition-colors p-1"
+                              title="Open original link"
+                            >
+                              <ExternalLink size={13} aria-hidden />
+                            </a>
+                          )}
+                        </h4>
+                      </div>
                     </div>
-                    <div className="p-4">
-                      <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{w.category}</span>
-                      <h4 className="text-sm text-white font-medium mt-1 flex items-start justify-between gap-2">
-                        <span>{w.title}</span>
-                        <ExternalLink size={13} className="shrink-0 mt-0.5 text-neutral-500 group-hover:text-[#C7A46A]" aria-hidden />
-                      </h4>
-                    </div>
-                  </a>
-                ))}
+                  );
+                })}
               </div>
             </section>
           </motion.div>

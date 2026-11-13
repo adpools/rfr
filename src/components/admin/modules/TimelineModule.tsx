@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile, ensureTimelineYearExists } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Calendar, FolderPlus, Play, ExternalLink, Layers } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Calendar, FolderPlus, Play, ExternalLink, Layers, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 export interface TimelineEvent {
   id?: string;
@@ -147,6 +148,7 @@ interface TimelineModuleProps {
 }
 
 export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const [years, setYears] = useState<TimelineYearRow[]>([]);
   const [selectedYear, setSelectedYear] = useState<number>(2026);
   const [events, setEvents] = useState<TimelineEvent[]>([]);
@@ -649,25 +651,45 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
                   {/* Event Media Preview */}
                   <div 
                     className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${
-                      videoInfo.hasValidVideo ? 'cursor-pointer group/media' : ''
+                      videoInfo.hasValidVideo || ev.image ? 'cursor-pointer group/media' : ''
                     }`}
-                    onClick={videoInfo.hasValidVideo ? () => handleOpenVideoPreview(ev) : undefined}
-                    role={videoInfo.hasValidVideo ? 'button' : undefined}
-                    tabIndex={videoInfo.hasValidVideo ? 0 : undefined}
-                    onKeyDown={videoInfo.hasValidVideo ? (e) => {
+                    onClick={() => {
+                      if (videoInfo.hasValidVideo) {
+                        handleOpenVideoPreview(ev);
+                      } else if (ev.image) {
+                        openImage({
+                          src: ev.image,
+                          title: ev.name,
+                          subtitle: ev.location_or_client || ev.description,
+                          category: `${ev.year_number} ${ev.type.toUpperCase()}`,
+                        });
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        handleOpenVideoPreview(ev);
+                        if (videoInfo.hasValidVideo) {
+                          handleOpenVideoPreview(ev);
+                        } else if (ev.image) {
+                          openImage({
+                            src: ev.image,
+                            title: ev.name,
+                            subtitle: ev.location_or_client || ev.description,
+                            category: `${ev.year_number} ${ev.type.toUpperCase()}`,
+                          });
+                        }
                       }
-                    } : undefined}
-                    aria-label={videoInfo.hasValidVideo ? `Play video for ${ev.name}` : undefined}
+                    }}
+                    aria-label={videoInfo.hasValidVideo ? `Play video for ${ev.name}` : `View photo for ${ev.name}`}
                   >
                     {ev.image ? (
                       <img 
                         src={ev.image} 
                         alt={ev.name} 
                         className={`w-full h-full object-cover transition-transform duration-500 ${
-                          videoInfo.hasValidVideo ? 'group-hover/media:scale-105' : ''
+                          videoInfo.hasValidVideo || ev.image ? 'group-hover/media:scale-105' : ''
                         }`} 
                       />
                     ) : (
@@ -687,6 +709,26 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
                         </span>
                       )}
                     </div>
+
+                    {/* Expand Photo Button (Top-Right) */}
+                    {ev.image && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openImage({
+                            src: ev.image!,
+                            title: ev.name,
+                            subtitle: ev.location_or_client || ev.description,
+                            category: `${ev.year_number} ${ev.type.toUpperCase()}`,
+                          });
+                        }}
+                        className="absolute top-3 right-3 p-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-white hover:text-black border border-white/20 hover:border-[#C7A46A] transition-all z-20 cursor-pointer shadow-lg"
+                        title="View photo in high-resolution"
+                      >
+                        <Maximize2 size={12} />
+                      </button>
+                    )}
 
                     {/* Centered Play Button Overlay (Visible ONLY when card has valid video URL) */}
                     {videoInfo.hasValidVideo && (
@@ -896,7 +938,13 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
                 </div>
                 {formData.image && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.image} alt="Preview" className="w-16 h-10 object-cover rounded border border-neutral-700" />
+                    <img 
+                      src={formData.image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.image!, title: formData.name || 'Event Photo Preview', category: formData.type })}
+                      className="w-16 h-10 object-cover rounded border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.image}</span>
                   </div>
                 )}

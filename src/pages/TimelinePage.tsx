@@ -17,8 +17,10 @@ import {
   Video, 
   ExternalLink,
   ChevronRight,
-  Layers
+  Layers,
+  Maximize2
 } from 'lucide-react';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 export const TimelinePage: React.FC = () => {
   const [data, setData] = useState<TimelineYear[]>(timelineData);
@@ -26,6 +28,17 @@ export const TimelinePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeVideoEvent, setActiveVideoEvent] = useState<TimelineEventItem | null>(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(0);
+  const { openImage } = useMediaViewer();
+
+  // Background scroll lock when video modal is open
+  useEffect(() => {
+    if (!activeVideoEvent) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [activeVideoEvent]);
 
   useEffect(() => {
     let isMounted = true;
@@ -279,6 +292,27 @@ export const TimelinePage: React.FC = () => {
                               <span>{event.videos.length} VIDEOS</span>
                             </span>
                           </div>
+                        )}
+
+                        {/* Expand Full Photo button if image is present */}
+                        {event.image && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openImage({
+                                src: event.image!,
+                                title: event.name,
+                                subtitle: `${yearItem.year} ARCHIVE • ${event.type}`,
+                                caption: event.description,
+                              });
+                            }}
+                            aria-label={`Expand full image for ${event.name}`}
+                            title="Expand full image"
+                            className="absolute bottom-3 right-3 z-10 p-2 rounded-full bg-black/75 backdrop-blur-md border border-neutral-700 text-neutral-300 hover:text-[#C7A46A] hover:border-[#C7A46A] transition-colors"
+                          >
+                            <Maximize2 size={13} />
+                          </button>
                         )}
 
                         {/* Video Play Button Overlay */}

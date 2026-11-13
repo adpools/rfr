@@ -3,10 +3,12 @@ import { PageWrapper } from '../components/layout/PageWrapper';
 import { founderData } from '../data/founderData';
 import { getAboutRiyas } from '../services/cmsService';
 import { motion } from 'framer-motion';
-import { Quote, ArrowUpRight, Diamond } from 'lucide-react';
+import { Quote, ArrowUpRight, Diamond, Maximize2 } from 'lucide-react';
 import { Link } from 'wouter';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 export const FounderPage: React.FC = () => {
+  const { openImage } = useMediaViewer();
   const [founder, setFounder] = useState({
     portraitImage: founderData.portraitImage,
     quote: founderData.quote.text,
@@ -154,15 +156,27 @@ export const FounderPage: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.2 }}
-                className="absolute inset-0 rounded-t-full rounded-b-3xl overflow-hidden border border-[#C7A46A]/20"
+                onClick={() => openImage({
+                  src: founder.portraitImage,
+                  title: 'Adv. Riyas — Founder & Creative Director',
+                  subtitle: 'Founder Portrait, RFR by Riyas',
+                  category: 'FOUNDER DOSSIER',
+                })}
+                className="absolute inset-0 rounded-t-full rounded-b-3xl overflow-hidden border border-[#C7A46A]/20 cursor-pointer group"
+                title="Click to view full portrait in high-resolution"
               >
                 <img
                   src={founder.portraitImage}
                   alt="Riyas Creative Session"
-                  className="w-full h-full object-cover object-center filter grayscale opacity-80"
+                  className="w-full h-full object-cover object-center filter grayscale opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-black/30" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent" />
+                
+                {/* Expand overlay */}
+                <div className="absolute top-6 right-6 p-3 rounded-full bg-black/60 backdrop-blur-md text-[#C7A46A] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Maximize2 size={18} />
+                </div>
               </motion.div>
               
               {/* Floating Quote Badge */}

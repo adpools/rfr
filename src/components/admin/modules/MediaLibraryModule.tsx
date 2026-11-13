@@ -4,8 +4,10 @@ import { uploadMediaFile } from '../../../services/cmsService';
 import { 
   Upload, Trash2, Copy, Check, ExternalLink, Image as ImageIcon, 
   Video, FileText, Search, RefreshCw, FolderSync, ShieldCheck, 
-  X, CheckCircle2, AlertCircle, ArrowUpRight 
+  X, CheckCircle2, AlertCircle, ArrowUpRight,
+  Maximize2, Play
 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 interface StorageFile {
   name: string;
@@ -74,6 +76,7 @@ const CANONICAL_ASSETS = [
 ];
 
 export const MediaLibraryModule: React.FC<MediaLibraryModuleProps> = ({ showToast }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const [files, setFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -367,9 +370,28 @@ export const MediaLibraryModule: React.FC<MediaLibraryModuleProps> = ({ showToas
                 className="group relative rounded-2xl bg-[#0D0D0D] border border-neutral-800 overflow-hidden hover:border-[#C7A46A]/50 transition-all flex flex-col"
               >
                 {/* Thumbnail Preview */}
-                <div className="w-full aspect-square bg-[#151515] relative flex items-center justify-center overflow-hidden">
+                <div 
+                  onClick={() => {
+                    if (file.type === 'video') {
+                      openVideo({
+                        src: url,
+                        title: file.name,
+                        subtitle: file.metadata?.size ? `${Math.round(file.metadata.size / 1024)} KB` : undefined,
+                        badge: 'STORAGE MEDIA',
+                      });
+                    } else {
+                      openImage({
+                        src: url,
+                        title: file.name,
+                        subtitle: file.metadata?.size ? `${Math.round(file.metadata.size / 1024)} KB` : undefined,
+                      });
+                    }
+                  }}
+                  className="w-full aspect-square bg-[#151515] relative flex items-center justify-center overflow-hidden cursor-pointer group/thumb"
+                  title="Click to preview media in universal viewer"
+                >
                   {file.type === 'video' ? (
-                    <div className="flex flex-col items-center gap-2 text-neutral-400">
+                    <div className="flex flex-col items-center gap-2 text-neutral-400 group-hover/thumb:text-[#C7A46A] transition-colors">
                       <Video size={32} className="text-[#C7A46A]" />
                       <span className="text-[10px] font-mono uppercase">Video</span>
                     </div>
@@ -380,14 +402,40 @@ export const MediaLibraryModule: React.FC<MediaLibraryModuleProps> = ({ showToas
                       onError={(e) => {
                         (e.target as any).style.display = 'none';
                       }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500"
                     />
                   )}
 
                   {/* Hover Overlay Controls */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-2">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 p-2">
                     <button
-                      onClick={() => copyToClipboard(url)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (file.type === 'video') {
+                          openVideo({
+                            src: url,
+                            title: file.name,
+                            subtitle: file.metadata?.size ? `${Math.round(file.metadata.size / 1024)} KB` : undefined,
+                            badge: 'STORAGE MEDIA',
+                          });
+                        } else {
+                          openImage({
+                            src: url,
+                            title: file.name,
+                            subtitle: file.metadata?.size ? `${Math.round(file.metadata.size / 1024)} KB` : undefined,
+                          });
+                        }
+                      }}
+                      title={file.type === 'video' ? 'Play Video' : 'View High-Res Image'}
+                      className="p-2 rounded-xl bg-[#1C1C1C] hover:bg-[#C7A46A] hover:text-black text-white transition-colors"
+                    >
+                      {file.type === 'video' ? <Play size={14} className="fill-current" /> : <Maximize2 size={14} />}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        copyToClipboard(url);
+                      }}
                       title="Copy Public URL"
                       className="p-2 rounded-xl bg-[#1C1C1C] hover:bg-[#C7A46A] hover:text-black text-white transition-colors"
                     >
@@ -397,13 +445,17 @@ export const MediaLibraryModule: React.FC<MediaLibraryModuleProps> = ({ showToas
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
                       title="Open in new tab"
                       className="p-2 rounded-xl bg-[#1C1C1C] hover:bg-neutral-800 text-white transition-colors"
                     >
                       <ExternalLink size={14} />
                     </a>
                     <button
-                      onClick={() => handleDelete(file.path)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(file.path);
+                      }}
                       title="Delete Asset"
                       className="p-2 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-200 transition-colors"
                     >

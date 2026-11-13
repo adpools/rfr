@@ -26,8 +26,10 @@ import {
   Clock,
   Film,
   Tag,
-  Radio
+  Radio,
+  Maximize2
 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 interface VideoPodcastModuleProps {
   showToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -35,6 +37,7 @@ interface VideoPodcastModuleProps {
 }
 
 export const VideoPodcastModule: React.FC<VideoPodcastModuleProps> = ({ showToast }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const [videos, setVideos] = useState<MediaVideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -450,14 +453,27 @@ export const VideoPodcastModule: React.FC<VideoPodcastModuleProps> = ({ showToas
             >
               {/* Thumbnail & Video Preview Trigger */}
               <div
-                onClick={() => setPreviewVideo(item)}
-                className="relative aspect-video bg-black overflow-hidden cursor-pointer"
+                onClick={() => {
+                  if (item.video_url || item.video_embed_url) {
+                    openVideo({
+                      src: item.video_url || item.video_embed_url,
+                      embedUrl: item.video_embed_url,
+                      title: item.title,
+                      subtitle: item.description,
+                      badge: item.category,
+                    });
+                  } else {
+                    setPreviewVideo(item);
+                  }
+                }}
+                className="relative aspect-video bg-black overflow-hidden cursor-pointer group/vid"
+                title="Play video in universal player"
               >
                 {item.thumbnail_url ? (
                   <img
                     src={item.thumbnail_url}
                     alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover/vid:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
                         'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80';
@@ -473,7 +489,7 @@ export const VideoPodcastModule: React.FC<VideoPodcastModuleProps> = ({ showToas
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Centered Play Button Overlay */}
-                <div className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover:bg-[#C7A46A] group-hover:text-black transition-all duration-300 transform group-hover:scale-110 shadow-xl">
+                <div className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover/vid:bg-[#C7A46A] group-hover/vid:text-black transition-all duration-300 transform group-hover/vid:scale-110 shadow-xl">
                   <Play size={18} className="fill-current ml-0.5" />
                 </div>
 
@@ -817,16 +833,23 @@ export const VideoPodcastModule: React.FC<VideoPodcastModuleProps> = ({ showToas
                   </div>
 
                   {formData.thumbnail_url && (
-                    <div className="relative aspect-video w-48 rounded-xl overflow-hidden border border-neutral-800 bg-black">
+                    <div 
+                      onClick={() => openImage({ src: formData.thumbnail_url!, title: formData.title || 'Video Thumbnail Preview', subtitle: formData.category })}
+                      className="relative aspect-video w-48 rounded-xl overflow-hidden border border-neutral-800 bg-black cursor-pointer group"
+                      title="Click to view full image in high-resolution"
+                    >
                       <img
                         src={formData.thumbnail_url}
                         alt="Thumbnail preview"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform group-hover:scale-105"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80';
                         }}
                       />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[#C7A46A]">
+                        <Maximize2 size={16} />
+                      </div>
                     </div>
                   )}
                 </div>

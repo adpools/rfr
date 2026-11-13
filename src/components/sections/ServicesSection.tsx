@@ -4,18 +4,13 @@ import { Link } from 'wouter';
 import { servicesData } from '../../data/servicesData';
 import { getServicesCatalog } from '../../services/cmsService';
 import { ServiceItem } from '../../types';
-import { ArrowUpRight, Calendar, Megaphone, Mic, Sparkles, Play, X, Film } from 'lucide-react';
+import { ArrowUpRight, Calendar, Megaphone, Mic, Sparkles, Play, Film, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../context/MediaViewerContext';
 
 export const ServicesSection: React.FC = () => {
   const [services, setServices] = useState<ServiceItem[]>(servicesData);
   const [activeCategory, setActiveCategory] = useState<'events' | 'campaigns' | 'podcast'>('events');
-  const [selectedVideo, setSelectedVideo] = useState<{
-    title: string;
-    badge: string;
-    videoUrl?: string;
-    videoEmbedUrl?: string;
-    driveFolderUrl?: string;
-  } | null>(null);
+  const { openImage, openVideo } = useMediaViewer();
 
   useEffect(() => {
     let isMounted = true;
@@ -36,6 +31,25 @@ export const ServicesSection: React.FC = () => {
   const eventItems = services.filter((s) => s.category === 'events');
   const campaignItems = services.filter((s) => s.category === 'campaigns');
   const podcastItem = services.find((s) => s.category === 'podcast') || services[0] || servicesData[0];
+
+  const playReel = (item: ServiceItem) => {
+    openVideo({
+      src: item.videoUrl,
+      embedUrl: item.videoEmbedUrl,
+      title: item.title,
+      badge: item.badge,
+      driveFolderUrl: item.driveFolderUrl,
+    });
+  };
+
+  const viewImage = (item: ServiceItem) => {
+    openImage({
+      src: item.image,
+      title: item.title,
+      subtitle: item.badge,
+      caption: item.description,
+    });
+  };
 
   return (
     <section
@@ -145,29 +159,17 @@ export const ServicesSection: React.FC = () => {
                   return (
                     <div key={item.id} className="min-w-[85vw] sm:min-w-[360px] lg:min-w-[420px] snap-center bg-[#0a0a0a] border border-neutral-900 hover:border-[#C7A46A]/50 rounded-[20px] overflow-hidden flex flex-col group transition-all duration-500 shadow-xl">
                       <div 
-                        className={`h-60 relative overflow-hidden bg-neutral-950 ${hasVideo ? 'cursor-pointer group/thumb' : ''}`}
-                        onClick={hasVideo ? () => setSelectedVideo({
-                          title: item.title,
-                          badge: item.badge,
-                          videoUrl: item.videoUrl,
-                          videoEmbedUrl: item.videoEmbedUrl,
-                          driveFolderUrl: item.driveFolderUrl
-                        }) : undefined}
-                        role={hasVideo ? 'button' : undefined}
-                        tabIndex={hasVideo ? 0 : undefined}
-                        onKeyDown={hasVideo ? (e) => {
+                        className="h-60 relative overflow-hidden bg-neutral-950 cursor-pointer group/thumb"
+                        onClick={() => hasVideo ? playReel(item) : viewImage(item)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            setSelectedVideo({
-                              title: item.title,
-                              badge: item.badge,
-                              videoUrl: item.videoUrl,
-                              videoEmbedUrl: item.videoEmbedUrl,
-                              driveFolderUrl: item.driveFolderUrl
-                            });
+                            hasVideo ? playReel(item) : viewImage(item);
                           }
-                        } : undefined}
-                        aria-label={hasVideo ? `Play reel for ${item.title}` : undefined}
+                        }}
+                        aria-label={hasVideo ? `Play reel for ${item.title}` : `View image for ${item.title}`}
                       >
                         <img
                           src={item.image}
@@ -177,19 +179,29 @@ export const ServicesSection: React.FC = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent pointer-events-none" />
                         
+                        {/* Expand photo button if image is present */}
+                        {item.image && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              viewImage(item);
+                            }}
+                            aria-label={`Expand photo for ${item.title}`}
+                            title="Expand full photo"
+                            className="absolute top-4 left-4 z-10 p-2 rounded-full bg-black/80 hover:bg-neutral-800 text-neutral-300 hover:text-[#C7A46A] border border-neutral-700/80 backdrop-blur-md transition-all shadow-lg cursor-pointer"
+                          >
+                            <Maximize2 size={12} />
+                          </button>
+                        )}
+
                         {/* Play Reel button if video is present */}
                         {hasVideo && (
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setSelectedVideo({
-                                title: item.title,
-                                badge: item.badge,
-                                videoUrl: item.videoUrl,
-                                videoEmbedUrl: item.videoEmbedUrl,
-                                driveFolderUrl: item.driveFolderUrl
-                              });
+                              playReel(item);
                             }}
                             className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/50 backdrop-blur-md text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg group/btn cursor-pointer"
                           >
@@ -267,29 +279,17 @@ export const ServicesSection: React.FC = () => {
                   return (
                     <div key={item.id} className="min-w-[85vw] sm:min-w-[360px] lg:min-w-[420px] snap-center bg-[#0a0a0a] border border-neutral-900 hover:border-[#C7A46A]/50 rounded-[20px] overflow-hidden flex flex-col group transition-all duration-500 shadow-xl">
                       <div 
-                        className={`h-60 relative overflow-hidden bg-neutral-950 ${hasVideo ? 'cursor-pointer group/thumb' : ''}`}
-                        onClick={hasVideo ? () => setSelectedVideo({
-                          title: item.title,
-                          badge: item.badge,
-                          videoUrl: item.videoUrl,
-                          videoEmbedUrl: item.videoEmbedUrl,
-                          driveFolderUrl: item.driveFolderUrl
-                        }) : undefined}
-                        role={hasVideo ? 'button' : undefined}
-                        tabIndex={hasVideo ? 0 : undefined}
-                        onKeyDown={hasVideo ? (e) => {
+                        className="h-60 relative overflow-hidden bg-neutral-950 cursor-pointer group/thumb"
+                        onClick={() => hasVideo ? playReel(item) : viewImage(item)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            setSelectedVideo({
-                              title: item.title,
-                              badge: item.badge,
-                              videoUrl: item.videoUrl,
-                              videoEmbedUrl: item.videoEmbedUrl,
-                              driveFolderUrl: item.driveFolderUrl
-                            });
+                            hasVideo ? playReel(item) : viewImage(item);
                           }
-                        } : undefined}
-                        aria-label={hasVideo ? `Play reel for ${item.title}` : undefined}
+                        }}
+                        aria-label={hasVideo ? `Play reel for ${item.title}` : `View image for ${item.title}`}
                       >
                         <img
                           src={item.image}
@@ -299,19 +299,29 @@ export const ServicesSection: React.FC = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent pointer-events-none" />
                         
+                        {/* Expand photo button if image is present */}
+                        {item.image && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              viewImage(item);
+                            }}
+                            aria-label={`Expand photo for ${item.title}`}
+                            title="Expand full photo"
+                            className="absolute top-4 left-4 z-10 p-2 rounded-full bg-black/80 hover:bg-neutral-800 text-neutral-300 hover:text-[#C7A46A] border border-neutral-700/80 backdrop-blur-md transition-all shadow-lg cursor-pointer"
+                          >
+                            <Maximize2 size={12} />
+                          </button>
+                        )}
+
                         {/* Play Reel button if video is present */}
                         {hasVideo && (
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setSelectedVideo({
-                                title: item.title,
-                                badge: item.badge,
-                                videoUrl: item.videoUrl,
-                                videoEmbedUrl: item.videoEmbedUrl,
-                                driveFolderUrl: item.driveFolderUrl
-                              });
+                              playReel(item);
                             }}
                             className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/50 backdrop-blur-md text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg group/btn cursor-pointer"
                           >
@@ -393,11 +403,11 @@ export const ServicesSection: React.FC = () => {
                 
                 <button
                   type="button"
-                  onClick={() => setSelectedVideo({
+                  onClick={() => openVideo({
                     title: 'The RFR Podcast — Akhila Anand (Playback Singer)',
                     badge: 'EPISODE 01 • FULL INTERVIEW',
-                    videoEmbedUrl: 'https://www.youtube.com/embed/-X_1HETQbho?autoplay=1',
-                    driveFolderUrl: 'https://www.youtube.com/watch?v=-X_1HETQbho'
+                    embedUrl: 'https://www.youtube.com/embed/-X_1HETQbho',
+                    youtubeUrl: 'https://www.youtube.com/watch?v=-X_1HETQbho'
                   })}
                   className="absolute inset-0 flex items-center justify-center cursor-pointer"
                 >
@@ -466,11 +476,11 @@ export const ServicesSection: React.FC = () => {
                     <button
                       key={e.ep}
                       type="button"
-                      onClick={() => setSelectedVideo({
+                      onClick={() => openVideo({
                         title: `The RFR Podcast — ${e.title}`,
                         badge: `${e.ep} • OFFICIAL PODCAST`,
-                        videoEmbedUrl: `https://www.youtube.com/embed/${e.id}?autoplay=1`,
-                        driveFolderUrl: `https://www.youtube.com/watch?v=${e.id}`
+                        embedUrl: `https://www.youtube.com/embed/${e.id}`,
+                        youtubeUrl: `https://www.youtube.com/watch?v=${e.id}`
                       })}
                       className="px-3 py-1.5 rounded-xl bg-neutral-900/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-neutral-800 hover:border-[#C7A46A] text-[10px] font-mono transition-all inline-flex items-center gap-1.5 cursor-pointer"
                     >
@@ -492,11 +502,11 @@ export const ServicesSection: React.FC = () => {
 
                   <button
                     type="button"
-                    onClick={() => setSelectedVideo({
+                    onClick={() => openVideo({
                       title: 'The RFR Podcast — Akhila Anand (Playback Singer)',
                       badge: 'FLAGSHIP EPISODE • 4K STREAM',
-                      videoEmbedUrl: 'https://www.youtube.com/embed/-X_1HETQbho?autoplay=1',
-                      driveFolderUrl: 'https://www.youtube.com/watch?v=-X_1HETQbho'
+                      embedUrl: 'https://www.youtube.com/embed/-X_1HETQbho',
+                      youtubeUrl: 'https://www.youtube.com/watch?v=-X_1HETQbho'
                     })}
                     className="inline-flex items-center gap-2.5 px-6 py-4 rounded-full border border-neutral-800 hover:border-[#C7A46A] text-[#E0DDD5] hover:text-white text-[11px] font-mono tracking-widest uppercase transition-all bg-[#0a0a0a] cursor-pointer"
                   >
@@ -505,80 +515,6 @@ export const ServicesSection: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Video Player Modal */}
-        <AnimatePresence>
-          {selectedVideo && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-xl"
-              onClick={() => setSelectedVideo(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                className="w-full max-w-4xl bg-[#0c0c0c] border border-[#C7A46A]/40 rounded-2xl overflow-hidden shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-[#111]">
-                  <div>
-                    <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
-                      {selectedVideo.badge}
-                    </span>
-                    <h4 className="text-base sm:text-lg font-serif text-[#F4F1EA] uppercase">
-                      {selectedVideo.title}
-                    </h4>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedVideo(null)}
-                    className="w-9 h-9 rounded-full bg-neutral-900 border border-neutral-700 hover:border-[#C7A46A] flex items-center justify-center text-neutral-400 hover:text-white transition-colors cursor-pointer"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-
-                <div className="relative aspect-video w-full bg-black">
-                  {selectedVideo.videoUrl && selectedVideo.videoUrl.endsWith('.mp4') ? (
-                    <video
-                      src={selectedVideo.videoUrl}
-                      controls
-                      autoPlay
-                      playsInline
-                      className="w-full h-full object-contain"
-                    />
-                  ) : selectedVideo.videoEmbedUrl ? (
-                    <iframe
-                      src={selectedVideo.videoEmbedUrl}
-                      title={selectedVideo.title}
-                      className="w-full h-full border-0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : null}
-                </div>
-
-                {selectedVideo.driveFolderUrl && (
-                  <div className="px-6 py-3 bg-[#0a0a0a] border-t border-neutral-900 flex justify-between items-center text-xs">
-                    <span className="text-neutral-500 font-mono text-[10px]">OFFICIAL RFR REEL ARCHIVE</span>
-                    <a
-                      href={selectedVideo.driveFolderUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-[#C7A46A] hover:underline font-mono text-[11px]"
-                    >
-                      <span>VIEW FULL ARCHIVE</span>
-                      <ArrowUpRight size={12} />
-                    </a>
-                  </div>
-                )}
-              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

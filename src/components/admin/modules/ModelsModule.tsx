@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Users, Star } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Users, Star, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 import { InstagramIcon } from '../../common/SocialIcons';
 
 export interface TalentModel {
@@ -29,6 +30,7 @@ interface ModelsModuleProps {
 }
 
 export const ModelsModule: React.FC<ModelsModuleProps> = ({ showToast }) => {
+  const { openImage } = useMediaViewer();
   const [models, setModels] = useState<TalentModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -284,9 +286,25 @@ export const ModelsModule: React.FC<ModelsModuleProps> = ({ showToast }) => {
             >
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-full bg-[#181818] overflow-hidden flex-shrink-0 border border-neutral-800">
+                  <div 
+                    onClick={m.headshot_image ? () => openImage({
+                      src: m.headshot_image,
+                      title: m.name,
+                      subtitle: `${m.category} • ${m.height || ''}`,
+                      category: 'MODELS GUILD',
+                    }) : undefined}
+                    className={`w-14 h-14 rounded-full bg-[#181818] overflow-hidden flex-shrink-0 border border-neutral-800 ${
+                      m.headshot_image ? 'cursor-pointer hover:border-[#C7A46A] transition-colors group/avatar relative' : ''
+                    }`}
+                    title={m.headshot_image ? 'Click to inspect headshot in high-resolution' : undefined}
+                  >
                     {m.headshot_image ? (
-                      <img src={m.headshot_image} alt={m.name} className="w-full h-full object-cover" />
+                      <>
+                        <img src={m.headshot_image} alt={m.name} className="w-full h-full object-cover group-hover/avatar:scale-110 transition-transform" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex items-center justify-center text-[#C7A46A]">
+                          <Maximize2 size={14} />
+                        </div>
+                      </>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-neutral-500">
                         <Users size={18} />
@@ -468,7 +486,13 @@ export const ModelsModule: React.FC<ModelsModuleProps> = ({ showToast }) => {
                 </div>
                 {formData.headshot_image && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.headshot_image} alt="Preview" className="w-10 h-10 object-cover rounded-full border border-neutral-700" />
+                    <img 
+                      src={formData.headshot_image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.headshot_image, title: formData.name || 'Model Headshot', category: formData.category })}
+                      className="w-10 h-10 object-cover rounded-full border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view full image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.headshot_image}</span>
                   </div>
                 )}

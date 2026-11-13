@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, FolderKanban, Star } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, FolderKanban, Star, Maximize2, Play } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 export interface ProjectItem {
   id?: string;
@@ -28,6 +29,7 @@ interface ProjectsModuleProps {
 }
 
 export const ProjectsModule: React.FC<ProjectsModuleProps> = ({ showToast }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -310,15 +312,58 @@ export const ProjectsModule: React.FC<ProjectsModuleProps> = ({ showToast }) => 
               className="p-5 rounded-2xl bg-[#0D0D0D] border border-neutral-850 hover:border-neutral-700 transition-all flex flex-col justify-between space-y-4"
             >
               <div className="space-y-3">
-                <div className="aspect-[16/10] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800">
+                <div 
+                  onClick={() => {
+                    if (p.video_url) {
+                      openVideo({
+                        src: p.video_url,
+                        title: p.title,
+                        subtitle: `${p.client || ''} (${p.year})`,
+                        badge: p.category.toUpperCase(),
+                      });
+                    } else if (p.cover_image) {
+                      openImage({
+                        src: p.cover_image,
+                        title: p.title,
+                        subtitle: `${p.client || ''} (${p.year})`,
+                        category: p.category.toUpperCase(),
+                        year: String(p.year),
+                      });
+                    }
+                  }}
+                  className={`aspect-[16/10] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${
+                    p.video_url || p.cover_image ? 'cursor-pointer group/project' : ''
+                  }`}
+                  title={p.video_url ? 'Play video showcase' : p.cover_image ? 'View image in high-resolution' : undefined}
+                >
                   {p.cover_image ? (
-                    <img src={p.cover_image} alt={p.title} className="w-full h-full object-cover" />
+                    <img src={p.cover_image} alt={p.title} className="w-full h-full object-cover transition-transform duration-500 group-hover/project:scale-105" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-neutral-500">
                       <FolderKanban size={24} />
                     </div>
                   )}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
+
+                  {/* Universal Media Trigger on Hover */}
+                  {(p.video_url || p.cover_image) && (
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/project:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+                      <div className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover/project:scale-100 transition-transform">
+                        {p.video_url ? (
+                          <>
+                            <Play size={10} className="fill-[#C7A46A]" />
+                            <span>Play Reel</span>
+                          </>
+                        ) : (
+                          <>
+                            <Maximize2 size={11} />
+                            <span>Expand</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="absolute top-3 left-3 flex items-center gap-2 z-10 pointer-events-none">
                     <span className="px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[10px] font-mono text-[#C7A46A] uppercase">
                       {p.category}
                     </span>
@@ -496,7 +541,13 @@ export const ProjectsModule: React.FC<ProjectsModuleProps> = ({ showToast }) => 
                 </div>
                 {formData.cover_image && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.cover_image} alt="Preview" className="w-16 h-10 object-cover rounded border border-neutral-700" />
+                    <img 
+                      src={formData.cover_image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.cover_image, title: formData.title || 'Project Cover Image', category: formData.category })}
+                      className="w-16 h-10 object-cover rounded border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view full image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.cover_image}</span>
                   </div>
                 )}

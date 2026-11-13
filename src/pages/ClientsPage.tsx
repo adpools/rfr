@@ -3,11 +3,13 @@ import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { clientCategories, clientsAndPartnersList } from '../data/partnersClientsData';
 import { getPartnersClients } from '../services/cmsService';
-import { Building2, Sparkles, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { Building2, Sparkles, ArrowUpRight, CheckCircle2, Maximize2 } from 'lucide-react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 export const ClientsPage: React.FC = () => {
+  const { openImage } = useMediaViewer();
   const [list, setList] = useState<any[]>(clientsAndPartnersList);
 
   useEffect(() => {
@@ -52,7 +54,14 @@ export const ClientsPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="p-6 rounded-2xl bg-[#141414] border border-neutral-800 hover:border-[#C7A46A]/70 shadow-xl transition-all duration-300 flex flex-col justify-between items-center min-h-[220px] group"
+                onClick={() => openImage({
+                  src: client.logo,
+                  title: client.name,
+                  subtitle: `${client.category} • Client Alliance`,
+                  category: 'CLIENT LOGO',
+                })}
+                className="p-6 rounded-2xl bg-[#141414] border border-neutral-800 hover:border-[#C7A46A]/70 shadow-xl transition-all duration-300 flex flex-col justify-between items-center min-h-[220px] group cursor-pointer"
+                title="Click to view logo in high-resolution"
               >
                 <div className="w-full flex justify-between items-center text-[10px] font-mono font-medium text-neutral-400">
                   <span className="text-[#C7A46A] font-bold">{client.category}</span>

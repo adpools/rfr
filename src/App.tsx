@@ -11,6 +11,7 @@ import { useSmoothScroll } from './hooks/useSmoothScroll';
 
 // Admin CMS Components & Context
 import { AdminAuthProvider } from './context/AdminAuthContext';
+import { MediaViewerProvider } from './context/MediaViewerContext';
 import { AdminProtectedRoute } from './components/admin/AdminProtectedRoute';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
@@ -217,7 +218,9 @@ export const App: React.FC = () => {
   return (
     <HelmetProvider>
       <AdminAuthProvider>
-        <AppContent />
+        <MediaViewerProvider>
+          <AppContent />
+        </MediaViewerProvider>
       </AdminAuthProvider>
     </HelmetProvider>
   );

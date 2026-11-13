@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { StudioMicScene } from '../components/3d/StudioMicScene';
-import { ArrowUpRight, Play, Headphones, Radio, Mic, Sparkles, Video, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, Play, Headphones, Radio, Mic, Sparkles, Video, ExternalLink, Maximize2 } from 'lucide-react';
 import { Link } from 'wouter';
 import { getMediaVideos } from '../services/cmsService';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 export const PodcastPage: React.FC = () => {
+  const { openVideo } = useMediaViewer();
   const episodes = [
     {
       ep: 'EP 01',
@@ -241,46 +243,52 @@ export const PodcastPage: React.FC = () => {
                       : 'border-neutral-800 hover:border-[#C7A46A]/50'
                   }`}
                 >
-                  {/* Episode Video Thumbnail */}
-                  <div className="lg:col-span-4 relative h-52 sm:h-56 rounded-xl overflow-hidden bg-black border border-neutral-800 group-hover:border-[#C7A46A]/40 transition-colors">
-                    <img
-                      src={ep.image}
-                      alt={ep.title}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg`;
-                      }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    
-                    <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-[#C7A46A]/40 text-[10px] font-mono text-[#C7A46A] font-bold">
-                      {ep.ep}
-                    </div>
-
-                    {isActive && (
-                      <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded bg-[#C7A46A] text-black text-[9px] font-mono font-bold tracking-widest uppercase">
-                        ACTIVE
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded bg-black/80 backdrop-blur-md text-neutral-300 text-[10px] font-mono">
-                      {ep.duration}
-                    </div>
-
-                    <button
+                    {/* Episode Video Thumbnail */}
+                    <div 
                       onClick={() => {
-                        setActiveEpisodeIndex(index);
-                        const playerElem = document.getElementById('podcast-player');
-                        if (playerElem) {
-                          playerElem.scrollIntoView({ behavior: 'smooth' });
-                        }
+                        openVideo({
+                          src: ep.youtubeUrl,
+                          embedUrl: ep.videoEmbedUrl,
+                          title: ep.title,
+                          badge: `${ep.ep} • ${ep.guest}`,
+                          subtitle: `${ep.duration} • ${ep.date}`,
+                          description: ep.description,
+                          youtubeUrl: ep.youtubeUrl,
+                          driveFolderUrl: ep.driveFolderUrl,
+                        });
                       }}
-                      className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover:bg-[#C7A46A] group-hover:text-black transition-all duration-300 transform group-hover:scale-110 shadow-xl"
-                      aria-label={`Play ${ep.title}`}
+                      className="lg:col-span-4 relative h-52 sm:h-56 rounded-xl overflow-hidden bg-black border border-neutral-800 group-hover:border-[#C7A46A]/40 transition-colors cursor-pointer"
                     >
-                      <Play size={18} className="fill-current ml-0.5" />
-                    </button>
-                  </div>
+                      <img
+                        src={ep.image}
+                        alt={ep.title}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg`;
+                        }}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      
+                      <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-[#C7A46A]/40 text-[10px] font-mono text-[#C7A46A] font-bold">
+                        {ep.ep}
+                      </div>
+
+                      {isActive && (
+                        <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded bg-[#C7A46A] text-black text-[9px] font-mono font-bold tracking-widest uppercase">
+                          ACTIVE
+                        </div>
+                      )}
+
+                      <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded bg-black/80 backdrop-blur-md text-neutral-300 text-[10px] font-mono">
+                        {ep.duration}
+                      </div>
+
+                      <div
+                        className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover:bg-[#C7A46A] group-hover:text-black transition-all duration-300 transform group-hover:scale-110 shadow-xl"
+                      >
+                        <Play size={18} className="fill-current ml-0.5" />
+                      </div>
+                    </div>
 
                   {/* Episode Info */}
                   <div className="lg:col-span-8 flex flex-col justify-between space-y-3">

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Sparkles, Play, Video } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Sparkles, Play, Video, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 export interface HeroBanner {
   id?: string;
@@ -98,6 +99,7 @@ const BannerPreviewDisplay: React.FC<{
   className?: string;
   isModal?: boolean;
 }> = ({ banner, className = '', isModal = false }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const preview = getBannerPreview(banner);
   const [loadError, setLoadError] = useState(false);
 
@@ -105,14 +107,42 @@ const BannerPreviewDisplay: React.FC<{
     setLoadError(false);
   }, [banner.image_url, banner.video_url]);
 
+  const isClickable = !loadError && preview.type !== 'empty';
+
+  const handleOpenMedia = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isClickable) return;
+
+    if (preview.hasVideo && (banner.video_url || preview.src)) {
+      openVideo({
+        src: banner.video_url || preview.src,
+        title: banner.title || 'Hero Banner Reel',
+        subtitle: banner.eyebrow || 'Hero Showcase',
+        badge: preview.videoLabel || 'HERO REEL',
+      });
+    } else if (preview.src) {
+      openImage({
+        src: preview.src,
+        title: banner.title || 'Hero Banner Visual',
+        subtitle: banner.eyebrow || 'Hero Banner',
+      });
+    }
+  };
+
   return (
-    <div className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${className}`}>
+    <div
+      onClick={isClickable ? handleOpenMedia : undefined}
+      className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${
+        isClickable ? 'cursor-pointer group/banner' : ''
+      } ${className}`}
+      title={isClickable ? (preview.hasVideo ? 'Play video in universal player' : 'View image in high-resolution') : undefined}
+    >
       {/* 1. Image or YouTube thumbnail */}
       {(preview.type === 'image' || preview.type === 'youtube') && !loadError && (
         <img
           src={preview.src}
           alt={banner.title || 'Banner Preview'}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover/banner:scale-105"
           onError={() => setLoadError(true)}
         />
       )}
@@ -144,16 +174,35 @@ const BannerPreviewDisplay: React.FC<{
         </div>
       )}
 
+      {/* Universal Media Viewer Trigger Overlay */}
+      {isClickable && (
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/banner:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+          <div className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover/banner:scale-100 transition-transform">
+            {preview.hasVideo ? (
+              <>
+                <Play size={10} className="fill-[#C7A46A]" />
+                <span>Play Reel</span>
+              </>
+            ) : (
+              <>
+                <Maximize2 size={11} />
+                <span>Expand</span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Eyebrow badge top-left (card view only) */}
       {!isModal && banner.eyebrow && (
-        <div className="absolute top-3 left-3 px-3 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[9px] font-mono text-[#C7A46A] uppercase max-w-[65%] truncate">
+        <div className="absolute top-3 left-3 px-3 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[9px] font-mono text-[#C7A46A] uppercase max-w-[65%] truncate z-10 pointer-events-none">
           {banner.eyebrow}
         </div>
       )}
 
       {/* Subtle VIDEO / YOUTUBE badge top-right */}
       {preview.hasVideo && (
-        <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-[#C7A46A]/50 text-[9px] font-mono text-[#C7A46A] uppercase flex items-center gap-1.5 shadow-lg">
+        <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-[#C7A46A]/50 text-[9px] font-mono text-[#C7A46A] uppercase flex items-center gap-1.5 shadow-lg z-10 pointer-events-none">
           <Play size={8} className="fill-[#C7A46A] text-[#C7A46A]" />
           <span>{preview.videoLabel || 'VIDEO'}</span>
         </div>

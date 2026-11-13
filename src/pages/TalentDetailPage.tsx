@@ -4,7 +4,8 @@ import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { talentData } from '../data/talentData';
 import { submitContactInquiry, getTalentModels, getTalentInfluencers, getPageContent } from '../services/cmsService';
-import { CheckCircle2, ArrowLeft, Send, Sparkles, ExternalLink, User } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, Send, Sparkles, ExternalLink, User, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../context/MediaViewerContext';
 import confetti from 'canvas-confetti';
 
 interface TalentDetailPageProps {
@@ -14,6 +15,7 @@ interface TalentDetailPageProps {
 export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) => {
   const [, params] = useRoute('/assets/:id');
   const id = customId || (params?.id as 'careers' | 'models' | 'influencers' | 'artists') || 'models';
+  const { openImage } = useMediaViewer();
 
   const defaultPortal = talentData.find((t) => t.id === id) || talentData[1];
   const [portal, setPortal] = useState(defaultPortal);
@@ -384,7 +386,15 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
                   key={model.id}
                   className="group rounded-2xl bg-[#111111] border border-neutral-800 overflow-hidden hover:border-[#C7A46A]/60 transition-all flex flex-col"
                 >
-                  <div className="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
+                  <div 
+                    onClick={() => model.headshot_image && openImage({
+                      src: model.headshot_image,
+                      title: model.name,
+                      subtitle: model.category ? `${model.category.toUpperCase()} MODEL` : 'RFR MODEL',
+                      caption: [model.tagline, model.height ? `Height: ${model.height}` : null, model.measurements ? `Measurements: ${model.measurements}` : null].filter(Boolean).join(' • '),
+                    })}
+                    className={`aspect-[3/4] bg-neutral-900 overflow-hidden relative ${model.headshot_image ? 'cursor-pointer' : ''}`}
+                  >
                     {model.headshot_image ? (
                       <img
                         src={model.headshot_image}
@@ -400,6 +410,11 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
                     {model.category && (
                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono uppercase text-[#C7A46A] border border-[#C7A46A]/30">
                         {model.category}
+                      </div>
+                    )}
+                    {model.headshot_image && (
+                      <div className="absolute top-3 right-3 p-2 rounded-full bg-black/70 border border-neutral-700 text-[#C7A46A] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Maximize2 size={13} />
                       </div>
                     )}
                   </div>
@@ -465,7 +480,15 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
                   key={inf.id}
                   className="group rounded-2xl bg-[#111111] border border-neutral-800 overflow-hidden hover:border-[#C7A46A]/60 transition-all flex flex-col"
                 >
-                  <div className="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
+                  <div 
+                    onClick={() => inf.profile_image && openImage({
+                      src: inf.profile_image,
+                      title: inf.name,
+                      subtitle: inf.category ? `${inf.category.toUpperCase()} CREATOR` : `${inf.tier || 'FEATURED'} CREATOR`,
+                      caption: [inf.handle, inf.location, inf.followers_count ? `Followers: ${inf.followers_count}` : null].filter(Boolean).join(' • '),
+                    })}
+                    className={`aspect-[3/4] bg-neutral-900 overflow-hidden relative ${inf.profile_image ? 'cursor-pointer' : ''}`}
+                  >
                     {inf.profile_image ? (
                       <img
                         src={inf.profile_image}
@@ -481,6 +504,11 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
                     {inf.tier && (
                       <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono uppercase text-[#C7A46A] border border-[#C7A46A]/30">
                         {inf.tier} Tier
+                      </div>
+                    )}
+                    {inf.profile_image && (
+                      <div className="absolute top-3 right-3 p-2 rounded-full bg-black/70 border border-neutral-700 text-[#C7A46A] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Maximize2 size={13} />
                       </div>
                     )}
                   </div>

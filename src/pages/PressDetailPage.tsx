@@ -3,7 +3,8 @@ import { useRoute, Link } from 'wouter';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { pressData } from '../data/pressData';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { ArrowLeft, Calendar, Clock, Share2, Quote, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Share2, Quote, Tag, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 interface ArticleView {
   title: string;
@@ -21,6 +22,7 @@ interface ArticleView {
 export const PressDetailPage: React.FC = () => {
   const [, params] = useRoute('/press/:slug');
   const slug = params?.slug;
+  const { openImage } = useMediaViewer();
 
   const defaultLocal = pressData.find((p) => p.slug === slug) || pressData[0];
 
@@ -151,12 +153,24 @@ export const PressDetailPage: React.FC = () => {
         </div>
 
         {/* Cover Image */}
-        <div className="max-w-5xl mx-auto h-80 sm:h-[500px] rounded-3xl overflow-hidden editorial-image-frame border border-neutral-800 mb-16">
+        <div 
+          onClick={() => openImage({
+            src: article.coverImage,
+            alt: article.title,
+            title: article.title,
+            subtitle: article.category,
+            caption: article.excerpt,
+          })}
+          className="max-w-5xl mx-auto h-80 sm:h-[500px] rounded-3xl overflow-hidden editorial-image-frame border border-neutral-800 mb-16 relative group cursor-pointer"
+        >
           <img
             src={article.coverImage}
             alt={article.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
           />
+          <div className="absolute top-4 right-4 p-2.5 rounded-full bg-black/70 border border-neutral-700 text-[#C7A46A] opacity-0 group-hover:opacity-100 transition-opacity">
+            <Maximize2 size={16} />
+          </div>
         </div>
 
         {/* Article Body */}

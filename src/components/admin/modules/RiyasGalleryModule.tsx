@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Camera, Tag, MapPin, Calendar } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Camera, Tag, MapPin, Calendar, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 export interface RiyasGalleryItem {
   id?: string;
@@ -21,6 +22,7 @@ interface RiyasGalleryModuleProps {
 }
 
 export const RiyasGalleryModule: React.FC<RiyasGalleryModuleProps> = ({ showToast }) => {
+  const { openImage } = useMediaViewer();
   const [items, setItems] = useState<RiyasGalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -269,10 +271,29 @@ export const RiyasGalleryModule: React.FC<RiyasGalleryModuleProps> = ({ showToas
               className="p-4 rounded-2xl bg-[#0D0D0D] border border-neutral-850 hover:border-neutral-700 transition-all flex flex-col justify-between space-y-4"
             >
               <div className="space-y-3">
-                <div className="aspect-[4/5] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                <div 
+                  onClick={() => openImage({
+                    src: item.image,
+                    title: item.title,
+                    subtitle: item.caption || item.location,
+                    category: 'RIYAS ARCHIVE',
+                    year: item.shoot_date,
+                  })}
+                  className="aspect-[4/5] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 cursor-pointer group/portrait"
+                  title="Click to view full portrait in high-resolution"
+                >
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover/portrait:scale-105" />
+                  
+                  {/* Universal Media Trigger on Hover */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/portrait:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+                    <div className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover/portrait:scale-100 transition-transform">
+                      <Maximize2 size={11} />
+                      <span>Expand</span>
+                    </div>
+                  </div>
+
                   {item.shoot_date && (
-                    <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[10px] font-mono text-[#C7A46A]">
+                    <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[10px] font-mono text-[#C7A46A] z-10 pointer-events-none">
                       {item.shoot_date}
                     </div>
                   )}
@@ -421,7 +442,13 @@ export const RiyasGalleryModule: React.FC<RiyasGalleryModuleProps> = ({ showToas
                 </div>
                 {formData.image && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.image} alt="Preview" className="w-12 h-16 object-cover rounded border border-neutral-700" />
+                    <img 
+                      src={formData.image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.image, title: formData.title || 'Photograph Preview', category: 'RIYAS ARCHIVE' })}
+                      className="w-12 h-16 object-cover rounded border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to preview image"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.image}</span>
                   </div>
                 )}

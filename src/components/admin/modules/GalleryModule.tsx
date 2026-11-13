@@ -24,8 +24,11 @@ import {
   Sparkles,
   Info,
   Calendar,
-  Layers
+  Layers,
+  Maximize2,
+  Play
 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 interface GalleryModuleProps {
   showToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
@@ -33,6 +36,7 @@ interface GalleryModuleProps {
 }
 
 export const GalleryModule: React.FC<GalleryModuleProps> = ({ showToast }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const [items, setItems] = useState<GalleryItemRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -383,11 +387,33 @@ export const GalleryModule: React.FC<GalleryModuleProps> = ({ showToast }) => {
               }`}
             >
               {/* Media Preview Container */}
-              <div className="relative aspect-[16/10] bg-black overflow-hidden">
+              <div 
+                onClick={() => {
+                  if (item.has_video && (item.video_embed_url || item.drive_view_url)) {
+                    openVideo({
+                      src: item.video_embed_url || item.drive_view_url,
+                      embedUrl: item.video_embed_url,
+                      title: item.title,
+                      subtitle: item.caption || item.credits,
+                      badge: `${item.category.toUpperCase()} REEL`,
+                    });
+                  } else if (item.image) {
+                    openImage({
+                      src: item.image,
+                      title: item.title,
+                      subtitle: item.caption || item.credits,
+                      category: item.category.toUpperCase(),
+                      year: item.year ? String(item.year) : undefined,
+                    });
+                  }
+                }}
+                className="relative aspect-[16/10] bg-black overflow-hidden cursor-pointer group/media"
+                title={item.has_video ? 'Play video in universal player' : 'View image in high-resolution'}
+              >
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover/media:scale-105 transition-transform duration-500"
                   onError={(e) => {
                     // Fallback placeholder if broken URL
                     (e.target as HTMLImageElement).src =
@@ -397,8 +423,25 @@ export const GalleryModule: React.FC<GalleryModuleProps> = ({ showToast }) => {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
+                {/* Universal Media Trigger on Hover */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/media:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+                  <div className="px-3 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover/media:scale-100 transition-transform">
+                    {item.has_video ? (
+                      <>
+                        <Play size={10} className="fill-[#C7A46A]" />
+                        <span>Play Reel</span>
+                      </>
+                    ) : (
+                      <>
+                        <Maximize2 size={11} />
+                        <span>Expand Photo</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
                 {/* Category & Year Badges */}
-                <div className="absolute top-3 left-3 flex items-center gap-1.5">
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10 pointer-events-none">
                   <span className="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider font-bold bg-black/70 backdrop-blur-md text-[#C7A46A] border border-[#C7A46A]/30">
                     {item.category}
                   </span>
@@ -414,14 +457,29 @@ export const GalleryModule: React.FC<GalleryModuleProps> = ({ showToast }) => {
 
                 {/* Video Indicator */}
                 {item.has_video && (
-                  <div className="absolute top-3 right-3 px-2 py-1 rounded-md text-[10px] font-mono bg-[#C7A46A]/90 text-black font-bold flex items-center gap-1 shadow-md">
+                  <div 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (item.video_embed_url || item.drive_view_url) {
+                        openVideo({
+                          src: item.video_embed_url || item.drive_view_url,
+                          embedUrl: item.video_embed_url,
+                          title: item.title,
+                          subtitle: item.caption || item.credits,
+                          badge: `${item.category.toUpperCase()} REEL`,
+                        });
+                      }
+                    }}
+                    className="absolute top-3 right-3 px-2 py-1 rounded-md text-[10px] font-mono bg-[#C7A46A]/90 hover:bg-[#C7A46A] text-black font-bold flex items-center gap-1 shadow-md z-10 transition-colors cursor-pointer"
+                    title="Play Video Reel"
+                  >
                     <Video size={12} />
                     <span>REEL</span>
                   </div>
                 )}
 
                 {/* Sort Order Badge */}
-                <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-black/60 backdrop-blur-md text-neutral-400 border border-white/10">
+                <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-mono bg-black/60 backdrop-blur-md text-neutral-400 border border-white/10 z-10 pointer-events-none">
                   #{item.sort_order}
                 </div>
               </div>
@@ -624,16 +682,23 @@ export const GalleryModule: React.FC<GalleryModuleProps> = ({ showToast }) => {
 
                   {/* Thumbnail Preview */}
                   {formData.image && (
-                    <div className="relative aspect-[16/9] w-48 rounded-xl overflow-hidden border border-neutral-800 bg-black">
+                    <div 
+                      onClick={() => openImage({ src: formData.image, title: formData.title || 'Curated Image Preview', category: formData.category.toUpperCase() })}
+                      className="relative aspect-[16/9] w-48 rounded-xl overflow-hidden border border-neutral-800 bg-black cursor-pointer group"
+                      title="Click to view full image in high-resolution"
+                    >
                       <img
                         src={formData.image}
                         alt="Preview"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform group-hover:scale-105"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80';
                         }}
                       />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[#C7A46A]">
+                        <Maximize2 size={16} />
+                      </div>
                     </div>
                   )}
                 </div>

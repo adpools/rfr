@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Briefcase, ExternalLink, Star } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Briefcase, ExternalLink, Star, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 export interface PartnerClient {
   id?: string;
@@ -22,6 +23,7 @@ interface ClientsModuleProps {
 }
 
 export const ClientsModule: React.FC<ClientsModuleProps> = ({ showToast }) => {
+  const { openImage } = useMediaViewer();
   const [brands, setBrands] = useState<PartnerClient[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -288,9 +290,25 @@ export const ClientsModule: React.FC<ClientsModuleProps> = ({ showToast }) => {
             >
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-12 rounded-xl bg-[#181818] p-2 flex items-center justify-center border border-neutral-800 shrink-0">
+                  <div 
+                    onClick={brand.logo ? () => openImage({
+                      src: brand.logo,
+                      title: brand.name,
+                      subtitle: `${brand.category} • ${brand.type.toUpperCase()}`,
+                      category: 'CLIENT ALLIANCE',
+                    }) : undefined}
+                    className={`w-16 h-12 rounded-xl bg-[#181818] p-2 flex items-center justify-center border border-neutral-800 shrink-0 ${
+                      brand.logo ? 'cursor-pointer hover:border-[#C7A46A] transition-colors group/logo relative' : ''
+                    }`}
+                    title={brand.logo ? 'Click to inspect logo in high-resolution' : undefined}
+                  >
                     {brand.logo ? (
-                      <img src={brand.logo} alt={brand.name} className="max-h-full max-w-full object-contain filter invert" />
+                      <>
+                        <img src={brand.logo} alt={brand.name} className="max-h-full max-w-full object-contain filter invert group-hover/logo:scale-105 transition-transform" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/logo:opacity-100 transition-opacity flex items-center justify-center text-[#C7A46A] rounded-xl">
+                          <Maximize2 size={12} />
+                        </div>
+                      </>
                     ) : (
                       <Briefcase size={18} className="text-neutral-500" />
                     )}
@@ -454,7 +472,13 @@ export const ClientsModule: React.FC<ClientsModuleProps> = ({ showToast }) => {
                 </div>
                 {formData.logo && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.logo} alt="Preview" className="w-12 h-8 object-contain rounded bg-neutral-900 border border-neutral-700 p-1" />
+                    <img 
+                      src={formData.logo} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.logo, title: formData.name || 'Brand Logo', category: formData.category })}
+                      className="w-12 h-8 object-contain rounded bg-neutral-900 border border-neutral-700 p-1 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view full image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.logo}</span>
                   </div>
                 )}

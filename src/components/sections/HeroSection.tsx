@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, X, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { getHeroBanners } from '../../services/cmsService';
 import { servicesData } from '../../data/servicesData';
+import { useMediaViewer } from '../../context/MediaViewerContext';
 
 export const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [modalVideo, setModalVideo] = useState<{
-    type: 'video' | 'youtube' | 'drive';
-    src: string;
-    title: string;
-  } | null>(null);
+  const { openVideo } = useMediaViewer();
 
   const [activePodcastEp, setActivePodcastEp] = useState(0);
 
@@ -196,14 +192,11 @@ export const HeroSection: React.FC = () => {
               {currentSlide === 0 && (
                 <div className="mb-6 md:mb-8">
                   <button 
-                    onClick={() => {
-                      setModalVideo({
-                        type: 'drive',
-                        src: 'https://drive.google.com/file/d/1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw/preview',
-                        title: 'RFR 2020-2026 VIDEO ARCHIVE REEL'
-                      });
-                      setIsVideoModalOpen(true);
-                    }}
+                    onClick={() => openVideo({
+                      src: 'https://drive.google.com/file/d/1dy6TIwofRd4bWLMrdHeiykYkqTVbFIFw/preview',
+                      title: 'RFR 2020-2026 VIDEO ARCHIVE REEL',
+                      badge: 'ARCHIVE REEL',
+                    })}
                     className="flex items-center gap-4 px-6 md:px-8 py-3.5 md:py-4 rounded-full border border-[#C7A46A]/50 hover:border-[#C7A46A] hover:bg-[#C7A46A]/20 transition-all group backdrop-blur-md bg-black/40 shadow-2xl cursor-pointer"
                   >
                     <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,1)]"></div>
@@ -218,14 +211,12 @@ export const HeroSection: React.FC = () => {
               {currentSlide === 1 && (
                 <div className="mb-6 md:mb-8">
                   <button 
-                    onClick={() => {
-                      setModalVideo({
-                        type: 'youtube',
-                        src: 'https://www.youtube.com/embed/NTDkcWdruPs?autoplay=1&start=144',
-                        title: 'KOOTTAM FLEA SEASON 2 — OFFICIAL EVENT HIGHLIGHTS'
-                      });
-                      setIsVideoModalOpen(true);
-                    }}
+                    onClick={() => openVideo({
+                      src: 'https://www.youtube.com/watch?v=NTDkcWdruPs',
+                      embedUrl: 'https://www.youtube.com/embed/NTDkcWdruPs?start=144',
+                      title: 'KOOTTAM FLEA SEASON 2 — OFFICIAL EVENT HIGHLIGHTS',
+                      badge: 'KOOTTAM FLEA',
+                    })}
                     className="flex items-center gap-4 px-6 md:px-8 py-3.5 md:py-4 rounded-full border border-[#C7A46A]/50 hover:border-[#C7A46A] hover:bg-[#C7A46A]/20 transition-all group backdrop-blur-md bg-black/40 shadow-2xl cursor-pointer"
                   >
                     <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_12px_rgba(239,68,68,1)]"></div>
@@ -327,53 +318,6 @@ export const HeroSection: React.FC = () => {
           <ChevronRight size={24} strokeWidth={2} />
         </button>
       </div>
-
-      {/* Interactive BG Video Modal */}
-      <AnimatePresence>
-        {isVideoModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4"
-            onClick={() => setIsVideoModalOpen(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-6xl aspect-video bg-[#050505] p-2 md:p-4 border border-[#C7A46A]/30 relative rounded-xl shadow-[0_0_50px_rgba(199,164,106,0.15)] flex flex-col"
-            >
-              <button
-                onClick={() => setIsVideoModalOpen(false)}
-                className="absolute top-4 right-4 z-50 p-3 rounded-full bg-[#C7A46A] text-black shadow-lg hover:scale-110 transition-transform"
-              >
-                <X size={20} className="stroke-[3px]" />
-              </button>
-              <div className="w-full h-full bg-black rounded-lg overflow-hidden relative">
-                {modalVideo?.type === 'youtube' || modalVideo?.type === 'drive' || modalVideo?.src?.includes('drive.google.com') ? (
-                  <iframe
-                    src={modalVideo.src}
-                    title={modalVideo.title}
-                    className="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : (
-                  <video
-                    autoPlay
-                    controls
-                    playsInline
-                    className="w-full h-full object-contain"
-                    src={modalVideo?.src || "/videos/Dandya%20Deeshna%20Event/hero-bg-optimized.mp4"}
-                  />
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };

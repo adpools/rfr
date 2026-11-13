@@ -19,8 +19,10 @@ import {
   Tag, 
   Quote as QuoteIcon, 
   AlignLeft,
-  FileText
+  FileText,
+  Maximize2
 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 
 export interface BlogArticle {
   id?: string;
@@ -50,6 +52,7 @@ interface BlogModuleProps {
 }
 
 export const BlogModule: React.FC<BlogModuleProps> = ({ showToast }) => {
+  const { openImage } = useMediaViewer();
   const [articles, setArticles] = useState<BlogArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -390,19 +393,40 @@ export const BlogModule: React.FC<BlogModuleProps> = ({ showToast }) => {
             >
               <div className="space-y-3">
                 {/* Cover Image & Category Pill */}
-                <div className="aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800">
+                <div 
+                  onClick={article.cover_image ? () => openImage({
+                    src: article.cover_image,
+                    title: article.title,
+                    subtitle: `${article.author} • ${article.date_label}`,
+                    category: article.category,
+                  }) : undefined}
+                  className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${
+                    article.cover_image ? 'cursor-pointer group/blog' : ''
+                  }`}
+                  title={article.cover_image ? 'Click to view cover in high-resolution' : undefined}
+                >
                   {article.cover_image ? (
                     <img
                       src={article.cover_image}
                       alt={article.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover/blog:scale-105"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-neutral-600">
                       <BookOpen size={24} />
                     </div>
                   )}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
+
+                  {article.cover_image && (
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/blog:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+                      <div className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover/blog:scale-100 transition-transform">
+                        <Maximize2 size={11} />
+                        <span>Expand</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="absolute top-3 left-3 flex items-center gap-2 z-10 pointer-events-none">
                     <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[10px] font-mono text-[#C7A46A] uppercase tracking-wider">
                       {article.category}
                     </span>
@@ -705,7 +729,13 @@ export const BlogModule: React.FC<BlogModuleProps> = ({ showToast }) => {
                 </div>
                 {formData.cover_image && (
                   <div className="flex items-center gap-2 pt-2">
-                    <img src={formData.cover_image} alt="Preview" className="w-16 h-10 object-cover rounded border border-neutral-700" />
+                    <img 
+                      src={formData.cover_image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.cover_image, title: formData.title || 'Article Cover Preview', category: formData.category })}
+                      className="w-16 h-10 object-cover rounded border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view full image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.cover_image}</span>
                   </div>
                 )}

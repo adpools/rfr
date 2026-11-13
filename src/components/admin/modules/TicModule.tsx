@@ -17,8 +17,11 @@ import {
   Building2,
   ArrowUp,
   ArrowDown,
-  RotateCcw
+  RotateCcw,
+  Maximize2,
+  Play
 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 import {
   TicCreatorItem,
   TicBrandItem,
@@ -44,6 +47,7 @@ interface TicModuleProps {
 }
 
 export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
+  const { openImage, openVideo } = useMediaViewer();
   const [events, setEvents] = useState<TicEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -680,13 +684,30 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
           <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">
             Launch Video Embed URL
           </label>
-          <input
-            type="text"
-            value={manifestoVideoUrl}
-            onChange={(e) => setManifestoVideoUrl(e.target.value)}
-            placeholder="https://drive.google.com/file/d/.../preview"
-            className="w-full px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={manifestoVideoUrl}
+              onChange={(e) => setManifestoVideoUrl(e.target.value)}
+              placeholder="https://drive.google.com/file/d/.../preview"
+              className="flex-1 px-4 py-2 rounded-xl bg-[#141414] border border-neutral-800 text-white text-xs font-mono"
+            />
+            {manifestoVideoUrl && (
+              <button
+                type="button"
+                onClick={() => openVideo({
+                  src: manifestoVideoUrl,
+                  title: manifestoTitle || 'TIC Manifesto Video',
+                  subtitle: manifestoTagline || 'Trivandrum Influencer Circle',
+                  badge: 'TIC LAUNCH',
+                })}
+                className="px-3.5 py-2 rounded-xl bg-neutral-800 hover:bg-[#C7A46A] text-neutral-300 hover:text-black font-mono text-xs flex items-center gap-1.5 transition-colors shrink-0"
+              >
+                <Play size={13} className="fill-current" />
+                <span>Preview</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -967,12 +988,31 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
                 className="p-5 rounded-2xl bg-[#0D0D0D] border border-neutral-850 hover:border-neutral-700 transition-all flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
-                  <div className="aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800">
+                  <div 
+                    onClick={ev.cover_image ? () => openImage({
+                      src: ev.cover_image,
+                      title: ev.name,
+                      subtitle: `${ev.event_date || ''} • ${ev.venue || ''}`,
+                      category: 'TIC CONCLAVE',
+                    }) : undefined}
+                    className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${
+                      ev.cover_image ? 'cursor-pointer group/ticev' : ''
+                    }`}
+                    title={ev.cover_image ? 'Click to view event flyer in high-resolution' : undefined}
+                  >
                     {ev.cover_image ? (
-                      <img src={ev.cover_image} alt={ev.name} className="w-full h-full object-cover" />
+                      <img src={ev.cover_image} alt={ev.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/ticev:scale-105" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-neutral-600">
                         <Radio size={24} />
+                      </div>
+                    )}
+                    {ev.cover_image && (
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/ticev:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-10">
+                        <div className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C7A46A]/60 text-[#C7A46A] text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 shadow-xl transform scale-95 group-hover/ticev:scale-100 transition-transform">
+                          <Maximize2 size={11} />
+                          <span>Expand</span>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -1125,7 +1165,13 @@ export const TicModule: React.FC<TicModuleProps> = ({ showToast }) => {
                 </div>
                 {formData.cover_image && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.cover_image} alt="Preview" className="w-16 h-10 object-cover rounded border border-neutral-700" />
+                    <img 
+                      src={formData.cover_image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.cover_image, title: formData.name || 'TIC Event Flyer', category: 'TIC CONCLAVE' })}
+                      className="w-16 h-10 object-cover rounded border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view full image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.cover_image}</span>
                   </div>
                 )}

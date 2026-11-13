@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Save, X, Upload, UserCheck } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Save, X, Upload, UserCheck, Maximize2 } from 'lucide-react';
+import { useMediaViewer } from '../../../context/MediaViewerContext';
 import { InstagramIcon, LinkedinIcon } from '../../common/SocialIcons';
 
 export interface TeamMember {
@@ -23,6 +24,7 @@ interface AboutTeamModuleProps {
 }
 
 export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) => {
+  const { openImage } = useMediaViewer();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -562,9 +564,25 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
               >
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-[#181818] overflow-hidden flex-shrink-0 border border-neutral-800">
+                    <div 
+                      onClick={m.image ? () => openImage({
+                        src: m.image,
+                        title: m.name,
+                        subtitle: `${m.designation}${m.department ? ` • ${m.department}` : ''}`,
+                        category: 'RFR TEAM',
+                      }) : undefined}
+                      className={`w-12 h-12 rounded-full bg-[#181818] overflow-hidden flex-shrink-0 border border-neutral-800 ${
+                        m.image ? 'cursor-pointer hover:border-[#C7A46A] transition-colors group/avatar relative' : ''
+                      }`}
+                      title={m.image ? 'Click to inspect portrait in high-resolution' : undefined}
+                    >
                       {m.image ? (
-                        <img src={m.image} alt={m.name} className="w-full h-full object-cover" />
+                        <>
+                          <img src={m.image} alt={m.name} className="w-full h-full object-cover group-hover/avatar:scale-110 transition-transform" />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex items-center justify-center text-[#C7A46A]">
+                            <Maximize2 size={12} />
+                          </div>
+                        </>
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-neutral-500">
                           <UserCheck size={18} />
@@ -727,7 +745,13 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
                 </div>
                 {formData.image && (
                   <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.image} alt="Preview" className="w-10 h-10 object-cover rounded-full border border-neutral-700" />
+                    <img 
+                      src={formData.image} 
+                      alt="Preview" 
+                      onClick={() => openImage({ src: formData.image, title: formData.name || 'Team Member Photo', category: 'RFR TEAM' })}
+                      className="w-10 h-10 object-cover rounded-full border border-neutral-700 cursor-pointer hover:opacity-80 transition-opacity" 
+                      title="Click to view full image in high-resolution"
+                    />
                     <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.image}</span>
                   </div>
                 )}

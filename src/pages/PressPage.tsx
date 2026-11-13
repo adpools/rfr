@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Maximize2, X, ChevronLeft, ChevronRight, Newspaper, Building2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Sparkles, Maximize2, Newspaper, Building2 } from 'lucide-react';
 import { getPressClippings } from '../services/cmsService';
+import { useMediaViewer } from '../context/MediaViewerContext';
 
 export interface PressItem {
   id: string;
@@ -166,7 +167,7 @@ const pressItems: PressItem[] = [
 export const PressPage: React.FC = () => {
   const [items, setItems] = useState<PressItem[]>(pressItems);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const { openImage } = useMediaViewer();
 
   useEffect(() => {
     getPressClippings().then((records) => {
@@ -204,24 +205,26 @@ export const PressPage: React.FC = () => {
     ? items
     : items.filter((item) => item.category === selectedCategory);
 
-  // Keyboard navigation for Lightbox
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImageIndex === null) return;
-      if (e.key === 'Escape') {
-        setSelectedImageIndex(null);
-      } else if (e.key === 'ArrowRight') {
-        setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : null));
-      } else if (e.key === 'ArrowLeft') {
-        setSelectedImageIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : null));
-      }
-    };
+  const handleOpenClipping = (index: number) => {
+    const active = filteredItems[index];
+    if (!active) return;
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImageIndex, filteredItems.length]);
-
-  const activeImage = selectedImageIndex !== null ? filteredItems[selectedImageIndex] : null;
+    openImage({
+      src: active.src,
+      alt: `${active.brand} — Press Clipping`,
+      title: active.brand,
+      subtitle: active.category,
+      caption: active.typeLabel,
+      items: filteredItems.map((p) => ({
+        src: p.src,
+        alt: `${p.brand} — Press Clipping`,
+        title: p.brand,
+        subtitle: p.category,
+        caption: p.typeLabel,
+      })),
+      initialIndex: index,
+    });
+  };
 
   return (
     <PageWrapper
@@ -268,7 +271,6 @@ export const PressPage: React.FC = () => {
                 key={cat.value}
                 onClick={() => {
                   setSelectedCategory(cat.value);
-                  setSelectedImageIndex(null);
                 }}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-mono tracking-wider transition-all duration-200 ${
                   selectedCategory === cat.value
@@ -296,7 +298,7 @@ export const PressPage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.45, delay: (idx % 6) * 0.05 }}
-              onClick={() => setSelectedImageIndex(idx)}
+              onClick={() => handleOpenClipping(idx)}
               className="group relative cursor-pointer rounded-2xl overflow-hidden bg-[#111111] border border-neutral-800 hover:border-[#C7A46A]/60 transition-all duration-300 flex flex-col shadow-lg hover:shadow-2xl hover:shadow-[#C7A46A]/5"
             >
               {/* Image Frame with natural top-alignment for newspaper headers */}
@@ -344,106 +346,6 @@ export const PressPage: React.FC = () => {
             </motion.div>
           ))}
         </div>
-
-        {/* Clean Lightbox Modal */}
-        <AnimatePresence>
-          {activeImage && selectedImageIndex !== null && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 md:p-8 select-none"
-              onClick={() => setSelectedImageIndex(null)}
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedImageIndex(null)}
-                aria-label="Close Lightbox"
-                className="absolute top-5 right-5 z-50 p-3 rounded-full bg-neutral-900/90 text-white border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all"
-              >
-                <X size={20} />
-              </button>
-
-              {/* Prev / Next Floating Buttons */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedImageIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : 0));
-                }}
-                aria-label="Previous Image"
-                className="absolute left-4 sm:left-6 z-50 p-3 sm:p-3.5 rounded-full bg-neutral-900/90 text-white border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all flex items-center justify-center"
-              >
-                <ChevronLeft size={22} />
-              </button>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : 0));
-                }}
-                aria-label="Next Image"
-                className="absolute right-4 sm:right-6 z-50 p-3 sm:p-3.5 rounded-full bg-neutral-900/90 text-white border border-neutral-700 hover:border-[#C7A46A] hover:text-[#C7A46A] transition-all flex items-center justify-center"
-              >
-                <ChevronRight size={22} />
-              </button>
-
-              {/* Modal Container */}
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                onClick={(e) => e.stopPropagation()}
-                className="relative max-w-5xl w-full max-h-[92vh] flex flex-col items-center justify-center bg-[#0d0d0d] rounded-3xl border border-neutral-800 p-4 sm:p-6 shadow-2xl overflow-hidden"
-              >
-                {/* Header Information — Clean Brand Only */}
-                <div className="w-full flex items-center justify-between pb-4 mb-4 border-b border-neutral-800/80 text-xs font-mono">
-                  <div className="flex items-center gap-2.5">
-                    <Building2 size={15} className="text-[#C7A46A]" />
-                    <span className="text-white font-bold tracking-wider text-sm">{activeImage.brand}</span>
-                    <span className="text-neutral-500">•</span>
-                    <span className="text-neutral-400 text-xs">{activeImage.typeLabel}</span>
-                  </div>
-
-                  <span className="text-neutral-400 font-mono">
-                    {selectedImageIndex + 1} OF {filteredItems.length}
-                  </span>
-                </div>
-
-                {/* High-Resolution Uncropped Image Viewing Frame */}
-                <div className="w-full flex-1 flex items-center justify-center overflow-auto max-h-[75vh]">
-                  <img
-                    key={activeImage.id}
-                    src={activeImage.src}
-                    alt={`${activeImage.brand} — Original Press Feature`}
-                    className="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl"
-                  />
-                </div>
-
-                {/* Minimal Footer Controls */}
-                <div className="w-full pt-4 mt-4 border-t border-neutral-800/80 flex items-center justify-between text-xs font-mono text-neutral-400">
-                  <span className="text-[11px] text-neutral-500 hidden sm:inline">
-                    PRESS ARCHIVE • VERIFIED RECORD
-                  </span>
-                  <div className="flex items-center gap-3 ml-auto">
-                    <button
-                      onClick={() => setSelectedImageIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : 0))}
-                      className="px-3.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 text-white transition-all text-xs"
-                    >
-                      PREV
-                    </button>
-                    <button
-                      onClick={() => setSelectedImageIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : 0))}
-                      className="px-3.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-600 text-white transition-all text-xs"
-                    >
-                      NEXT
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
       </div>
     </PageWrapper>
