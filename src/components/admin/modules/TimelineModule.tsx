@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile, ensureTimelineYearExists } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Calendar, FolderPlus } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Calendar, FolderPlus, Play, ExternalLink, Layers } from 'lucide-react';
 
 export interface TimelineEvent {
   id?: string;
@@ -17,6 +17,17 @@ export interface TimelineEvent {
   video_embed_url?: string;
   has_video?: boolean;
   drive_folder_url?: string;
+  videos?: Array<{
+    id?: string;
+    title?: string;
+    image?: string;
+    videoUrl?: string;
+    videoEmbedUrl?: string;
+    video_url?: string;
+    video_embed_url?: string;
+    driveFolderUrl?: string;
+    drive_folder_url?: string;
+  }>;
   sort_order: number;
   is_published: boolean;
   timeline_years?: {
@@ -25,6 +36,97 @@ export interface TimelineEvent {
     title?: string;
   };
 }
+
+// Helpers for timeline video resolution & embed normalization
+const toDirectVideoUrl = (rawUrl?: string | null): string | undefined => {
+  if (!rawUrl || typeof rawUrl !== 'string') return undefined;
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return undefined;
+
+  if (
+    trimmed.match(/\.(mp4|webm|mov|ogg)(\?.*)?$/i) ||
+    trimmed.startsWith('/videos/')
+  ) {
+    return trimmed;
+  }
+  return undefined;
+};
+
+const toEmbedUrl = (rawUrl?: string | null): string | undefined => {
+  if (!rawUrl || typeof rawUrl !== 'string') return undefined;
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return undefined;
+
+  if (
+    trimmed.match(/\.(mp4|webm|mov|ogg)(\?.*)?$/i) ||
+    trimmed.startsWith('/videos/')
+  ) {
+    return undefined;
+  }
+
+  if (trimmed.includes('youtube.com/embed/')) {
+    return trimmed.includes('autoplay=') ? trimmed : `${trimmed}${trimmed.includes('?') ? '&' : '?'}autoplay=1`;
+  }
+
+  const ytMatch = trimmed.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  if (ytMatch && ytMatch[1]) {
+    return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
+  }
+
+  if (trimmed.includes('drive.google.com')) {
+    const driveMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch && driveMatch[1]) {
+      return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+    }
+    const idMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+    }
+  }
+
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+
+  return undefined;
+};
+
+const getEventVideoData = (ev: TimelineEvent) => {
+  const directCandidate = ev.video_url || (ev as any).videoUrl;
+  const embedCandidate = ev.video_embed_url || (ev as any).videoEmbedUrl;
+  const childVideos = Array.isArray(ev.videos) ? ev.videos : [];
+
+  const normalizedChildren = childVideos.map((v: any, index: number) => {
+    const childDirect = toDirectVideoUrl(v.videoUrl || v.video_url);
+    const childEmbed = toEmbedUrl(v.videoEmbedUrl || v.video_embed_url || v.videoUrl || v.video_url);
+    return {
+      id: v.id || String(index),
+      title: v.title || `Reel ${index + 1}`,
+      image: v.image,
+      videoUrl: childDirect,
+      videoEmbedUrl: childEmbed,
+      driveFolderUrl: v.driveFolderUrl || v.drive_folder_url,
+      hasVideo: Boolean(childDirect || childEmbed),
+    };
+  }).filter((v) => v.hasVideo);
+
+  const directVideo = toDirectVideoUrl(directCandidate);
+  const embedVideo = toEmbedUrl(embedCandidate || directCandidate);
+
+  const hasValidVideo = Boolean(
+    directVideo || 
+    embedVideo || 
+    (normalizedChildren.length > 0)
+  );
+
+  return {
+    hasValidVideo,
+    primaryVideoUrl: directVideo || normalizedChildren[0]?.videoUrl,
+    primaryEmbedUrl: embedVideo || normalizedChildren[0]?.videoEmbedUrl,
+    driveFolderUrl: ev.drive_folder_url || (ev as any).driveFolderUrl || normalizedChildren[0]?.driveFolderUrl,
+    videosList: normalizedChildren,
+  };
+};
 
 export interface TimelineYearRow {
   id: string;
@@ -55,6 +157,10 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<TimelineEvent | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  // Video Preview Modal state
+  const [activeVideoEvent, setActiveVideoEvent] = useState<TimelineEvent | null>(null);
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState<number>(0);
 
   // Year Modal state
   const [isYearModalOpen, setIsYearModalOpen] = useState(false);
@@ -151,6 +257,22 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
   useEffect(() => {
     fetchYearsAndEvents();
   }, []);
+
+  // Close video preview on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && activeVideoEvent) {
+        setActiveVideoEvent(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeVideoEvent]);
+
+  const handleOpenVideoPreview = (ev: TimelineEvent) => {
+    setActiveVideoEvent(ev);
+    setSelectedVideoIndex(0);
+  };
 
   const openCreateModal = () => {
     setEditingEvent(null);
@@ -516,40 +638,93 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredEvents.map((ev) => (
-            <div
-              key={ev.id || ev.name}
-              className="p-5 rounded-2xl bg-[#0D0D0D] border border-neutral-850 hover:border-neutral-700 transition-all flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-3">
-                <div className="aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800">
-                  {ev.image ? (
-                    <img src={ev.image} alt={ev.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-neutral-600">
-                      <Calendar size={24} />
-                    </div>
-                  )}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[10px] font-mono text-[#C7A46A] uppercase">
-                      {ev.type}
-                    </span>
-                    {ev.category_badge && (
-                      <span className="px-2 py-0.5 rounded-full bg-neutral-900/80 text-neutral-300 text-[10px] font-mono uppercase">
-                        {ev.category_badge}
+          {filteredEvents.map((ev) => {
+            const videoInfo = getEventVideoData(ev);
+            return (
+              <div
+                key={ev.id || ev.name}
+                className="p-5 rounded-2xl bg-[#0D0D0D] border border-neutral-850 hover:border-neutral-700 transition-all flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-3">
+                  {/* Event Media Preview */}
+                  <div 
+                    className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${
+                      videoInfo.hasValidVideo ? 'cursor-pointer group/media' : ''
+                    }`}
+                    onClick={videoInfo.hasValidVideo ? () => handleOpenVideoPreview(ev) : undefined}
+                    role={videoInfo.hasValidVideo ? 'button' : undefined}
+                    tabIndex={videoInfo.hasValidVideo ? 0 : undefined}
+                    onKeyDown={videoInfo.hasValidVideo ? (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleOpenVideoPreview(ev);
+                      }
+                    } : undefined}
+                    aria-label={videoInfo.hasValidVideo ? `Play video for ${ev.name}` : undefined}
+                  >
+                    {ev.image ? (
+                      <img 
+                        src={ev.image} 
+                        alt={ev.name} 
+                        className={`w-full h-full object-cover transition-transform duration-500 ${
+                          videoInfo.hasValidVideo ? 'group-hover/media:scale-105' : ''
+                        }`} 
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-neutral-600">
+                        <Calendar size={24} />
+                      </div>
+                    )}
+
+                    {/* Top-left Badges */}
+                    <div className="absolute top-3 left-3 flex items-center gap-2 pointer-events-none z-10">
+                      <span className="px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[10px] font-mono text-[#C7A46A] uppercase">
+                        {ev.type}
                       </span>
+                      {ev.category_badge && (
+                        <span className="px-2 py-0.5 rounded-full bg-neutral-900/80 text-neutral-300 text-[10px] font-mono uppercase">
+                          {ev.category_badge}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Centered Play Button Overlay (Visible ONLY when card has valid video URL) */}
+                    {videoInfo.hasValidVideo && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                        <div className="w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover/media:bg-[#C7A46A] group-hover/media:text-black group-hover/media:scale-110 transition-all duration-300 shadow-xl">
+                          <Play size={18} className="fill-current ml-0.5" />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Bottom Indicator for Video Availability */}
+                    {videoInfo.hasValidVideo && (
+                      <div className="absolute bottom-2.5 right-2.5 pointer-events-none z-10">
+                        <span className="px-2 py-0.5 rounded bg-black/80 border border-[#C7A46A]/40 text-[9px] font-mono text-[#C7A46A] uppercase tracking-wider flex items-center gap-1 backdrop-blur-sm">
+                          {videoInfo.videosList.length > 1 ? (
+                            <>
+                              <Layers size={10} />
+                              <span>{videoInfo.videosList.length} REELS</span>
+                            </>
+                          ) : (
+                            <>
+                              <Play size={8} className="fill-current" />
+                              <span>PREVIEW VIDEO</span>
+                            </>
+                          )}
+                        </span>
+                      </div>
                     )}
                   </div>
-                </div>
 
-                <div>
-                  {ev.location_or_client && (
-                    <div className="text-[10px] font-mono text-neutral-500">{ev.location_or_client}</div>
-                  )}
-                  <h3 className="text-base font-serif text-white font-medium">{ev.name}</h3>
-                  {ev.description && <p className="text-neutral-400 text-xs font-light line-clamp-2 mt-1">{ev.description}</p>}
+                  <div>
+                    {ev.location_or_client && (
+                      <div className="text-[10px] font-mono text-neutral-500">{ev.location_or_client}</div>
+                    )}
+                    <h3 className="text-base font-serif text-white font-medium">{ev.name}</h3>
+                    {ev.description && <p className="text-neutral-400 text-xs font-light line-clamp-2 mt-1">{ev.description}</p>}
+                  </div>
                 </div>
-              </div>
 
               <div className="flex items-center justify-between pt-4 border-t border-neutral-850">
                 <button
@@ -582,9 +757,10 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
+    )}
 
       {/* Event Add/Edit Modal */}
       {isModalOpen && (
@@ -895,6 +1071,157 @@ export const TimelineModule: React.FC<TimelineModuleProps> = ({ showToast }) => 
           </div>
         </div>
       )}
+
+      {/* Admin Timeline Video Preview Modal */}
+      {activeVideoEvent && (() => {
+        const videoData = getEventVideoData(activeVideoEvent);
+        const currentReel = videoData.videosList && videoData.videosList.length > selectedVideoIndex
+          ? videoData.videosList[selectedVideoIndex]
+          : null;
+
+        const currentVideoUrl = currentReel ? currentReel.videoUrl : videoData.primaryVideoUrl;
+        const currentEmbedUrl = currentReel ? currentReel.videoEmbedUrl : videoData.primaryEmbedUrl;
+        const currentTitle = currentReel?.title || activeVideoEvent.name;
+        const currentDriveUrl = currentReel?.driveFolderUrl || videoData.driveFolderUrl;
+
+        return (
+          <div
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6"
+            onClick={() => setActiveVideoEvent(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Admin Timeline Video Preview"
+          >
+            <div
+              className="w-full max-w-4xl bg-[#111111] border border-[#C7A46A]/50 rounded-2xl overflow-hidden shadow-2xl flex flex-col my-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between bg-[#141414] gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest mb-1 truncate">
+                    <span>{activeVideoEvent.year_number} CHRONICLE</span>
+                    <span>•</span>
+                    <span className="truncate">{activeVideoEvent.category_badge || activeVideoEvent.type}</span>
+                    {activeVideoEvent.location_or_client && (
+                      <>
+                        <span>•</span>
+                        <span className="truncate">{activeVideoEvent.location_or_client}</span>
+                      </>
+                    )}
+                  </div>
+                  <h3 className="text-base sm:text-lg font-serif text-white uppercase tracking-wide truncate">
+                    {activeVideoEvent.name}
+                  </h3>
+                  {currentReel && (
+                    <div className="flex items-center gap-2 mt-0.5 text-xs font-mono text-neutral-300">
+                      <span className="text-[#C7A46A]">REEL {String(selectedVideoIndex + 1).padStart(2, '0')}:</span>
+                      <span className="truncate">{currentReel.title}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                  {currentDriveUrl && (
+                    <a
+                      href={currentDriveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-700 text-[#C7A46A] hover:bg-[#C7A46A] hover:text-black text-xs font-mono transition-all flex items-center gap-1.5"
+                      title="Open Drive Folder"
+                    >
+                      <span className="hidden sm:inline">DRIVE FOLDER</span>
+                      <ExternalLink size={13} />
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setActiveVideoEvent(null)}
+                    aria-label="Close Video Player"
+                    className="p-2 sm:p-2.5 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300 hover:text-white hover:border-[#C7A46A] transition-all cursor-pointer"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Video Player Display */}
+              <div className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden">
+                {currentVideoUrl ? (
+                  <video
+                    key={currentVideoUrl}
+                    src={currentVideoUrl}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="w-full h-full object-contain"
+                  />
+                ) : currentEmbedUrl ? (
+                  <iframe
+                    key={currentEmbedUrl}
+                    src={currentEmbedUrl}
+                    title={currentTitle}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="text-center p-8 space-y-3">
+                    <p className="text-sm font-mono text-neutral-400">No streamable video source found</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Multi-reel switcher if there are multiple videos */}
+              {videoData.videosList && videoData.videosList.length > 1 && (
+                <div className="p-3 sm:p-4 bg-[#0e0e0e] border-t border-neutral-800">
+                  <div className="flex items-center justify-between mb-2 text-xs font-mono uppercase tracking-wider text-neutral-400">
+                    <div className="flex items-center gap-2 text-[#C7A46A]">
+                      <Layers size={13} />
+                      <span>MULTIPLE REELS ({videoData.videosList.length})</span>
+                    </div>
+                    <span className="text-[10px] text-neutral-500">SWITCH REEL</span>
+                  </div>
+                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    {videoData.videosList.map((vid, idx) => {
+                      const isSelected = idx === selectedVideoIndex;
+                      return (
+                        <button
+                          key={vid.id || idx}
+                          type="button"
+                          onClick={() => setSelectedVideoIndex(idx)}
+                          className={`px-3 py-1.5 rounded-lg text-left text-xs font-mono flex items-center gap-2 whitespace-nowrap transition-all border cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#C7A46A]/20 border-[#C7A46A] text-[#C7A46A] font-bold'
+                              : 'bg-[#151515] border-neutral-800 text-neutral-400 hover:text-white'
+                          }`}
+                        >
+                          <Play size={10} className={isSelected ? 'fill-current' : ''} />
+                          <span>0{idx + 1}. {vid.title}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Modal Footer */}
+              <div className="p-3 sm:p-4 bg-[#141414] border-t border-neutral-800 flex items-center justify-between text-xs text-neutral-400">
+                <span className="font-mono text-[10px] sm:text-[11px] text-neutral-400">
+                  ADMIN VERIFIED MEDIA PREVIEW • {activeVideoEvent.year_number}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActiveVideoEvent(null)}
+                  className="px-4 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  Close Preview
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };

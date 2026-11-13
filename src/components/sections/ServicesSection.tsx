@@ -140,41 +140,70 @@ export const ServicesSection: React.FC = () => {
               className="w-full"
             >
               <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 scrollbar-none">
-                {eventItems.map((item, idx) => (
-                  <div key={item.id} className="min-w-[85vw] sm:min-w-[360px] lg:min-w-[420px] snap-center bg-[#0a0a0a] border border-neutral-900 hover:border-[#C7A46A]/50 rounded-[20px] overflow-hidden flex flex-col group transition-all duration-500 shadow-xl">
-                    <div className="h-60 relative overflow-hidden bg-neutral-950">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
-                      
-                      {/* Play Reel button if video is present */}
-                      {(item.videoUrl || item.videoEmbedUrl) && (
-                        <button
-                          type="button"
-                          onClick={() => setSelectedVideo({
-                            title: item.title,
-                            badge: item.badge,
-                            videoUrl: item.videoUrl,
-                            videoEmbedUrl: item.videoEmbedUrl,
-                            driveFolderUrl: item.driveFolderUrl
-                          })}
-                          className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/50 backdrop-blur-md text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg group/btn cursor-pointer"
-                        >
-                          <Play size={10} className="fill-current" />
-                          <span>PLAY REEL</span>
-                        </button>
-                      )}
+                {eventItems.map((item, idx) => {
+                  const hasVideo = Boolean(item.videoUrl || item.videoEmbedUrl);
+                  return (
+                    <div key={item.id} className="min-w-[85vw] sm:min-w-[360px] lg:min-w-[420px] snap-center bg-[#0a0a0a] border border-neutral-900 hover:border-[#C7A46A]/50 rounded-[20px] overflow-hidden flex flex-col group transition-all duration-500 shadow-xl">
+                      <div 
+                        className={`h-60 relative overflow-hidden bg-neutral-950 ${hasVideo ? 'cursor-pointer group/thumb' : ''}`}
+                        onClick={hasVideo ? () => setSelectedVideo({
+                          title: item.title,
+                          badge: item.badge,
+                          videoUrl: item.videoUrl,
+                          videoEmbedUrl: item.videoEmbedUrl,
+                          driveFolderUrl: item.driveFolderUrl
+                        }) : undefined}
+                        role={hasVideo ? 'button' : undefined}
+                        tabIndex={hasVideo ? 0 : undefined}
+                        onKeyDown={hasVideo ? (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedVideo({
+                              title: item.title,
+                              badge: item.badge,
+                              videoUrl: item.videoUrl,
+                              videoEmbedUrl: item.videoEmbedUrl,
+                              driveFolderUrl: item.driveFolderUrl
+                            });
+                          }
+                        } : undefined}
+                        aria-label={hasVideo ? `Play reel for ${item.title}` : undefined}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent pointer-events-none" />
+                        
+                        {/* Play Reel button if video is present */}
+                        {hasVideo && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedVideo({
+                                title: item.title,
+                                badge: item.badge,
+                                videoUrl: item.videoUrl,
+                                videoEmbedUrl: item.videoEmbedUrl,
+                                driveFolderUrl: item.driveFolderUrl
+                              });
+                            }}
+                            className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/50 backdrop-blur-md text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg group/btn cursor-pointer"
+                          >
+                            <Play size={10} className="fill-current" />
+                            <span>PLAY REEL</span>
+                          </button>
+                        )}
 
-                      <div className="absolute bottom-4 left-6 right-6">
-                        <span className="text-[10px] font-mono text-[#C7A46A] tracking-[0.2em] uppercase block">
-                          {item.badge}
-                        </span>
+                        <div className="absolute bottom-4 left-6 right-6 pointer-events-none">
+                          <span className="text-[10px] font-mono text-[#C7A46A] tracking-[0.2em] uppercase block">
+                            {item.badge}
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
                     <div className="p-6 sm:p-8 flex-1 flex flex-col bg-[#0a0a0a]">
                       <h4 className="text-xl sm:text-2xl font-serif text-[#F4F1EA] uppercase mb-3 leading-tight group-hover:text-white transition-colors">
@@ -217,7 +246,8 @@ export const ServicesSection: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             </motion.div>
           )}
@@ -232,41 +262,70 @@ export const ServicesSection: React.FC = () => {
               className="w-full"
             >
               <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 scrollbar-none">
-                {campaignItems.map((item, idx) => (
-                  <div key={item.id} className="min-w-[85vw] sm:min-w-[360px] lg:min-w-[420px] snap-center bg-[#0a0a0a] border border-neutral-900 hover:border-[#C7A46A]/50 rounded-[20px] overflow-hidden flex flex-col group transition-all duration-500 shadow-xl">
-                    <div className="h-60 relative overflow-hidden bg-neutral-950">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
-                      
-                      {/* Play Reel button if video is present */}
-                      {(item.videoUrl || item.videoEmbedUrl) && (
-                        <button
-                          type="button"
-                          onClick={() => setSelectedVideo({
-                            title: item.title,
-                            badge: item.badge,
-                            videoUrl: item.videoUrl,
-                            videoEmbedUrl: item.videoEmbedUrl,
-                            driveFolderUrl: item.driveFolderUrl
-                          })}
-                          className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/50 backdrop-blur-md text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg group/btn cursor-pointer"
-                        >
-                          <Play size={10} className="fill-current" />
-                          <span>PLAY REEL</span>
-                        </button>
-                      )}
+                {campaignItems.map((item, idx) => {
+                  const hasVideo = Boolean(item.videoUrl || item.videoEmbedUrl);
+                  return (
+                    <div key={item.id} className="min-w-[85vw] sm:min-w-[360px] lg:min-w-[420px] snap-center bg-[#0a0a0a] border border-neutral-900 hover:border-[#C7A46A]/50 rounded-[20px] overflow-hidden flex flex-col group transition-all duration-500 shadow-xl">
+                      <div 
+                        className={`h-60 relative overflow-hidden bg-neutral-950 ${hasVideo ? 'cursor-pointer group/thumb' : ''}`}
+                        onClick={hasVideo ? () => setSelectedVideo({
+                          title: item.title,
+                          badge: item.badge,
+                          videoUrl: item.videoUrl,
+                          videoEmbedUrl: item.videoEmbedUrl,
+                          driveFolderUrl: item.driveFolderUrl
+                        }) : undefined}
+                        role={hasVideo ? 'button' : undefined}
+                        tabIndex={hasVideo ? 0 : undefined}
+                        onKeyDown={hasVideo ? (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedVideo({
+                              title: item.title,
+                              badge: item.badge,
+                              videoUrl: item.videoUrl,
+                              videoEmbedUrl: item.videoEmbedUrl,
+                              driveFolderUrl: item.driveFolderUrl
+                            });
+                          }
+                        } : undefined}
+                        aria-label={hasVideo ? `Play reel for ${item.title}` : undefined}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent pointer-events-none" />
+                        
+                        {/* Play Reel button if video is present */}
+                        {hasVideo && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedVideo({
+                                title: item.title,
+                                badge: item.badge,
+                                videoUrl: item.videoUrl,
+                                videoEmbedUrl: item.videoEmbedUrl,
+                                driveFolderUrl: item.driveFolderUrl
+                              });
+                            }}
+                            className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/80 hover:bg-[#C7A46A] text-[#C7A46A] hover:text-black border border-[#C7A46A]/50 backdrop-blur-md text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg group/btn cursor-pointer"
+                          >
+                            <Play size={10} className="fill-current" />
+                            <span>PLAY REEL</span>
+                          </button>
+                        )}
 
-                      <div className="absolute bottom-4 left-6 right-6">
-                        <span className="text-[10px] font-mono text-[#C7A46A] tracking-[0.2em] uppercase block">
-                          {item.badge}
-                        </span>
+                        <div className="absolute bottom-4 left-6 right-6 pointer-events-none">
+                          <span className="text-[10px] font-mono text-[#C7A46A] tracking-[0.2em] uppercase block">
+                            {item.badge}
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
                     <div className="p-6 sm:p-8 flex-1 flex flex-col bg-[#0a0a0a]">
                       <h4 className="text-xl sm:text-2xl font-serif text-[#F4F1EA] uppercase mb-3 leading-tight group-hover:text-white transition-colors">
@@ -309,7 +368,8 @@ export const ServicesSection: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             </motion.div>
           )}

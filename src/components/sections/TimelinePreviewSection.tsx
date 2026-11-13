@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { timelineData } from '../../data/timelineData';
 import { getTimelineYears } from '../../services/cmsService';
-import { ArrowUpRight, Sparkles, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Sparkles, ChevronRight, Play, X } from 'lucide-react';
 import { Link } from 'wouter';
 
 export const TimelinePreviewSection: React.FC = () => {
@@ -10,6 +10,13 @@ export const TimelinePreviewSection: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<number>(timelineData[0].year);
   const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const [selectedVideo, setSelectedVideo] = useState<{
+    title: string;
+    badge: string;
+    videoUrl?: string;
+    videoEmbedUrl?: string;
+    driveFolderUrl?: string;
+  } | null>(null);
 
   useEffect(() => {
     getTimelineYears().then((res) => {
@@ -37,8 +44,33 @@ export const TimelinePreviewSection: React.FC = () => {
     return () => clearInterval(interval);
   }, [activeData, selectedYear, isAutoPlaying, activeEventIndex]);
 
-  const currentVideoUrl = activeEvent?.videos?.[0]?.videoEmbedUrl || activeEvent?.videoEmbedUrl || activeData.videoEmbedUrl;
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedVideo) {
+        setSelectedVideo(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedVideo]);
+
+  const targetVideoUrl = activeEvent?.videoUrl || activeEvent?.videos?.[0]?.videoUrl;
+  const targetVideoEmbedUrl = activeEvent?.videoEmbedUrl || activeEvent?.videos?.[0]?.videoEmbedUrl || activeData.videoEmbedUrl;
+  const hasVideo = Boolean(targetVideoUrl || targetVideoEmbedUrl || activeEvent?.hasVideo);
   const currentImageUrl = (activeEvent ? activeEvent.image : null) || activeEvent?.videos?.[0]?.image || activeData.image;
+
+  const handleOpenVideo = () => {
+    if (!hasVideo) return;
+    setIsAutoPlaying(false);
+    setSelectedVideo({
+      title: activeEvent?.name || activeData.title,
+      badge: `${activeData.year} ARCHIVE • ${activeEvent?.categoryBadge || activeEvent?.type || 'EVENT REEL'}`,
+      videoUrl: targetVideoUrl,
+      videoEmbedUrl: targetVideoEmbedUrl,
+      driveFolderUrl: activeEvent?.driveFolderUrl || activeData.driveFolderUrl,
+    });
+  };
 
   return (
     <section
@@ -176,44 +208,140 @@ export const TimelinePreviewSection: React.FC = () => {
 
             {/* Right: Visual */}
             <div 
-              className="lg:col-span-6 h-72 sm:h-[450px] rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative shadow-2xl bg-black"
+              className={`lg:col-span-6 h-72 sm:h-[450px] rounded-2xl overflow-hidden editorial-image-frame border border-neutral-800 relative shadow-2xl bg-black ${
+                hasVideo ? 'cursor-pointer group/media' : ''
+              }`}
               onMouseEnter={() => setIsAutoPlaying(false)}
+              onClick={hasVideo ? handleOpenVideo : undefined}
+              role={hasVideo ? 'button' : undefined}
+              tabIndex={hasVideo ? 0 : undefined}
+              onKeyDown={hasVideo ? (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenVideo();
+                }
+              } : undefined}
+              aria-label={hasVideo ? `Play video for ${activeEvent?.name || activeData.title}` : undefined}
             >
-                            {activeEvent?.videoUrl ? (
+              {currentImageUrl ? (
+                <img
+                  key={currentImageUrl}
+                  src={currentImageUrl}
+                  alt={activeEvent?.name || activeData.title}
+                  className={`w-full h-full object-cover transition-all duration-700 ${hasVideo ? 'group-hover/media:scale-105' : ''}`}
+                />
+              ) : targetVideoUrl ? (
                 <video
-                  key={activeEvent.videoUrl}
-                  src={activeEvent.videoUrl}
-                  controls
+                  key={targetVideoUrl}
+                  src={targetVideoUrl}
+                  muted
                   playsInline
-                  className="w-full h-full object-cover transition-all duration-700"
+                  className={`w-full h-full object-cover transition-all duration-700 ${hasVideo ? 'group-hover/media:scale-105' : ''}`}
                 />
-              ) : currentVideoUrl ? (
-                <iframe
-                  key={currentVideoUrl}
-                  src={currentVideoUrl}
-                  className="w-full h-full border-0 transition-all duration-700"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                />
-              ) : currentImageUrl ? (
-                <>
-                  <img
-                    key={currentImageUrl}
-                    src={currentImageUrl}
-                    alt={activeEvent?.name || activeData.title}
-                    className="w-full h-full object-cover transition-all duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute bottom-5 left-5 right-5 flex flex-col md:flex-row items-start md:items-center justify-between text-xs font-mono text-neutral-300 pointer-events-none gap-2">
-                    <span className="truncate w-full max-w-[70%]">RFR ARCHIVES • {activeData.year} • {activeEvent?.categoryBadge || 'RECORD'}</span>
-                    <span className="text-[#C7A46A] flex-shrink-0">VERIFIED RECORD</span>
-                  </div>
-                </>
               ) : null}
+
+              {/* Gradient Scrim */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+
+              {/* Play Button Overlay (Visible only when video exists) */}
+              {hasVideo && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div 
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-black/70 backdrop-blur-md border border-[#C7A46A] flex items-center justify-center text-[#C7A46A] group-hover/media:bg-[#C7A46A] group-hover/media:text-black transition-all duration-300 transform group-hover/media:scale-110 shadow-2xl"
+                  >
+                    <Play size={24} className="fill-current ml-1" />
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom Metadata Banner */}
+              <div className="absolute bottom-5 left-5 right-5 flex flex-col md:flex-row items-start md:items-center justify-between text-xs font-mono text-neutral-300 pointer-events-none gap-2 z-10">
+                <span className="truncate w-full max-w-[70%]">
+                  RFR ARCHIVES • {activeData.year} • {activeEvent?.categoryBadge || 'RECORD'}
+                </span>
+                <span className="text-[#C7A46A] flex-shrink-0">
+                  {hasVideo ? 'CLICK TO WATCH REEL' : 'VERIFIED RECORD'}
+                </span>
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Video Player Modal */}
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-xl"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="w-full max-w-4xl bg-[#0c0c0c] border border-[#C7A46A]/40 rounded-2xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-[#111]">
+                <div>
+                  <span className="text-[10px] font-mono text-[#C7A46A] uppercase tracking-widest block">
+                    {selectedVideo.badge}
+                  </span>
+                  <h4 className="text-base sm:text-lg font-serif text-[#F4F1EA] uppercase">
+                    {selectedVideo.title}
+                  </h4>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedVideo(null)}
+                  aria-label="Close Video Player"
+                  className="w-9 h-9 rounded-full bg-neutral-900 border border-neutral-700 hover:border-[#C7A46A] flex items-center justify-center text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="relative aspect-video w-full bg-black">
+                {selectedVideo.videoUrl && selectedVideo.videoUrl.endsWith('.mp4') ? (
+                  <video
+                    src={selectedVideo.videoUrl}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="w-full h-full object-contain"
+                  />
+                ) : selectedVideo.videoEmbedUrl ? (
+                  <iframe
+                    src={selectedVideo.videoEmbedUrl}
+                    title={selectedVideo.title}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : null}
+              </div>
+
+              {selectedVideo.driveFolderUrl && (
+                <div className="px-6 py-3 bg-[#0a0a0a] border-t border-neutral-900 flex justify-between items-center text-xs">
+                  <span className="text-neutral-500 font-mono text-[10px]">OFFICIAL RFR REEL ARCHIVE</span>
+                  <a
+                    href={selectedVideo.driveFolderUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-[#C7A46A] hover:underline font-mono text-[11px]"
+                  >
+                    <span>VIEW FULL ARCHIVE</span>
+                    <ArrowUpRight size={12} />
+                  </a>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

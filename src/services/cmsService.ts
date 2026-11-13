@@ -729,14 +729,14 @@ export interface AdminMetrics {
 export const getAdminMetrics = async (): Promise<AdminMetrics> => {
   const fallbackMetrics: AdminMetrics = {
     timelineCount: 48,
-    testimonialsCount: 12,
+    testimonialsCount: 3,
     partnersCount: 20,
     pressCount: 8,
     inquiriesCount: 0,
     projectsCount: 12,
     modelsCount: 12,
     influencersCount: 10,
-    galleryCount: 24,
+    galleryCount: 13,
   };
 
   if (!isSupabaseConfigured) return fallbackMetrics;
@@ -761,7 +761,7 @@ export const getAdminMetrics = async (): Promise<AdminMetrics> => {
       supabase.from('projects_portfolio').select('*', { count: 'exact', head: true }),
       supabase.from('talent_models').select('*', { count: 'exact', head: true }),
       supabase.from('talent_influencers').select('*', { count: 'exact', head: true }),
-      supabase.from('gallery_items').select('*', { count: 'exact', head: true }),
+      supabase.from('riyas_gallery_items').select('*', { count: 'exact', head: true }),
     ]);
 
     return {
