@@ -601,6 +601,172 @@ export const getGalleryItems = async (categorySlug?: string): Promise<any[]> => 
   }
 };
 
+export interface GalleryItemRecord {
+  id?: string;
+  title: string;
+  category: 'events' | 'shows' | 'shoots';
+  caption?: string | null;
+  year?: number;
+  credits?: string | null;
+  image: string;
+  dimensions?: 'portrait' | 'landscape' | 'square';
+  tags?: string[];
+  video_embed_url?: string | null;
+  drive_view_url?: string | null;
+  has_video?: boolean;
+  sort_order?: number;
+  is_published?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export const getGalleryItemsAdmin = async (): Promise<GalleryItemRecord[]> => {
+  if (!isSupabaseConfigured) {
+    return galleryData.map((item, idx) => ({
+      id: item.id,
+      title: item.title,
+      category: item.category,
+      caption: item.caption,
+      year: item.year,
+      credits: item.credits,
+      image: item.image,
+      dimensions: item.dimensions || 'landscape',
+      tags: item.tags || [],
+      video_embed_url: item.videoEmbedUrl,
+      drive_view_url: item.driveViewUrl,
+      has_video: Boolean(item.hasVideo),
+      sort_order: idx + 1,
+      is_published: true,
+    }));
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('gallery_items')
+      .select('*')
+      .order('sort_order', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err: any) {
+    console.error('getGalleryItemsAdmin error:', err);
+    return [];
+  }
+};
+
+export const createGalleryItem = async (
+  item: Omit<GalleryItemRecord, 'id' | 'created_at' | 'updated_at'>
+): Promise<{ success: boolean; data?: any; error?: string }> => {
+  if (!item.title?.trim() || !item.image?.trim() || !item.category) {
+    return { success: false, error: 'Title, category, and image are required.' };
+  }
+
+  if (!isSupabaseConfigured) {
+    return { success: true, data: { ...item, id: `local-${Date.now()}` } };
+  }
+
+  try {
+    const payload = {
+      title: item.title.trim(),
+      category: item.category,
+      caption: item.caption?.trim() || null,
+      year: Number(item.year) || 2026,
+      credits: item.credits?.trim() || null,
+      image: item.image.trim(),
+      dimensions: item.dimensions || 'landscape',
+      tags: Array.isArray(item.tags) ? item.tags : [],
+      video_embed_url: item.video_embed_url?.trim() || null,
+      drive_view_url: item.drive_view_url?.trim() || null,
+      has_video: Boolean(item.has_video),
+      sort_order: Number(item.sort_order) || 0,
+      is_published: item.is_published !== undefined ? Boolean(item.is_published) : true,
+    };
+
+    const { data, error } = await supabase
+      .from('gallery_items')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to create gallery item' };
+  }
+};
+
+export const updateGalleryItem = async (
+  id: string,
+  item: Partial<GalleryItemRecord>
+): Promise<{ success: boolean; data?: any; error?: string }> => {
+  if (!id) return { success: false, error: 'Item ID is required.' };
+
+  if (!isSupabaseConfigured) {
+    return { success: true };
+  }
+
+  try {
+    const payload: any = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (item.title !== undefined) payload.title = item.title.trim();
+    if (item.category !== undefined) payload.category = item.category;
+    if (item.caption !== undefined) payload.caption = item.caption ? item.caption.trim() : null;
+    if (item.year !== undefined) payload.year = Number(item.year) || 2026;
+    if (item.credits !== undefined) payload.credits = item.credits ? item.credits.trim() : null;
+    if (item.image !== undefined) payload.image = item.image.trim();
+    if (item.dimensions !== undefined) payload.dimensions = item.dimensions;
+    if (item.tags !== undefined) payload.tags = Array.isArray(item.tags) ? item.tags : [];
+    if (item.video_embed_url !== undefined) payload.video_embed_url = item.video_embed_url ? item.video_embed_url.trim() : null;
+    if (item.drive_view_url !== undefined) payload.drive_view_url = item.drive_view_url ? item.drive_view_url.trim() : null;
+    if (item.has_video !== undefined) payload.has_video = Boolean(item.has_video);
+    if (item.sort_order !== undefined) payload.sort_order = Number(item.sort_order) || 0;
+    if (item.is_published !== undefined) payload.is_published = Boolean(item.is_published);
+
+    const { data, error } = await supabase
+      .from('gallery_items')
+      .update(payload)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to update gallery item' };
+  }
+};
+
+export const deleteGalleryItem = async (
+  id: string
+): Promise<{ success: boolean; error?: string }> => {
+  if (!id) return { success: false, error: 'Item ID is required.' };
+
+  if (!isSupabaseConfigured) {
+    return { success: true };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('gallery_items')
+      .delete()
+      .eq('id', id);
+
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to delete gallery item' };
+  }
+};
+
+export const toggleGalleryItemPublished = async (
+  id: string,
+  isPublished: boolean
+): Promise<{ success: boolean; error?: string }> => {
+  return updateGalleryItem(id, { is_published: isPublished });
+};
+
 // ==============================================================================
 // 9. SERVICES & DISCIPLINES
 // ==============================================================================
@@ -888,6 +1054,148 @@ export const getMediaVideos = async (categoryFilter?: string): Promise<any[]> =>
   } catch {
     return [];
   }
+};
+
+export interface MediaVideoItem {
+  id?: string;
+  title: string;
+  category: string;
+  description?: string | null;
+  video_url?: string | null;
+  video_embed_url?: string | null;
+  thumbnail_url?: string | null;
+  duration?: string | null;
+  aspect_ratio?: string | null;
+  tags?: string[];
+  sort_order?: number;
+  is_published?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export const getMediaVideosAdmin = async (): Promise<MediaVideoItem[]> => {
+  if (!isSupabaseConfigured) return [];
+  try {
+    const { data, error } = await supabase
+      .from('media_videos')
+      .select('*')
+      .order('sort_order', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err: any) {
+    console.error('getMediaVideosAdmin error:', err);
+    return [];
+  }
+};
+
+export const createMediaVideo = async (
+  item: Omit<MediaVideoItem, 'id' | 'created_at' | 'updated_at'>
+): Promise<{ success: boolean; data?: any; error?: string }> => {
+  if (!item.title?.trim()) {
+    return { success: false, error: 'Video title is required.' };
+  }
+
+  if (!isSupabaseConfigured) {
+    return { success: true, data: { ...item, id: `local-${Date.now()}` } };
+  }
+
+  try {
+    const payload = {
+      title: item.title.trim(),
+      category: item.category?.trim() || 'Highlight',
+      description: item.description?.trim() || null,
+      video_url: item.video_url?.trim() || null,
+      video_embed_url: item.video_embed_url?.trim() || null,
+      thumbnail_url: item.thumbnail_url?.trim() || null,
+      duration: item.duration?.trim() || null,
+      aspect_ratio: item.aspect_ratio || '16:9',
+      tags: Array.isArray(item.tags) ? item.tags : [],
+      sort_order: Number(item.sort_order) || 0,
+      is_published: item.is_published !== undefined ? Boolean(item.is_published) : true,
+    };
+
+    const { data, error } = await supabase
+      .from('media_videos')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to create media video' };
+  }
+};
+
+export const updateMediaVideo = async (
+  id: string,
+  item: Partial<MediaVideoItem>
+): Promise<{ success: boolean; data?: any; error?: string }> => {
+  if (!id) return { success: false, error: 'Video ID is required.' };
+
+  if (!isSupabaseConfigured) {
+    return { success: true };
+  }
+
+  try {
+    const payload: any = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (item.title !== undefined) payload.title = item.title.trim();
+    if (item.category !== undefined) payload.category = item.category.trim();
+    if (item.description !== undefined) payload.description = item.description ? item.description.trim() : null;
+    if (item.video_url !== undefined) payload.video_url = item.video_url ? item.video_url.trim() : null;
+    if (item.video_embed_url !== undefined) payload.video_embed_url = item.video_embed_url ? item.video_embed_url.trim() : null;
+    if (item.thumbnail_url !== undefined) payload.thumbnail_url = item.thumbnail_url ? item.thumbnail_url.trim() : null;
+    if (item.duration !== undefined) payload.duration = item.duration ? item.duration.trim() : null;
+    if (item.aspect_ratio !== undefined) payload.aspect_ratio = item.aspect_ratio || '16:9';
+    if (item.tags !== undefined) payload.tags = Array.isArray(item.tags) ? item.tags : [];
+    if (item.sort_order !== undefined) payload.sort_order = Number(item.sort_order) || 0;
+    if (item.is_published !== undefined) payload.is_published = Boolean(item.is_published);
+
+    const { data, error } = await supabase
+      .from('media_videos')
+      .update(payload)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to update media video' };
+  }
+};
+
+export const deleteMediaVideo = async (
+  id: string
+): Promise<{ success: boolean; error?: string }> => {
+  if (!id) return { success: false, error: 'Video ID is required.' };
+
+  if (!isSupabaseConfigured) {
+    return { success: true };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('media_videos')
+      .delete()
+      .eq('id', id);
+
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to delete media video' };
+  }
+};
+
+export const toggleMediaVideoPublished = async (
+  id: string,
+  isPublished: boolean
+): Promise<{ success: boolean; error?: string }> => {
+  return updateMediaVideo(id, { is_published: isPublished });
 };
 
 export const getTicContent = async (): Promise<any | null> => {

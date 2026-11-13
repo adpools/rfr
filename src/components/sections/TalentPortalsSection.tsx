@@ -3,11 +3,48 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowUpRight, Sparkles, Maximize2, X } from 'lucide-react';
 import { talentData } from '../../data/talentData';
+import { TalentCategory } from '../../types';
+import { getPageContent } from '../../services/cmsService';
 
 export const TalentPortalsSection: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
   const [selectedImageMap, setSelectedImageMap] = useState<Record<string, string>>({});
   const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string } | null>(null);
+  const [portals, setPortals] = useState<TalentCategory[]>(talentData);
+
+  // Load dynamic portal definitions from assets slug (content.portals)
+  useEffect(() => {
+    getPageContent('assets', {
+      title: 'THE RFR NETWORK',
+      subtitle: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
+      content: {
+        portals: talentData.map((t) => ({
+          id: t.id,
+          title: t.title,
+          tagline: t.tagline,
+          description: t.description,
+          ctaLabel: t.ctaLabel,
+          image: t.image,
+        }))
+      }
+    }).then((res) => {
+      if (Array.isArray(res.content?.portals) && res.content.portals.length > 0) {
+        const merged = talentData.map((base) => {
+          const override = res.content.portals.find((p: any) => p.id === base.id);
+          if (!override) return base;
+          return {
+            ...base,
+            title: override.title || base.title,
+            tagline: override.tagline || base.tagline,
+            description: override.description || base.description,
+            ctaLabel: override.ctaLabel || base.ctaLabel,
+            image: override.image || base.image,
+          };
+        });
+        setPortals(merged);
+      }
+    });
+  }, []);
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -50,7 +87,7 @@ export const TalentPortalsSection: React.FC = () => {
 
         {/* Horizontal Expanding Accordion (Flex Cards) */}
         <div className="flex flex-col md:flex-row h-auto md:h-[78vh] min-h-[580px] md:max-h-[760px] w-full gap-4 md:gap-3">
-          {talentData.map((portal, idx) => {
+          {portals.map((portal, idx) => {
             const isActive = hoveredIndex === idx;
             const currentImg = selectedImageMap[portal.id] || portal.image;
 

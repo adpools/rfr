@@ -12,6 +12,7 @@ export const FounderPage: React.FC = () => {
     quote: founderData.quote.text,
     bioParagraphs: founderData.bioParagraphs,
   });
+  const [principles, setPrinciples] = useState(founderData.principles);
 
   useEffect(() => {
     getAboutRiyas().then((res) => {
@@ -23,6 +24,16 @@ export const FounderPage: React.FC = () => {
             ? res.biography_paragraphs
             : founderData.bioParagraphs,
         });
+
+        // Dynamic Founder Guiding Principles from about_riyas.stats.principles
+        if (Array.isArray(res.stats?.principles) && res.stats.principles.length > 0) {
+          const mapped = res.stats.principles.map((pr: any, idx: number) => ({
+            number: pr.number || `0${idx + 1}`,
+            title: pr.title || founderData.principles[idx]?.title || 'Principle',
+            description: pr.description || pr.desc || founderData.principles[idx]?.description || '',
+          }));
+          setPrinciples(mapped);
+        }
       }
     });
   }, []);
@@ -191,7 +202,7 @@ export const FounderPage: React.FC = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {founderData.principles.map((pr, idx) => (
+            {principles.map((pr, idx) => (
               <motion.div
                 key={pr.number}
                 initial={{ opacity: 0, y: 40 }}

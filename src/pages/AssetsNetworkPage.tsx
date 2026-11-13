@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PageWrapper } from '../components/layout/PageWrapper';
 import { SectionHeading } from '../components/common/SectionHeading';
 import { talentData } from '../data/talentData';
+import { TalentCategory } from '../types';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { getPageContent } from '../services/cmsService';
@@ -11,17 +12,44 @@ export const AssetsNetworkPage: React.FC = () => {
     title: 'THE RFR NETWORK',
     subtitle: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
   });
+  const [portals, setPortals] = useState<TalentCategory[]>(talentData);
 
   useEffect(() => {
     getPageContent('assets', {
       title: 'THE RFR NETWORK',
       subtitle: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
-      content: {}
+      content: {
+        portals: talentData.map((t) => ({
+          id: t.id,
+          title: t.title,
+          tagline: t.tagline,
+          description: t.description,
+          ctaLabel: t.ctaLabel,
+          image: t.image,
+        }))
+      }
     }).then((res) => {
       setHeader((prev) => ({
         title: res.title || prev.title,
         subtitle: res.subtitle || prev.subtitle,
       }));
+
+      // Safely merge dynamic portal overrides into baseline talentData
+      if (Array.isArray(res.content?.portals) && res.content.portals.length > 0) {
+        const merged = talentData.map((base) => {
+          const override = res.content.portals.find((p: any) => p.id === base.id);
+          if (!override) return base;
+          return {
+            ...base,
+            title: override.title || base.title,
+            tagline: override.tagline || base.tagline,
+            description: override.description || base.description,
+            ctaLabel: override.ctaLabel || base.ctaLabel,
+            image: override.image || base.image,
+          };
+        });
+        setPortals(merged);
+      }
     });
   }, []);
 
@@ -40,7 +68,7 @@ export const AssetsNetworkPage: React.FC = () => {
 
         {/* 4 Portals Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-16">
-          {talentData.map((portal, idx) => (
+          {portals.map((portal, idx) => (
             <div
               key={portal.id}
               className="p-8 md:p-10 rounded-3xl bg-[#111111] border border-neutral-800 hover:border-[#C7A46A]/50 transition-all flex flex-col justify-between group"

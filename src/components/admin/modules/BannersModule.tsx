@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase';
 import { uploadMediaFile } from '../../../services/cmsService';
-import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Sparkles } from 'lucide-react';
+import { Plus, Edit3, Trash2, Eye, EyeOff, Search, Save, X, Upload, Sparkles, Play, Video } from 'lucide-react';
 
 export interface HeroBanner {
   id?: string;
@@ -22,6 +22,145 @@ interface BannersModuleProps {
   showToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
   isConfigured: boolean;
 }
+
+interface BannerPreview {
+  type: 'image' | 'youtube' | 'video' | 'empty';
+  src: string;
+  youtubeId?: string;
+  hasVideo: boolean;
+  videoLabel?: string;
+}
+
+// Helper to determine the optimal preview media for a banner
+const getBannerPreview = (item: { image_url?: string | null; video_url?: string | null }): BannerPreview => {
+  const img = item.image_url?.trim() || '';
+  const vid = item.video_url?.trim() || '';
+
+  // Known legacy placeholder that does not exist on disk
+  const isKnownMissingPath = img === '/images/hero-bg.jpg';
+
+  const extractYouTubeId = (url: string) => {
+    const match = url.match(/(?:embed\/|v=|youtu\.be\/|\/v\/)([^?&#]+)/);
+    return match ? match[1] : null;
+  };
+
+  const ytId = vid ? extractYouTubeId(vid) : null;
+
+  // 1. If explicit valid image exists and is not the known missing path
+  if (img && !isKnownMissingPath) {
+    return {
+      type: 'image',
+      src: img,
+      hasVideo: Boolean(vid),
+      videoLabel: ytId ? 'YouTube' : vid ? 'Video' : undefined,
+    };
+  }
+
+  // 2. If video URL exists, use video preview or YouTube thumbnail
+  if (vid) {
+    if (ytId) {
+      return {
+        type: 'youtube',
+        src: `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`,
+        youtubeId: ytId,
+        hasVideo: true,
+        videoLabel: 'YouTube',
+      };
+    }
+    // Local or remote MP4 / WebM video
+    return {
+      type: 'video',
+      src: vid,
+      hasVideo: true,
+      videoLabel: 'Video',
+    };
+  }
+
+  // 3. Fallback to image if set
+  if (img) {
+    return {
+      type: 'image',
+      src: img,
+      hasVideo: false,
+    };
+  }
+
+  return {
+    type: 'empty',
+    src: '',
+    hasVideo: false,
+  };
+};
+
+// Reusable preview display for cards and modal
+const BannerPreviewDisplay: React.FC<{
+  banner: { image_url?: string | null; video_url?: string | null; title?: string; eyebrow?: string | null };
+  className?: string;
+  isModal?: boolean;
+}> = ({ banner, className = '', isModal = false }) => {
+  const preview = getBannerPreview(banner);
+  const [loadError, setLoadError] = useState(false);
+
+  useEffect(() => {
+    setLoadError(false);
+  }, [banner.image_url, banner.video_url]);
+
+  return (
+    <div className={`aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800 ${className}`}>
+      {/* 1. Image or YouTube thumbnail */}
+      {(preview.type === 'image' || preview.type === 'youtube') && !loadError && (
+        <img
+          src={preview.src}
+          alt={banner.title || 'Banner Preview'}
+          className="w-full h-full object-cover"
+          onError={() => setLoadError(true)}
+        />
+      )}
+
+      {/* 2. Muted local / remote MP4 video preview with preload="metadata" (no autoplay across cards) */}
+      {preview.type === 'video' && !loadError && (
+        <video
+          src={preview.src}
+          preload="metadata"
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          onError={() => setLoadError(true)}
+        />
+      )}
+
+      {/* 3. Clean branded fallback for empty or errored media (no broken-image icons) */}
+      {(preview.type === 'empty' || loadError) && (
+        <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-[#0a0a0a] text-center select-none">
+          <img
+            src="/images/final bro.png"
+            alt="RFR by Riyas"
+            className="w-20 h-auto max-h-12 object-contain opacity-60 mb-2"
+            draggable={false}
+          />
+          <span className="text-[10px] font-mono text-[#C7A46A]/80 uppercase tracking-widest">
+            {preview.hasVideo ? 'Video Showcase' : 'RFR Stage'}
+          </span>
+        </div>
+      )}
+
+      {/* Eyebrow badge top-left (card view only) */}
+      {!isModal && banner.eyebrow && (
+        <div className="absolute top-3 left-3 px-3 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[9px] font-mono text-[#C7A46A] uppercase max-w-[65%] truncate">
+          {banner.eyebrow}
+        </div>
+      )}
+
+      {/* Subtle VIDEO / YOUTUBE badge top-right */}
+      {preview.hasVideo && (
+        <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-[#C7A46A]/50 text-[9px] font-mono text-[#C7A46A] uppercase flex items-center gap-1.5 shadow-lg">
+          <Play size={8} className="fill-[#C7A46A] text-[#C7A46A]" />
+          <span>{preview.videoLabel || 'VIDEO'}</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const BannersModule: React.FC<BannersModuleProps> = ({ showToast }) => {
   const [banners, setBanners] = useState<HeroBanner[]>([]);
@@ -58,7 +197,7 @@ export const BannersModule: React.FC<BannersModuleProps> = ({ showToast }) => {
           cta_primary_link: '/timeline',
           cta_secondary_label: 'INITIATE COLLABORATION',
           cta_secondary_link: '/contact',
-          video_url: 'https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-neon-lighting-39874-large.mp4',
+          video_url: '/videos/Dandya%20Deeshna%20Event/hero-bg-optimized.mp4',
           sort_order: 1,
           is_published: true,
         },
@@ -245,20 +384,8 @@ export const BannersModule: React.FC<BannersModuleProps> = ({ showToast }) => {
               className="p-5 rounded-2xl bg-[#0D0D0D] border border-neutral-850 hover:border-neutral-700 transition-all flex flex-col justify-between space-y-4"
             >
               <div className="space-y-3">
-                <div className="aspect-[16/9] rounded-xl bg-[#141414] overflow-hidden relative border border-neutral-800">
-                  {b.image_url ? (
-                    <img src={b.image_url} alt={b.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-neutral-600">
-                      <Sparkles size={24} />
-                    </div>
-                  )}
-                  {b.eyebrow && (
-                    <div className="absolute top-3 left-3 px-3 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-[9px] font-mono text-[#C7A46A] uppercase">
-                      {b.eyebrow}
-                    </div>
-                  )}
-                </div>
+                {/* Unified Media Preview (Card View) */}
+                <BannerPreviewDisplay banner={b} />
 
                 <div>
                   <h3 className="text-base font-serif text-white font-medium">{b.title}</h3>
@@ -380,14 +507,14 @@ export const BannersModule: React.FC<BannersModuleProps> = ({ showToast }) => {
 
               <div>
                 <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1">
-                  Background Video URL (MP4 / WebM)
+                  Background Video URL (MP4 / WebM / YouTube)
                 </label>
                 <input
                   type="text"
-                  placeholder="https://...mp4"
+                  placeholder="https://...mp4 or https://www.youtube.com/..."
                   value={formData.video_url || ''}
                   onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                  className="w-full px-4 py-2 rounded-xl bg-[#181818] border border-neutral-800 text-white text-xs font-mono"
+                  className="w-full px-4 py-2 rounded-xl bg-[#181818] border border-neutral-800 text-white text-xs font-mono focus:outline-none focus:border-[#C7A46A]"
                 />
               </div>
 
@@ -405,11 +532,27 @@ export const BannersModule: React.FC<BannersModuleProps> = ({ showToast }) => {
                   {uploading && <span className="text-xs text-[#C7A46A] font-mono animate-pulse">Uploading...</span>}
                 </div>
                 {formData.image_url && (
-                  <div className="mt-2 flex items-center gap-2">
-                    <img src={formData.image_url} alt="Preview" className="w-16 h-10 object-cover rounded border border-neutral-700" />
-                    <span className="text-[10px] font-mono text-neutral-500 truncate max-w-xs">{formData.image_url}</span>
+                  <div className="mt-2 flex items-center justify-between gap-2 p-2 rounded-lg bg-[#141414] border border-neutral-800">
+                    <span className="text-[10px] font-mono text-neutral-400 truncate max-w-xs">{formData.image_url}</span>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, image_url: '' })}
+                      className="text-[10px] font-mono text-red-400 hover:text-red-300 shrink-0"
+                    >
+                      Remove Poster
+                    </button>
                   </div>
                 )}
+              </div>
+
+              {/* Live Preview in Modal */}
+              <div className="pt-2">
+                <label className="block text-[11px] font-mono text-neutral-400 uppercase tracking-wider mb-1.5">
+                  Live Preview
+                </label>
+                <div className="w-full max-w-sm">
+                  <BannerPreviewDisplay banner={formData} isModal={true} />
+                </div>
               </div>
 
               <div className="pt-2">

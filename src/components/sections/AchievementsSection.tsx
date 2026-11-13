@@ -2,7 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Trophy, Star, Award, Crown, TrendingUp, Users, Sparkles, ArrowUpRight } from 'lucide-react';
-import { getAboutRiyas } from '../../services/cmsService';
+import { getAboutRiyas, getPageContent } from '../../services/cmsService';
+
+const defaultHighlights = [
+  {
+    year: '2020–2026',
+    title: 'Pioneering South India’s Luxury Runway Architecture',
+    description: 'Engineered high-fashion stage productions, lighting choreography, and designer platforms that set benchmark production standards across major metros and luxury resorts.',
+    badge: 'INDUSTRY BENCHMARK'
+  },
+  {
+    year: 'FLAGSHIP IP',
+    title: 'Koottam Flea Market & Festival Phenom',
+    description: 'Conceptualized and scaled the multi-edition Koottam Flea Market IP, uniting 100+ creative vendors, live music, runway pop-ups, and over 100,000+ enthusiastic attendees.',
+    badge: 'EXPERIENTIAL IP'
+  },
+  {
+    year: 'COMMERCIAL REACH',
+    title: 'Global Brands & Marquee Client Alliances',
+    description: 'Executed high-impact campaigns and creative shoots for iconic labels including Manyavar, Puma, Max Fashion, Mahindra, UDS Resorts, Lulu Mall, and premier retail enterprises.',
+    badge: 'ENTERPRISE TRUST'
+  }
+];
 
 export const AchievementsSection: React.FC = () => {
   const [stats, setStats] = useState([
@@ -11,8 +32,10 @@ export const AchievementsSection: React.FC = () => {
     { key: 'campaigns', number: '50+', label: 'Commercial & Retail Brand Campaigns', icon: TrendingUp },
     { key: 'reach', number: '5M+', label: 'Audience Footfall & Digital Reach', icon: Sparkles },
   ]);
+  const [highlightCards, setHighlightCards] = useState(defaultHighlights);
 
   useEffect(() => {
+    // Keep dynamic numerical counters from about_riyas.stats untouched
     getAboutRiyas().then((res: any) => {
       if (res?.stats) {
         setStats([
@@ -23,28 +46,20 @@ export const AchievementsSection: React.FC = () => {
         ]);
       }
     });
-  }, []);
 
-  const highlights = [
-    {
-      year: '2020–2026',
-      title: 'Pioneering South India’s Luxury Runway Architecture',
-      description: 'Engineered high-fashion stage productions, lighting choreography, and designer platforms that set benchmark production standards across major metros and luxury resorts.',
-      badge: 'INDUSTRY BENCHMARK'
-    },
-    {
-      year: 'FLAGSHIP IP',
-      title: 'Koottam Flea Market & Festival Phenom',
-      description: 'Conceptualized and scaled the multi-edition Koottam Flea Market IP, uniting 100+ creative vendors, live music, runway pop-ups, and over 100,000+ enthusiastic attendees.',
-      badge: 'EXPERIENTIAL IP'
-    },
-    {
-      year: 'COMMERCIAL REACH',
-      title: 'Global Brands & Marquee Client Alliances',
-      description: 'Executed high-impact campaigns and creative shoots for iconic labels including Manyavar, Puma, Max Fashion, Mahindra, UDS Resorts, Lulu Mall, and premier retail enterprises.',
-      badge: 'ENTERPRISE TRUST'
-    }
-  ];
+    // Load separate content.highlights for homepage highlight cards (preserving content.items for AchievementsPage)
+    getPageContent('achievements', {
+      title: 'ACHIEVEMENTS',
+      subtitle: 'A legacy built on landmark productions, creative innovation, and setting the standard for runway excellence.',
+      content: {
+        highlights: defaultHighlights
+      }
+    }).then((res) => {
+      if (Array.isArray(res.content?.highlights) && res.content.highlights.length > 0) {
+        setHighlightCards(res.content.highlights);
+      }
+    });
+  }, []);
 
   return (
     <section
@@ -108,9 +123,9 @@ export const AchievementsSection: React.FC = () => {
 
         {/* 3 Landmark Achievement Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {highlights.map((item, idx) => (
+          {highlightCards.map((item, idx) => (
             <motion.div
-              key={item.title}
+              key={item.title || idx}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

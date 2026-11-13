@@ -42,16 +42,43 @@ export const TalentDetailPage: React.FC<TalentDetailPageProps> = ({ customId }) 
       getPageContent(slugKey, {
         title: base.title,
         subtitle: base.tagline,
-        content: { leadNarrative: base.description }
-      }).then((res) => {
-        if (res.title || res.content?.leadNarrative) {
-          setPortal((prev) => ({
-            ...prev,
-            title: res.title || prev.title,
-            tagline: res.subtitle || prev.tagline,
-            description: res.content?.leadNarrative || prev.description,
-          }));
+        content: {
+          leadNarrative: base.description,
+          opportunities: base.opportunities,
+          requirements: base.requirements,
+          items: base.opportunities.map((o) => ({ title: o, desc: '' }))
         }
+      }).then((res) => {
+        // Resolve dynamic opportunities with safe fallback
+        let mappedOpportunities = base.opportunities;
+        if (Array.isArray(res.content?.opportunities) && res.content.opportunities.length > 0) {
+          mappedOpportunities = res.content.opportunities.map((o: any) =>
+            typeof o === 'string' ? o : (o.title ? (o.desc ? `${o.title} — ${o.desc}` : o.title) : String(o))
+          );
+        } else if (Array.isArray(res.content?.items) && res.content.items.length > 0) {
+          mappedOpportunities = res.content.items.map((i: any) => {
+            if (typeof i === 'string') return i;
+            if (i.title && i.desc) return `${i.title} — ${i.desc}`;
+            return i.title || i.desc || String(i);
+          });
+        }
+
+        // Resolve dynamic requirements with safe fallback
+        let mappedRequirements = base.requirements;
+        if (Array.isArray(res.content?.requirements) && res.content.requirements.length > 0) {
+          mappedRequirements = res.content.requirements.map((r: any) =>
+            typeof r === 'string' ? r : (r.title ? (r.desc ? `${r.title} — ${r.desc}` : r.title) : String(r))
+          );
+        }
+
+        setPortal((prev) => ({
+          ...prev,
+          title: res.title || prev.title,
+          tagline: res.subtitle || prev.tagline,
+          description: res.content?.leadNarrative || (res.content as any)?.description || prev.description,
+          opportunities: mappedOpportunities,
+          requirements: mappedRequirements,
+        }));
       });
     }
 

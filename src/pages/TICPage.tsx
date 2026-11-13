@@ -74,7 +74,18 @@ const ticEvents: TICEvent[] = [
   }
 ];
 
-const ticCreators = [
+export interface TicCreatorItem {
+  name: string;
+  role: string;
+  category: string;
+}
+
+export interface TicBrandItem {
+  name: string;
+  category: string;
+}
+
+export const DEFAULT_TIC_CREATORS: TicCreatorItem[] = [
   { name: 'Riyas', role: 'Co-Founder • Runway & Creative Direction', category: 'Fashion & Luxury' },
   { name: 'Ganga', role: 'Lifestyle & Contemporary Fashion Creator', category: 'Lifestyle' },
   { name: 'Rithu', role: 'High-Aesthetic Lookbook & Visual Storyteller', category: 'Fashion' },
@@ -83,7 +94,7 @@ const ticCreators = [
   { name: 'Thara', role: 'Beauty, Editorial & Commercial Talent', category: 'Editorial' }
 ];
 
-const ticBrands = [
+export const DEFAULT_TIC_BRANDS: TicBrandItem[] = [
   { name: 'Max Fashion', category: 'Apparel & Retail' },
   { name: 'Ather Energy', category: 'EV Automotive' },
   { name: 'Citroën India', category: 'Automotive' },
@@ -94,8 +105,13 @@ const ticBrands = [
   { name: 'News 18', category: 'Television Broadcast' }
 ];
 
+export const ticCreators = DEFAULT_TIC_CREATORS;
+export const ticBrands = DEFAULT_TIC_BRANDS;
+
 export const TICPage: React.FC = () => {
   const [events, setEvents] = useState<TICEvent[]>(ticEvents);
+  const [creators, setCreators] = useState<TicCreatorItem[]>(DEFAULT_TIC_CREATORS);
+  const [brands, setBrands] = useState<TicBrandItem[]>(DEFAULT_TIC_BRANDS);
   const [content, setContent] = useState({
     title: 'TRIVANDRUM INFLUENCER CIRCLE',
     tagline: 'TIC • CO-FOUNDED BY RIYAS',
@@ -107,7 +123,7 @@ export const TICPage: React.FC = () => {
   useEffect(() => {
     if (!isSupabaseConfigured) return;
 
-    // Fetch TIC Manifesto
+    // Fetch TIC Manifesto & Ecosystem (stats.creators & stats.brands)
     supabase
       .from('tic_content')
       .select('*')
@@ -121,6 +137,14 @@ export const TICPage: React.FC = () => {
             tagline: data.tagline || 'TIC • CO-FOUNDED BY RIYAS',
             narrative: data.narrative || 'Trivandrum Influencer Circle (TIC) is Kerala’s premier regional creator alliance.',
           });
+          if (data.stats && typeof data.stats === 'object' && !Array.isArray(data.stats)) {
+            if (Array.isArray(data.stats.creators) && data.stats.creators.length > 0) {
+              setCreators(data.stats.creators);
+            }
+            if (Array.isArray(data.stats.brands) && data.stats.brands.length > 0) {
+              setBrands(data.stats.brands);
+            }
+          }
         }
       });
 
@@ -380,9 +404,9 @@ export const TICPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {ticCreators.map((creator) => (
+            {creators.map((creator, idx) => (
               <div
-                key={creator.name}
+                key={creator.name || idx}
                 className="p-5 rounded-2xl bg-[#0f0f0f] border border-neutral-800 hover:border-[#C7A46A]/40 transition-all flex flex-col justify-between"
               >
                 <div className="flex items-start justify-between mb-3">
@@ -414,9 +438,9 @@ export const TICPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {ticBrands.map((brand) => (
+            {brands.map((brand, idx) => (
               <div
-                key={brand.name}
+                key={brand.name || idx}
                 className="p-4 rounded-xl bg-[#141414] border border-neutral-800 flex flex-col items-center justify-center text-center hover:border-[#C7A46A]/50 transition-colors"
               >
                 <span className="text-sm font-semibold text-white tracking-wide">{brand.name}</span>

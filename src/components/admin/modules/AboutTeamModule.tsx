@@ -37,6 +37,28 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
   const [artistsStat, setArtistsStat] = useState('');
   const [campaignsStat, setCampaignsStat] = useState('');
   const [reachStat, setReachStat] = useState('');
+  const [principles, setPrinciples] = useState<Array<{ number: string; title: string; description: string }>>([
+    {
+      number: '01',
+      title: 'Authentic Human Connection',
+      description: 'Behind every runway look and brand campaign are passionate people whose authentic stories create real resonance.',
+    },
+    {
+      number: '02',
+      title: 'Uncompromising Editorial Standard',
+      description: 'Whether producing an intimate lookbook or a multi-thousand attendee gala, the standard of visual excellence remains uncompromising.',
+    },
+    {
+      number: '03',
+      title: 'Ecosystem Over Transaction',
+      description: 'We build long-term symbiotic networks where creators, brands, and audiences continuously empower each other.',
+    },
+    {
+      number: '04',
+      title: 'Fearless Creative Exploration',
+      description: 'Constantly challenging conventional formats by synthesizing runway fashion with digital media, UGC, and spatial experiences.',
+    },
+  ]);
   const [savingBio, setSavingBio] = useState(false);
 
   const [formData, setFormData] = useState<TeamMember>({
@@ -96,6 +118,9 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
           setArtistsStat(aboutData.stats.artists || '');
           setCampaignsStat(aboutData.stats.campaigns || '');
           setReachStat(aboutData.stats.reach || '');
+          if (Array.isArray(aboutData.stats.principles) && aboutData.stats.principles.length > 0) {
+            setPrinciples(aboutData.stats.principles);
+          }
         } else {
           setShowsStat('');
           setArtistsStat('');
@@ -140,17 +165,22 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
     try {
       const { data: existing, error: fetchErr } = await supabase
         .from('about_riyas')
-        .select('id')
+        .select('id, stats')
         .limit(1)
         .maybeSingle();
 
       if (fetchErr) throw fetchErr;
 
-      const statsPayload: Record<string, string> = {};
+      // Preserve all existing stats properties (e.g. TIC creators/brands, custom analytics)
+      const existingStats = (existing?.stats && typeof existing.stats === 'object') ? existing.stats : {};
+      const statsPayload: Record<string, any> = {
+        ...existingStats,
+      };
       if (showsStat.trim()) statsPayload.shows = showsStat.trim();
       if (artistsStat.trim()) statsPayload.artists = artistsStat.trim();
       if (campaignsStat.trim()) statsPayload.campaigns = campaignsStat.trim();
       if (reachStat.trim()) statsPayload.reach = reachStat.trim();
+      statsPayload.principles = principles;
 
       const payload = {
         founder_name: founderName.trim() || 'Adv. Riyas',
@@ -430,6 +460,81 @@ export const AboutTeamModule: React.FC<AboutTeamModuleProps> = ({ showToast }) =
                 className="w-full px-3 py-1.5 rounded-lg bg-[#141414] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
               />
             </div>
+          </div>
+        </div>
+
+        {/* Founder Guiding Principles */}
+        <div className="pt-4 border-t border-neutral-850 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <label className="block text-[11px] font-mono text-[#C7A46A] uppercase tracking-wider">
+                Founder Guiding Principles (about_riyas.stats.principles)
+              </label>
+              <p className="text-[10px] text-neutral-400 font-mono">
+                Powers the four philosophy cards on the public Founder Dossier (/founder).
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setPrinciples([...principles, { number: `0${principles.length + 1}`, title: 'New Principle', description: '' }])}
+              className="px-2.5 py-1 rounded bg-[#1a1a1a] hover:bg-[#252525] border border-neutral-800 text-[#C7A46A] text-[10px] font-mono uppercase"
+            >
+              + Add Principle
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {principles.map((pr, idx) => (
+              <div key={idx} className="p-3.5 rounded-xl bg-[#141414] border border-neutral-800 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-neutral-500 uppercase">#{idx + 1}</span>
+                    <input
+                      type="text"
+                      value={pr.number}
+                      onChange={(e) => {
+                        const next = [...principles];
+                        next[idx].number = e.target.value;
+                        setPrinciples(next);
+                      }}
+                      placeholder="01"
+                      className="w-14 px-2 py-1 rounded bg-[#1e1e1e] border border-neutral-700 text-white text-[11px] font-mono focus:border-[#C7A46A] focus:outline-none"
+                    />
+                  </div>
+                  {principles.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setPrinciples(principles.filter((_, i) => i !== idx))}
+                      className="text-[10px] font-mono text-red-400 hover:text-red-300"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <input
+                  type="text"
+                  value={pr.title}
+                  onChange={(e) => {
+                    const next = [...principles];
+                    next[idx].title = e.target.value;
+                    setPrinciples(next);
+                  }}
+                  placeholder="Principle Title"
+                  className="w-full px-2.5 py-1.5 rounded bg-[#1e1e1e] border border-neutral-700 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                />
+                <textarea
+                  rows={2}
+                  value={pr.description}
+                  onChange={(e) => {
+                    const next = [...principles];
+                    next[idx].description = e.target.value;
+                    setPrinciples(next);
+                  }}
+                  placeholder="Principle description..."
+                  className="w-full px-2.5 py-1.5 rounded bg-[#1e1e1e] border border-neutral-700 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -8,12 +8,14 @@ import { OverviewModule } from '../../components/admin/modules/OverviewModule';
 import { BannersModule } from '../../components/admin/modules/BannersModule';
 import { TimelineModule } from '../../components/admin/modules/TimelineModule';
 import { ProjectsModule } from '../../components/admin/modules/ProjectsModule';
+import { GalleryModule } from '../../components/admin/modules/GalleryModule';
 import { MediaLibraryModule } from '../../components/admin/modules/MediaLibraryModule';
 import { ModelsModule } from '../../components/admin/modules/ModelsModule';
 import { InfluencersModule } from '../../components/admin/modules/InfluencersModule';
 import { TestimonialsModule } from '../../components/admin/modules/TestimonialsModule';
 import { BlogModule } from '../../components/admin/modules/BlogModule';
 import { PressModule } from '../../components/admin/modules/PressModule';
+import { VideoPodcastModule } from '../../components/admin/modules/VideoPodcastModule';
 import { ClientsModule } from '../../components/admin/modules/ClientsModule';
 import { TicModule } from '../../components/admin/modules/TicModule';
 import { AboutTeamModule } from '../../components/admin/modules/AboutTeamModule';
@@ -81,6 +83,10 @@ export const AdminDashboardPage: React.FC = () => {
         <ProjectsModule showToast={showToast} isConfigured={isConfigured} />
       )}
 
+      {activeTab === 'gallery' && (
+        <GalleryModule showToast={showToast} isConfigured={isConfigured} />
+      )}
+
       {activeTab === 'media' && (
         <MediaLibraryModule showToast={showToast} isConfigured={isConfigured} />
       )}
@@ -103,6 +109,10 @@ export const AdminDashboardPage: React.FC = () => {
 
       {activeTab === 'press' && (
         <PressModule showToast={showToast} isConfigured={isConfigured} />
+      )}
+
+      {activeTab === 'videos' && (
+        <VideoPodcastModule showToast={showToast} isConfigured={isConfigured} />
       )}
 
       {activeTab === 'clients' && (

@@ -6,18 +6,46 @@ interface PageDef {
   slug: string;
   name: string;
   route: string;
-  group: 'Core' | 'Events' | 'Campaigns' | 'Podcast' | 'Talent';
+  group: 'Core' | 'Events' | 'Campaigns' | 'Podcast' | 'Talent' | 'Legal';
   defaultTitle: string;
   defaultSubtitle: string;
   defaultContent: {
     leadNarrative?: string;
     secondaryNarrative?: string;
     items?: Array<{ title: string; desc: string }>;
+    highlights?: Array<{ year: string; badge: string; title: string; description: string }>;
+    portals?: Array<{ id: string; title: string; tagline: string; description: string; ctaLabel?: string; image?: string }>;
+    opportunities?: string[];
+    requirements?: string[];
+    pillars?: Array<{ title: string; desc: string }>;
   };
 }
 
 const PAGE_DEFINITIONS: PageDef[] = [
   // --- CORE PAGES ---
+  {
+    slug: 'about',
+    name: 'About Us Ethos & Pillars',
+    route: '/about',
+    group: 'Core',
+    defaultTitle: 'ABOUT US',
+    defaultSubtitle: 'RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media.',
+    defaultContent: {
+      leadNarrative: 'RFR By Riyas is an integrated creative platform built on runway heritage, artistic vision, and empowering possibility.',
+      pillars: [
+        { title: 'Editorial Vision', desc: 'Treating every presentation, lookbook, and campaign with high-fashion editorial rigor, dramatic lighting, and refined curation.' },
+        { title: 'Creative Synergy', desc: 'Bridging high couture designers, energetic creators, and commercial enterprises to generate symbiotic cultural resonance.' },
+        { title: 'International Credibility', desc: 'Constructing production standards, spatial set architectures, and visual storytelling capable of competing on the global stage.' },
+        { title: 'Authenticity & Talent Welfare', desc: 'Providing models, creators, and artists with structured commercial opportunities, transparent workflows, and respectful mentorship.' },
+      ],
+      items: [
+        { title: 'Editorial Vision', desc: 'Treating every presentation, lookbook, and campaign with high-fashion editorial rigor, dramatic lighting, and refined curation.' },
+        { title: 'Creative Synergy', desc: 'Bridging high couture designers, energetic creators, and commercial enterprises to generate symbiotic cultural resonance.' },
+        { title: 'International Credibility', desc: 'Constructing production standards, spatial set architectures, and visual storytelling capable of competing on the global stage.' },
+        { title: 'Authenticity & Talent Welfare', desc: 'Providing models, creators, and artists with structured commercial opportunities, transparent workflows, and respectful mentorship.' },
+      ]
+    }
+  },
   {
     slug: 'what-is-rfr',
     name: 'What is RFR? Manifesto',
@@ -79,6 +107,26 @@ const PAGE_DEFINITIONS: PageDef[] = [
     defaultSubtitle: 'A curated chronicle of industry milestones, flagship productions, talent mentorships, and enterprise brand partnerships.',
     defaultContent: {
       leadNarrative: 'From South India’s luxury runways to enterprise automotive campaigns, RFR has set benchmark production standards across fashion, retail, and lifestyle.',
+      highlights: [
+        {
+          year: '2020–2026',
+          badge: 'INDUSTRY BENCHMARK',
+          title: 'Pioneering South India’s Luxury Runway Architecture',
+          description: 'Engineered high-fashion stage productions, lighting choreography, and designer platforms that set benchmark production standards across major metros and luxury resorts.'
+        },
+        {
+          year: 'FLAGSHIP IP',
+          badge: 'EXPERIENTIAL IP',
+          title: 'Koottam Flea Market & Festival Phenom',
+          description: 'Conceptualized and scaled the multi-edition Koottam Flea Market IP, uniting 100+ creative vendors, live music, runway pop-ups, and over 100,000+ enthusiastic attendees.'
+        },
+        {
+          year: 'COMMERCIAL REACH',
+          badge: 'ENTERPRISE TRUST',
+          title: 'Global Brands & Marquee Client Alliances',
+          description: 'Executed high-impact campaigns and creative shoots for iconic labels including Manyavar, Puma, Max Fashion, Mahindra, UDS Resorts, Lulu Mall, and premier retail enterprises.'
+        }
+      ],
       items: [
         { title: '100+ Flagship Productions', desc: 'Curated high-fashion runway shows, beauty pageants, countdown galas, and festival spectacles across India.' },
         { title: '500+ Talents Mentored', desc: 'Discovered, coached, groomed, and provided runway and commercial campaign exposure to hundreds of models, artists, and creators.' },
@@ -336,6 +384,40 @@ const PAGE_DEFINITIONS: PageDef[] = [
     defaultSubtitle: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
     defaultContent: {
       leadNarrative: 'A premier launchpad and collaborative ecosystem for passionate professionals, models, creators, and performing artists.',
+      portals: [
+        {
+          id: 'careers',
+          title: 'CAREERS AT RFR',
+          tagline: 'Shape the future of fashion, media, and experiential entertainment.',
+          description: 'RFR provides opportunities for passionate individuals who want to build careers across fashion curation, event management, media production, content creation, brand strategy, and entertainment logistics.',
+          ctaLabel: 'EXPLORE CAREERS',
+          image: '/images/thumbnails/max%20little%20icon%202023.jpg'
+        },
+        {
+          id: 'models',
+          title: 'MODELS NETWORK',
+          tagline: 'Step onto the runway and front international fashion campaigns.',
+          description: 'A platform for aspiring and established models to discover high-profile opportunities across couture fashion shows, designer lookbooks, commercial ad campaigns, brand promotions, and editorial shoots.',
+          ctaLabel: 'JOIN AS MODEL',
+          image: '/images/thumbnails/global%20fashion%20week%20lulu.JPG'
+        },
+        {
+          id: 'influencers',
+          title: 'INFLUENCER & CREATOR ROSTER',
+          tagline: 'Monetize your voice and partner with marquee lifestyle brands.',
+          description: 'RFR connects digital creators and lifestyle influencers with forward-thinking brands for authentic sponsorships, red-carpet invitations, viral UGC collaborations, and exclusive brand ambassadorships.',
+          ctaLabel: 'JOIN CREATOR CIRCLE',
+          image: '/images/thumbnails/techno%20flea%20fest.jpg'
+        },
+        {
+          id: 'artists',
+          title: 'PERFORMING ARTISTS',
+          tagline: 'Take center stage at premier fashion galas and festival stages.',
+          description: 'Connecting musical acts, live bands, electronic producers, vocalists, contemporary dancers, and performance artists with high-visibility runway showcases, festival headline slots, and brand launches.',
+          ctaLabel: 'SUBMIT ARTIST REEL',
+          image: '/images/thumbnails/the%20great%20indian%20flea.JPG'
+        }
+      ],
       items: [
         { title: 'Careers Portal', desc: 'Backstage production, styling, and creative operations guild.' },
         { title: 'Models Intake', desc: 'Runway casting, commercial lookbooks, and high-fashion modeling.' },
@@ -353,6 +435,20 @@ const PAGE_DEFINITIONS: PageDef[] = [
     defaultSubtitle: 'Join our backstage production, styling, and creative operations guild.',
     defaultContent: {
       leadNarrative: 'We are expanding our core team of event managers, choreographers, backstage styling coordinators, and media technicians.',
+      opportunities: [
+        'Fashion Show Choreographers & Stylists',
+        'Event Operations & Production Managers',
+        'Digital Media & Video Editors',
+        'Brand Partnership & Sponsorship Executives',
+        'Social Media Curators & Community Managers',
+        'Graphic Designers & Visual Storytellers'
+      ],
+      requirements: [
+        'Passion for contemporary fashion, arts, and experiential design',
+        'Collaborative mindset with high attention to editorial detail',
+        'Ability to thrive in fast-paced, high-octane creative environments',
+        'Demonstrated portfolio or relevant domain experience'
+      ],
       items: [
         { title: 'Runway Show Operations', desc: 'Backstage coordinators, model line-up managers, and cue callers.' },
         { title: 'Styling & Wardrobe', desc: 'Fashion stylists, wardrobe dressers, and accessory curators.' },
@@ -370,11 +466,89 @@ const PAGE_DEFINITIONS: PageDef[] = [
     defaultSubtitle: 'Curating visionary performance artists, musicians, and stage acts.',
     defaultContent: {
       leadNarrative: 'RFR platforms emerging and established musical acts, contemporary dancers, and visual artists across our high-fashion galas and festivals.',
+      opportunities: [
+        'Live Vocal & Instrumental Showcase Openings',
+        'Festival Stage Headline Acts & Electronic Sets',
+        'Runway Walk Soundtrack Scoring & Ambience',
+        'Brand Launch Gala & Afterparty Performances',
+        'Cross-Genre Collaborative Arts Productions',
+        'Original Music Video & Streaming Platform Features'
+      ],
+      requirements: [
+        'Original repertoire or versatile commercial performance catalog',
+        'High-energy stage presence and professional acoustic discipline',
+        'Willingness to collaborate with fashion choreographers and lighting directors',
+        'Audio links / video showreel of live performances'
+      ],
       items: [
         { title: 'Live Music & Bands', desc: 'Acoustic sets, fusion bands, and instrumental soloists for festival stages.' },
         { title: 'DJ & Electronic Producers', desc: 'Deep house, electronic percussion, and runway sound designers.' },
         { title: 'Choreography & Dance', desc: 'Contemporary, avant-garde, and traditional Kerala cultural performers.' },
         { title: 'Visual & Installation Artists', desc: 'Live muralists, kinetic sculptors, and digital projection artists.' }
+      ]
+    }
+  },
+
+  // --- LEGAL & POLICIES (2) ---
+  {
+    slug: 'privacy',
+    name: 'Legal: Privacy Policy',
+    route: '/privacy',
+    group: 'Legal',
+    defaultTitle: 'PRIVACY POLICY',
+    defaultSubtitle: 'RFR BY RIYAS is committed to safeguarding the privacy, media rights, and confidential communications of our clients, models, talent network, and commercial partners.',
+    defaultContent: {
+      leadNarrative: 'RFR BY RIYAS is committed to safeguarding the privacy, media rights, and confidential communications of our clients, models, talent network, and commercial partners.',
+      items: [
+        {
+          title: '1. Information We Collect',
+          desc: 'When you interact with the RFR BY RIYAS website, submit an executive contact inquiry, apply to our talent guilds (Careers, Models, Influencers, Artists), or initiate a commercial collaboration, we may collect:\n\n• Contact details: Name, corporate entity, email address, telephone and WhatsApp number.\n• Talent submissions: Lookbooks, portfolio URLs, social media handles, and performance experience.\n• Commercial inquiries: Event requirements, sponsorship tiers, and production briefs.\n• Technical analytics: Anonymous browser metrics, device types, and page interaction timestamps.'
+        },
+        {
+          title: '2. Media, Photography & Archival Rights',
+          desc: 'As a marquee fashion runway and experiential event platform, RFR productions involve photography, cinematography, 4K multi-camera streaming, and digital amplification.\n\nAll runway models, artists, performers, and registered attendees participating in RFR Galas, Koottam Flea editions, or commercial shoots acknowledge that recorded media may be archived, broadcast, and curated in official lookbooks and press syndicates in accordance with production agreements.'
+        },
+        {
+          title: '3. Enterprise Confidentiality',
+          desc: 'We treat corporate brand strategies, pre-launch runway collection lookbooks, and commercial rate cards with strict professional confidentiality. We never sell, lease, or monetize client or talent data to unauthorized third parties.'
+        },
+        {
+          title: '4. Executive Desk & Inquiries',
+          desc: 'For data access requests, media inquiries, or privacy concerns, contact our legal and executive desk directly:\n\nadvriyas@gmail.com • +91 77365 33346'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'terms',
+    name: 'Legal: Terms of Production',
+    route: '/terms',
+    group: 'Legal',
+    defaultTitle: 'TERMS OF PRODUCTION',
+    defaultSubtitle: 'Governing principles, intellectual property rights, and production standards for all runway presentations, brand collaborations, and talent engagements curated by RFR BY RIYAS.',
+    defaultContent: {
+      leadNarrative: 'Governing principles, intellectual property rights, and production standards for all runway presentations, brand collaborations, and talent engagements curated by RFR BY RIYAS.',
+      items: [
+        {
+          title: '1. Scope of Creative Architecture',
+          desc: 'RFR BY RIYAS operates as a full-spectrum creative platform providing runway choreography, high-fashion styling, staging, lighting, talent scouting, influencer marketing campaigns, commercial advertising production, and experiential festival management.\n\nAll commissioned projects are executed according to individual Statements of Work (SOW) referencing these overarching Terms of Production.'
+        },
+        {
+          title: '2. Intellectual Property & Brand Ownership',
+          desc: 'The RFR monogram, brand assets, trademarked intellectual properties (including Koottam Flea Market, The Indian Couture conclaves, and Rewind with Riyas Podcast), set designs, and proprietary event formats remain the exclusive intellectual property of Adv. Riyas and RFR BY RIYAS.\n\nClient brand marks and trademarks showcased during commissioned campaigns remain the property of their respective owners and are utilized under authorized license for the duration of the engagement.'
+        },
+        {
+          title: '3. Talent & Artist Welfare',
+          desc: 'RFR adheres to rigorous ethical production standards. All runway models, performers, backstage coordinators, and creative crew members are guaranteed safe working conditions, respectful backstage environments, verified credentials, and prompt settlement of commercial remuneration.'
+        },
+        {
+          title: '4. Force Majeure & Rescheduling',
+          desc: 'Neither party shall be held liable for delays or inability to stage outdoor or indoor festival productions resulting from acts of God, extreme weather phenomena, government advisories, or technical venue force majeure. In such events, RFR coordinates rescheduling to the nearest feasible window.'
+        },
+        {
+          title: '5. Jurisdiction & Governance',
+          desc: 'These Terms of Production are governed by the laws of India. Any disputes arising out of contracts or commercial commissions shall be subject to the exclusive jurisdiction of the competent courts in Kerala, India.'
+        }
       ]
     }
   }
@@ -386,7 +560,7 @@ interface PagesContentModuleProps {
 }
 
 export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToast }) => {
-  const [activeGroup, setActiveGroup] = useState<'All' | 'Core' | 'Events' | 'Campaigns' | 'Podcast' | 'Talent'>('All');
+  const [activeGroup, setActiveGroup] = useState<'All' | 'Core' | 'Events' | 'Campaigns' | 'Podcast' | 'Talent' | 'Legal'>('All');
   const [selectedSlug, setSelectedSlug] = useState<string>('what-is-rfr');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -398,6 +572,13 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
   const [secondaryNarrative, setSecondaryNarrative] = useState('');
   const [items, setItems] = useState<Array<{ title: string; desc: string }>>([]);
   const [isPublished, setIsPublished] = useState(true);
+
+  // Specialized Content Groups for P6
+  const [highlights, setHighlights] = useState<Array<{ year: string; badge: string; title: string; description: string }>>([]);
+  const [portals, setPortals] = useState<Array<{ id: string; title: string; tagline: string; description: string; ctaLabel?: string; image?: string }>>([]);
+  const [opportunities, setOpportunities] = useState<string[]>([]);
+  const [requirements, setRequirements] = useState<string[]>([]);
+  const [pillars, setPillars] = useState<Array<{ title: string; desc: string }>>([]);
 
   const activePageDef = PAGE_DEFINITIONS.find((p) => p.slug === selectedSlug) || PAGE_DEFINITIONS[0];
 
@@ -411,6 +592,11 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
     setLeadNarrative(def.defaultContent.leadNarrative || '');
     setSecondaryNarrative(def.defaultContent.secondaryNarrative || '');
     setItems(def.defaultContent.items || []);
+    setHighlights(def.defaultContent.highlights || []);
+    setPortals(def.defaultContent.portals || []);
+    setOpportunities(def.defaultContent.opportunities || []);
+    setRequirements(def.defaultContent.requirements || []);
+    setPillars(def.defaultContent.pillars || []);
     setIsPublished(true);
 
     if (!isSupabaseConfigured) {
@@ -445,6 +631,22 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
               const parts = d.split(':');
               return { title: parts[0]?.trim() || 'Highlight', desc: parts.slice(1).join(':').trim() };
             }));
+          }
+
+          if (Array.isArray(data.content.highlights) && data.content.highlights.length > 0) {
+            setHighlights(data.content.highlights);
+          }
+          if (Array.isArray(data.content.portals) && data.content.portals.length > 0) {
+            setPortals(data.content.portals);
+          }
+          if (Array.isArray(data.content.opportunities) && data.content.opportunities.length > 0) {
+            setOpportunities(data.content.opportunities);
+          }
+          if (Array.isArray(data.content.requirements) && data.content.requirements.length > 0) {
+            setRequirements(data.content.requirements);
+          }
+          if (Array.isArray(data.content.pillars) && data.content.pillars.length > 0) {
+            setPillars(data.content.pillars);
           }
         }
       }
@@ -485,18 +687,47 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
       return;
     }
 
+    // Retain any existing custom or pre-existing keys in content JSONB
+    let existingContent: any = {};
+    try {
+      const { data: currentData } = await supabase
+        .from('page_content')
+        .select('content')
+        .eq('page_slug', selectedSlug)
+        .maybeSingle();
+      if (currentData?.content && typeof currentData.content === 'object' && !Array.isArray(currentData.content)) {
+        existingContent = currentData.content;
+      }
+    } catch {
+      // ignore
+    }
+
+    const contentPayload: any = {
+      ...existingContent,
+      leadNarrative: leadNarrative.trim(),
+      description: leadNarrative.trim(),
+      secondaryNarrative: secondaryNarrative.trim(),
+      detailedOverview: secondaryNarrative.trim(),
+      items,
+      deliverables: items.map((i) => (i.desc ? `${i.title}: ${i.desc}` : i.title)),
+    };
+
+    if (selectedSlug === 'achievements') {
+      contentPayload.highlights = highlights;
+    } else if (selectedSlug === 'assets') {
+      contentPayload.portals = portals;
+    } else if (selectedSlug === 'talent_careers' || selectedSlug === 'talent_artists') {
+      contentPayload.opportunities = opportunities;
+      contentPayload.requirements = requirements;
+    } else if (selectedSlug === 'about') {
+      contentPayload.pillars = pillars;
+    }
+
     const payload = {
       page_slug: selectedSlug,
       title: title.trim() || activePageDef.defaultTitle,
       subtitle: subtitle.trim() || null,
-      content: {
-        leadNarrative: leadNarrative.trim(),
-        description: leadNarrative.trim(),
-        secondaryNarrative: secondaryNarrative.trim(),
-        detailedOverview: secondaryNarrative.trim(),
-        items,
-        deliverables: items.map((i) => (i.desc ? `${i.title}: ${i.desc}` : i.title)),
-      },
+      content: contentPayload,
       is_published: isPublished,
       updated_at: new Date().toISOString(),
     };
@@ -532,7 +763,7 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
             Site Pages & Narratives CMS
           </h1>
           <p className="text-neutral-400 text-xs font-light">
-            Manage headlines, manifestos, all 11 service cards, and section copy. Saves to Supabase and updates live without redeploying.
+            Manage headlines, manifestos, legal policies, all 11 service cards, and section copy. Saves to Supabase and updates live without redeploying.
           </p>
         </div>
 
@@ -548,7 +779,7 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
 
       {/* Category Group Switcher */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        {(['All', 'Core', 'Events', 'Campaigns', 'Podcast', 'Talent'] as const).map((group) => (
+        {(['All', 'Core', 'Events', 'Campaigns', 'Podcast', 'Talent', 'Legal'] as const).map((group) => (
           <button
             key={group}
             onClick={() => setActiveGroup(group)}
@@ -558,7 +789,7 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
                 : 'bg-[#141414] text-neutral-400 hover:text-white border border-neutral-800'
             }`}
           >
-            {group === 'All' ? 'All (19)' : group}
+            {group === 'All' ? `All (${PAGE_DEFINITIONS.length})` : group}
           </button>
         ))}
       </div>
@@ -658,6 +889,373 @@ export const PagesContentModule: React.FC<PagesContentModuleProps> = ({ showToas
               </div>
             )}
           </div>
+
+          {/* P6.2: Homepage Landmark Highlights for Achievements */}
+          {selectedSlug === 'achievements' && (
+            <div className="p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-800 space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-850">
+                <div>
+                  <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-wider block">
+                    Homepage Landmark Highlights (content.highlights)
+                  </span>
+                  <span className="text-[10px] text-neutral-500 font-mono">
+                    Powers the 3 landmark cards on Homepage Chapter 04. Metric cards below power the /achievements page.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setHighlights([...highlights, { year: '2026', badge: 'RECORD', title: 'New Highlight', description: '' }])}
+                  className="text-xs font-mono text-[#C7A46A] hover:underline"
+                >
+                  + Add Highlight Card
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {highlights.map((h, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-[#141414] border border-neutral-850 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-neutral-500 uppercase">
+                        Highlight #{idx + 1}
+                      </span>
+                      {highlights.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setHighlights(highlights.filter((_, i) => i !== idx))}
+                          className="text-[10px] font-mono text-red-400 hover:text-red-300"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Badge</label>
+                        <input
+                          type="text"
+                          value={h.badge}
+                          onChange={(e) => {
+                            const next = [...highlights];
+                            next[idx].badge = e.target.value;
+                            setHighlights(next);
+                          }}
+                          placeholder="e.g. INDUSTRY BENCHMARK"
+                          className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Year / Era</label>
+                        <input
+                          type="text"
+                          value={h.year}
+                          onChange={(e) => {
+                            const next = [...highlights];
+                            next[idx].year = e.target.value;
+                            setHighlights(next);
+                          }}
+                          placeholder="e.g. 2020–2026 or FLAGSHIP IP"
+                          className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Title</label>
+                      <input
+                        type="text"
+                        value={h.title}
+                        onChange={(e) => {
+                          const next = [...highlights];
+                          next[idx].title = e.target.value;
+                          setHighlights(next);
+                        }}
+                        placeholder="Landmark Title"
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Description</label>
+                      <textarea
+                        rows={2}
+                        value={h.description}
+                        onChange={(e) => {
+                          const next = [...highlights];
+                          next[idx].description = e.target.value;
+                          setHighlights(next);
+                        }}
+                        placeholder="Landmark description..."
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* P6.3: Portal Cards for Assets */}
+          {selectedSlug === 'assets' && (
+            <div className="p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-800 space-y-4">
+              <div className="pb-3 border-b border-neutral-850">
+                <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-wider block">
+                  Talent Guild Portal Cards (content.portals)
+                </span>
+                <span className="text-[10px] text-neutral-500 font-mono">
+                  Powers the 4 portal cards on /assets and Homepage Chapter 10 (Careers, Models, Influencers, Artists).
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {portals.map((pt, idx) => (
+                  <div key={pt.id || idx} className="p-4 rounded-2xl bg-[#141414] border border-neutral-850 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-[#C7A46A] uppercase">
+                        Portal 0{idx + 1} — {pt.id.toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Title</label>
+                        <input
+                          type="text"
+                          value={pt.title}
+                          onChange={(e) => {
+                            const next = [...portals];
+                            next[idx].title = e.target.value;
+                            setPortals(next);
+                          }}
+                          className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">CTA Label</label>
+                        <input
+                          type="text"
+                          value={pt.ctaLabel || ''}
+                          onChange={(e) => {
+                            const next = [...portals];
+                            next[idx].ctaLabel = e.target.value;
+                            setPortals(next);
+                          }}
+                          placeholder="e.g. EXPLORE CAREERS"
+                          className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Tagline</label>
+                      <input
+                        type="text"
+                        value={pt.tagline}
+                        onChange={(e) => {
+                          const next = [...portals];
+                          next[idx].tagline = e.target.value;
+                          setPortals(next);
+                        }}
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Description</label>
+                      <textarea
+                        rows={2}
+                        value={pt.description}
+                        onChange={(e) => {
+                          const next = [...portals];
+                          next[idx].description = e.target.value;
+                          setPortals(next);
+                        }}
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Cover Image URL</label>
+                      <input
+                        type="text"
+                        value={pt.image || ''}
+                        onChange={(e) => {
+                          const next = [...portals];
+                          next[idx].image = e.target.value;
+                          setPortals(next);
+                        }}
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* P6.1: Opportunities & Requirements for Careers / Artists */}
+          {(selectedSlug === 'talent_careers' || selectedSlug === 'talent_artists') && (
+            <div className="p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-800 space-y-6">
+              {/* Opportunities List */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-neutral-850">
+                  <div>
+                    <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-wider block">
+                      Open Opportunities (content.opportunities)
+                    </span>
+                    <span className="text-[10px] text-neutral-500 font-mono">
+                      Reflected on the public {selectedSlug === 'talent_careers' ? 'Careers' : 'Artists'} intake page under &quot;Open Opportunities&quot;.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setOpportunities([...opportunities, 'New Opportunity Role'])}
+                    className="text-xs font-mono text-[#C7A46A] hover:underline"
+                  >
+                    + Add Opportunity
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {opportunities.map((opp, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono text-neutral-500 w-6">0{idx + 1}</span>
+                      <input
+                        type="text"
+                        value={opp}
+                        onChange={(e) => {
+                          const next = [...opportunities];
+                          next[idx] = e.target.value;
+                          setOpportunities(next);
+                        }}
+                        className="flex-1 px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                      {opportunities.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setOpportunities(opportunities.filter((_, i) => i !== idx))}
+                          className="text-[10px] font-mono text-red-400 hover:text-red-300 px-2 py-1"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Requirements List */}
+              <div className="space-y-3 pt-3 border-t border-neutral-850">
+                <div className="flex items-center justify-between pb-2 border-b border-neutral-850">
+                  <div>
+                    <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-wider block">
+                      Application Criteria (content.requirements)
+                    </span>
+                    <span className="text-[10px] text-neutral-500 font-mono">
+                      Reflected on the public intake page under &quot;Application Criteria&quot;.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setRequirements([...requirements, 'New Application Requirement'])}
+                    className="text-xs font-mono text-[#C7A46A] hover:underline"
+                  >
+                    + Add Requirement
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {requirements.map((req, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono text-neutral-500 w-6">✦</span>
+                      <input
+                        type="text"
+                        value={req}
+                        onChange={(e) => {
+                          const next = [...requirements];
+                          next[idx] = e.target.value;
+                          setRequirements(next);
+                        }}
+                        className="flex-1 px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                      {requirements.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setRequirements(requirements.filter((_, i) => i !== idx))}
+                          className="text-[10px] font-mono text-red-400 hover:text-red-300 px-2 py-1"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* P6.4: Strategic Ethos Pillars for About */}
+          {selectedSlug === 'about' && (
+            <div className="p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-800 space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-850">
+                <div>
+                  <span className="text-xs font-mono text-[#C7A46A] uppercase tracking-wider block">
+                    Strategic Ethos Pillars (content.pillars)
+                  </span>
+                  <span className="text-[10px] text-neutral-500 font-mono">
+                    Powers the 4 foundational pillars on the public About page (/about).
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPillars([...pillars, { title: 'New Pillar', desc: '' }])}
+                  className="text-xs font-mono text-[#C7A46A] hover:underline"
+                >
+                  + Add Pillar
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {pillars.map((pil, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-[#141414] border border-neutral-850 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-neutral-500 uppercase">
+                        Pillar #{idx + 1}
+                      </span>
+                      {pillars.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setPillars(pillars.filter((_, i) => i !== idx))}
+                          className="text-[10px] font-mono text-red-400 hover:text-red-300"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Title</label>
+                      <input
+                        type="text"
+                        value={pil.title}
+                        onChange={(e) => {
+                          const next = [...pillars];
+                          next[idx].title = e.target.value;
+                          setPillars(next);
+                        }}
+                        placeholder="Pillar Title"
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono text-neutral-500 uppercase mb-1">Description</label>
+                      <textarea
+                        rows={2}
+                        value={pil.desc}
+                        onChange={(e) => {
+                          const next = [...pillars];
+                          next[idx].desc = e.target.value;
+                          setPillars(next);
+                        }}
+                        placeholder="Pillar description..."
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-neutral-800 text-white text-xs font-mono focus:border-[#C7A46A] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Structured Items / Cards */}
           <div className="p-6 rounded-3xl bg-[#0D0D0D] border border-neutral-800 space-y-4">

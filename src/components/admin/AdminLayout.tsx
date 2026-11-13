@@ -6,6 +6,7 @@ import {
   Calendar,
   FolderKanban,
   Image as ImageIcon,
+  Images,
   Users,
   Quote,
   Newspaper,
@@ -25,7 +26,8 @@ import {
   ChevronRight,
   Database,
   BookOpen,
-  FileText
+  FileText,
+  Video
 } from 'lucide-react';
 
 export type AdminModuleTab =
@@ -34,7 +36,9 @@ export type AdminModuleTab =
   | 'pages_content'
   | 'timeline'
   | 'projects'
+  | 'gallery'
   | 'media'
+  | 'videos'
   | 'models'
   | 'influencers'
   | 'testimonials'
@@ -74,6 +78,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         { id: 'banners' as AdminModuleTab, label: 'Hero Banners', icon: Sparkles },
         { id: 'timeline' as AdminModuleTab, label: 'Timeline & Events', icon: Calendar },
         { id: 'projects' as AdminModuleTab, label: 'Projects & Portfolio', icon: FolderKanban },
+        { id: 'gallery' as AdminModuleTab, label: 'Curated Gallery', icon: Images },
         { id: 'media' as AdminModuleTab, label: 'Media Library', icon: ImageIcon },
       ],
     },
@@ -83,6 +88,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         { id: 'pages_content' as AdminModuleTab, label: 'Pages & Narratives', icon: FileText },
         { id: 'blog' as AdminModuleTab, label: 'Blog & Articles', icon: BookOpen },
         { id: 'press' as AdminModuleTab, label: 'Press & Clippings', icon: Newspaper },
+        { id: 'videos' as AdminModuleTab, label: 'Videos & Podcasts', icon: Video },
       ],
     },
     {

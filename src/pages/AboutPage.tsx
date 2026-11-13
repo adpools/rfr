@@ -5,10 +5,37 @@ import { motion } from 'framer-motion';
 import { Sparkles, Eye, Shield, Globe, Award, Image as ImageIcon, Briefcase, User, Users, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'wouter';
 import { founderData } from '../data/founderData';
-import { getAboutRiyas, getProjectsPortfolio } from '../services/cmsService';
+import { getAboutRiyas, getProjectsPortfolio, getPageContent } from '../services/cmsService';
 import { selectedWork, driveThumb, driveView } from '../data/selectedWorkData';
 
+const defaultPillars = [
+  {
+    icon: Eye,
+    title: 'Editorial Vision',
+    desc: 'Treating every presentation, lookbook, and campaign with high-fashion editorial rigor, dramatic lighting, and refined curation.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Creative Synergy',
+    desc: 'Bridging high couture designers, energetic creators, and commercial enterprises to generate symbiotic cultural resonance.',
+  },
+  {
+    icon: Globe,
+    title: 'International Credibility',
+    desc: 'Constructing production standards, spatial set architectures, and visual storytelling capable of competing on the global stage.',
+  },
+  {
+    icon: Shield,
+    title: 'Authenticity & Talent Welfare',
+    desc: 'Providing models, creators, and artists with structured commercial opportunities, transparent workflows, and respectful mentorship.',
+  },
+];
+
 export const AboutPage: React.FC = () => {
+  const [header, setHeader] = useState({
+    title: 'ABOUT US',
+    subtitle: 'RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media.',
+  });
   const [founder, setFounder] = useState({
     name: founderData.name,
     title: founderData.title,
@@ -16,8 +43,34 @@ export const AboutPage: React.FC = () => {
     quote: 'Fashion is not merely what we wear; it is an architectural symphony of identity, passion and purpose.',
   });
   const [works, setWorks] = useState<any[]>(selectedWork);
+  const [pillars, setPillars] = useState(defaultPillars);
 
   useEffect(() => {
+    // Dynamic About page content and Strategic Pillars (content.pillars)
+    getPageContent('about', {
+      title: 'ABOUT US',
+      subtitle: 'RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media.',
+      content: {
+        pillars: defaultPillars.map((p) => ({ title: p.title, desc: p.desc })),
+      }
+    }).then((res) => {
+      if (res.title) {
+        setHeader({
+          title: res.title,
+          subtitle: res.subtitle || 'RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media.',
+        });
+      }
+      if (Array.isArray(res.content?.pillars) && res.content.pillars.length > 0) {
+        const iconList = [Eye, Sparkles, Globe, Shield];
+        const mapped = res.content.pillars.map((p: any, idx: number) => ({
+          icon: defaultPillars[idx]?.icon || iconList[idx % iconList.length],
+          title: p.title || defaultPillars[idx]?.title || 'Pillar',
+          desc: p.desc || p.description || defaultPillars[idx]?.desc || '',
+        }));
+        setPillars(mapped);
+      }
+    });
+
     getAboutRiyas().then((res) => {
       if (res) {
         setFounder({
@@ -45,29 +98,6 @@ export const AboutPage: React.FC = () => {
     });
   }, []);
 
-  const pillars = [
-    {
-      icon: Eye,
-      title: 'Editorial Vision',
-      desc: 'Treating every presentation, lookbook, and campaign with high-fashion editorial rigor, dramatic lighting, and refined curation.',
-    },
-    {
-      icon: Sparkles,
-      title: 'Creative Synergy',
-      desc: 'Bridging high couture designers, energetic creators, and commercial enterprises to generate symbiotic cultural resonance.',
-    },
-    {
-      icon: Globe,
-      title: 'International Credibility',
-      desc: 'Constructing production standards, spatial set architectures, and visual storytelling capable of competing on the global stage.',
-    },
-    {
-      icon: Shield,
-      title: 'Authenticity & Talent Welfare',
-      desc: 'Providing models, creators, and artists with structured commercial opportunities, transparent workflows, and respectful mentorship.',
-    },
-  ];
-
   return (
     <PageWrapper
       title="About Us — Riyas Fashion Runway (RFR)"
@@ -77,8 +107,8 @@ export const AboutPage: React.FC = () => {
         <SectionHeading
           number="02"
           category="FOUNDATION & LEADERSHIP"
-          title="ABOUT US"
-          subtitle="RFR By Riyas — An integrated creative platform focused on fashion, lifestyle, entertainment, advertising, events and digital media."
+          title={header.title}
+          subtitle={header.subtitle}
         />
 
         {/* Navigation Tabs: About Riyas & Our Team */}
